@@ -80,14 +80,15 @@ export function DashboardShell({ children }: { children: ReactNode }) {
               <Link key={item.to} to={item.to}>
                 <div
                   data-tour={item.tourId}
+                  data-active={active ? 'true' : 'false'}
                   className={cn(
-                    'group relative flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors',
+                    'nav-link group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm',
                     active
                       ? 'bg-sidebar-accent text-sidebar-accent-foreground'
                       : 'text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground'
                   )}
                 >
-                  <Icon className={cn('h-4 w-4', active && 'text-brand')} />
+                  <Icon className={cn('nav-icon h-4 w-4', active && 'text-brand')} />
                   <span className="flex-1">{item.label}</span>
                 </div>
               </Link>
