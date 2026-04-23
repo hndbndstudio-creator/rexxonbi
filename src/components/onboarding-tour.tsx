@@ -28,7 +28,7 @@ const STEPS: Step[] = [
   {
     id: 'feed',
     anchor: 'nav-dashboard',
-    title: '1. Your Signal Feed',
+    title: '1. Your Signals',
     body: 'This is mission control. Every buying signal we surface — funding rounds, key hires, tech expansions — lands here in real time. Filter by type and confidence to focus on what matters.',
     preview: { icon: Radar, label: 'Live buying signals' },
   },
