@@ -29,7 +29,7 @@ function LoginPage() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (user && !loading) router.navigate({ to: '/dashboard' });
+    if (user && !loading) router.navigate({ to: '/birdseye' });
   }, [user, loading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -38,7 +38,7 @@ function LoginPage() {
     try {
       await signIn(email, password);
       toast.success('Welcome back');
-      router.navigate({ to: '/dashboard' });
+      router.navigate({ to: '/birdseye' });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Sign in failed');
     } finally {

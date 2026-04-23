@@ -22,6 +22,7 @@ import { Route as ContactsRouteImport } from './routes/contacts'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CaseStudiesRouteImport } from './routes/case-studies'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as BirdseyeRouteImport } from './routes/birdseye'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as AffiliatesRouteImport } from './routes/affiliates'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -96,6 +97,11 @@ const BlogRoute = BlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BirdseyeRoute = BirdseyeRouteImport.update({
+  id: '/birdseye',
+  path: '/birdseye',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AnalyticsRoute = AnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
@@ -143,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/affiliates': typeof AffiliatesRoute
   '/analytics': typeof AnalyticsRoute
+  '/birdseye': typeof BirdseyeRoute
   '/blog': typeof BlogRouteWithChildren
   '/case-studies': typeof CaseStudiesRouteWithChildren
   '/checkout': typeof CheckoutRoute
@@ -166,6 +173,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/affiliates': typeof AffiliatesRoute
   '/analytics': typeof AnalyticsRoute
+  '/birdseye': typeof BirdseyeRoute
   '/blog': typeof BlogRouteWithChildren
   '/case-studies': typeof CaseStudiesRouteWithChildren
   '/checkout': typeof CheckoutRoute
@@ -190,6 +198,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/affiliates': typeof AffiliatesRoute
   '/analytics': typeof AnalyticsRoute
+  '/birdseye': typeof BirdseyeRoute
   '/blog': typeof BlogRouteWithChildren
   '/case-studies': typeof CaseStudiesRouteWithChildren
   '/checkout': typeof CheckoutRoute
@@ -215,6 +224,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/affiliates'
     | '/analytics'
+    | '/birdseye'
     | '/blog'
     | '/case-studies'
     | '/checkout'
@@ -238,6 +248,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/affiliates'
     | '/analytics'
+    | '/birdseye'
     | '/blog'
     | '/case-studies'
     | '/checkout'
@@ -261,6 +272,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/affiliates'
     | '/analytics'
+    | '/birdseye'
     | '/blog'
     | '/case-studies'
     | '/checkout'
@@ -285,6 +297,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AffiliatesRoute: typeof AffiliatesRoute
   AnalyticsRoute: typeof AnalyticsRoute
+  BirdseyeRoute: typeof BirdseyeRoute
   BlogRoute: typeof BlogRouteWithChildren
   CaseStudiesRoute: typeof CaseStudiesRouteWithChildren
   CheckoutRoute: typeof CheckoutRoute
@@ -393,6 +406,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/birdseye': {
+      id: '/birdseye'
+      path: '/birdseye'
+      fullPath: '/birdseye'
+      preLoaderRoute: typeof BirdseyeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/analytics': {
       id: '/analytics'
       path: '/analytics'
@@ -492,6 +512,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AffiliatesRoute: AffiliatesRoute,
   AnalyticsRoute: AnalyticsRoute,
+  BirdseyeRoute: BirdseyeRoute,
   BlogRoute: BlogRouteWithChildren,
   CaseStudiesRoute: CaseStudiesRouteWithChildren,
   CheckoutRoute: CheckoutRoute,
