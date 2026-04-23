@@ -40,7 +40,7 @@ export function SignalCard({ signal, onClaim, onDismiss, onDraft, isPending, isD
   return (
     <article
       className={cn(
-        'group relative rounded-xl border bg-card/60 p-4 transition-colors animate-signal-in',
+        'card-interactive group relative rounded-xl border bg-card/60 p-4',
         signal.is_read ? 'border-border' : 'border-brand/30 bg-card/80',
         isDismissed && 'opacity-50',
         isPending && 'opacity-70'
