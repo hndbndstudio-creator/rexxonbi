@@ -11,17 +11,20 @@ import {
   TrendingUp,
   Users,
   Mail,
+  ShieldCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { OnboardingTour } from '@/components/onboarding-tour';
+import { useIsAdmin } from '@/lib/use-admin';
 
 type NavItem = {
-  to: '/dashboard' | '/accounts' | '/contacts' | '/outreach' | '/territory' | '/analytics' | '/settings';
+  to: '/dashboard' | '/accounts' | '/contacts' | '/outreach' | '/territory' | '/analytics' | '/settings' | '/admin';
   label: string;
   icon: typeof Radio;
   tourId?: string;
+  adminOnly?: boolean;
 };
 
 const NAV: NavItem[] = [
@@ -32,10 +35,12 @@ const NAV: NavItem[] = [
   { to: '/territory', label: 'Territory', icon: Target, tourId: 'nav-territory' },
   { to: '/analytics', label: 'Analytics', icon: TrendingUp },
   { to: '/settings', label: 'Settings', icon: Settings },
+  { to: '/admin', label: 'Admin', icon: ShieldCheck, adminOnly: true },
 ];
 
 export function DashboardShell({ children }: { children: ReactNode }) {
   const { user, loading, signOut } = useAuth();
+  const { isAdmin } = useIsAdmin();
   const router = useRouter();
   const location = useLocation();
 
@@ -72,12 +77,12 @@ export function DashboardShell({ children }: { children: ReactNode }) {
         </Link>
 
         <nav className="flex-1 space-y-0.5 p-2">
-          {NAV.map((item) => {
+          {NAV.filter((i) => !i.adminOnly || isAdmin).map((item) => {
             const active = location.pathname === item.to ||
               (item.to !== '/dashboard' && location.pathname.startsWith(item.to));
             const Icon = item.icon;
             return (
-              <Link key={item.to} to={item.to}>
+              <Link key={item.to} to={item.to as any}>
                 <div
                   data-tour={item.tourId}
                   data-active={active ? 'true' : 'false'}
@@ -85,11 +90,17 @@ export function DashboardShell({ children }: { children: ReactNode }) {
                     'nav-link group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm',
                     active
                       ? 'bg-sidebar-accent text-sidebar-accent-foreground'
-                      : 'text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground'
+                      : 'text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground',
+                    item.adminOnly && 'border border-brand/30 bg-brand/5'
                   )}
                 >
-                  <Icon className={cn('nav-icon h-4 w-4', active && 'text-brand')} />
+                  <Icon className={cn('nav-icon h-4 w-4', active && 'text-brand', item.adminOnly && 'text-brand')} />
                   <span className="flex-1">{item.label}</span>
+                  {item.adminOnly && (
+                    <span className="rounded-sm bg-brand/20 px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-wider text-brand">
+                      Sudo
+                    </span>
+                  )}
                 </div>
               </Link>
             );

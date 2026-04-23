@@ -489,6 +489,33 @@ export type Database = {
         }
         Relationships: []
       }
+      workspace_settings: {
+        Row: {
+          default_ai_model: string
+          id: string
+          slack_default_channel: string | null
+          slack_enabled: boolean
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          default_ai_model?: string
+          id?: string
+          slack_default_channel?: string | null
+          slack_enabled?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          default_ai_model?: string
+          id?: string
+          slack_default_channel?: string | null
+          slack_enabled?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
