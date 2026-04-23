@@ -165,39 +165,46 @@ function LandingPage() {
             </div>
 
             {/* Live feed panel */}
-            <div className="relative">
-              <div className="absolute -inset-4 rounded-3xl bg-brand/10 blur-3xl" />
-              <div className="relative rounded-2xl border border-border bg-card/80 p-1 shadow-2xl backdrop-blur-xl glow-brand">
-                <div className="flex items-center justify-between border-b border-border px-4 py-3">
+            <div className="relative animate-fade-up [animation-delay:120ms]">
+              <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-brand/25 via-brand/10 to-brand-glow/20 blur-3xl" />
+              <div className="relative overflow-hidden rounded-2xl border border-border bg-card/85 p-1 shadow-elevated backdrop-blur-2xl glow-brand">
+                <div className="flex items-center justify-between border-b border-border bg-gradient-to-b from-card/50 to-transparent px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <Radio className="h-4 w-4 text-brand" />
-                    <span className="text-sm font-medium">Live signal feed</span>
+                    <div className="relative flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-brand to-brand-glow text-brand-foreground shadow-inset-glow">
+                      <Radio className="h-3.5 w-3.5" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold leading-tight">Signal Agent</div>
+                      <div className="font-mono text-[10px] text-muted-foreground">streaming · v1.42</div>
+                    </div>
                   </div>
-                  <span className="font-mono text-xs text-muted-foreground">v1.42 · streaming</span>
+                  <span className="rounded-full bg-green-500/15 px-2 py-0.5 font-mono text-[10px] font-medium text-green-300">
+                    ● live
+                  </span>
                 </div>
                 <div className="space-y-2 p-3">
                   {feed.map((s, i) => (
                     <div
                       key={`${s.company}-${i}`}
-                      className="animate-signal-in rounded-lg border border-border bg-background/40 p-3"
+                      className="animate-signal-in rounded-xl border border-border bg-background/60 p-3 shadow-soft backdrop-blur-sm"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <div
                             className="h-2 w-2 rounded-full"
-                            style={{ background: s.tone, boxShadow: `0 0 8px ${s.tone}` }}
+                            style={{ background: s.tone, boxShadow: `0 0 10px ${s.tone}, 0 0 2px ${s.tone}` }}
                           />
                           <span className="text-sm font-semibold">{s.company}</span>
                           <span
-                            className="rounded-md px-1.5 py-0.5 font-mono text-[10px] uppercase"
-                            style={{ background: `color-mix(in oklab, ${s.tone} 18%, transparent)`, color: s.tone }}
+                            className="rounded-md px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider"
+                            style={{ background: `color-mix(in oklab, ${s.tone} 18%, transparent)`, color: s.tone, boxShadow: `inset 0 0 0 1px color-mix(in oklab, ${s.tone} 30%, transparent)` }}
                           >
                             {s.type}
                           </span>
                         </div>
                         <span className="font-mono text-[10px] text-muted-foreground">just now</span>
                       </div>
-                      <p className="mt-1.5 text-sm text-muted-foreground">{s.text}</p>
+                      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{s.text}</p>
                     </div>
                   ))}
                 </div>
@@ -207,11 +214,11 @@ function LandingPage() {
         </div>
 
         {/* Ticker */}
-        <div className="border-y border-border bg-card/40 py-3">
+        <div className="border-y border-border bg-card/40 py-3 backdrop-blur-sm">
           <div className="flex w-max animate-ticker gap-12 whitespace-nowrap font-mono text-xs text-muted-foreground">
             {[...SAMPLE_TICKER, ...SAMPLE_TICKER].map((t, i) => (
               <div key={i} className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+                <span className="h-1.5 w-1.5 rounded-full bg-brand shadow-[0_0_8px_var(--brand)]" />
                 {t}
               </div>
             ))}
@@ -220,27 +227,27 @@ function LandingPage() {
       </section>
 
       {/* What is Rexxon */}
-      <section id="product" className="mx-auto max-w-7xl px-6 py-24">
+      <section id="product" className="mx-auto max-w-7xl px-6 py-28">
         <SectionHeader
-          eyebrow="What is Rexxon"
-          title="A signal engine, not another database"
-          subtitle="Static data is a snapshot. Rexxon watches for moments of change — when budgets activate, stacks evolve, and decision-makers move."
+          eyebrow="The signal engine"
+          title="A research analyst that never sleeps"
+          subtitle="Static databases give you a snapshot. Rexxon watches for the moment that matters — when budgets activate, stacks evolve, and decision-makers move."
         />
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="mt-14 grid gap-6 md:grid-cols-3">
           <ExplainCard
             icon={<Bell className="h-5 w-5" />}
             title="Real-time, not weekly"
-            body="Most platforms refresh weekly. Rexxon polls every 4 minutes and pushes alerts within five minutes of a signal firing."
+            body="While other tools refresh on a Monday, Rexxon polls every 4 minutes and alerts you within five of a signal firing. You move first, every time."
           />
           <ExplainCard
             icon={<Sparkles className="h-5 w-5" />}
             title="Insight, not just data"
-            body="Every signal is interpreted by AI: what it means, what budget it activates, and which vendors should be in motion."
+            body="Every signal ships with AI interpretation: what it means, which budget just activated, and the exact vendor categories now in motion."
           />
           <ExplainCard
             icon={<Zap className="h-5 w-5" />}
-            title="From trigger to outreach"
-            body="Each alert ships with a verified contact, a buying-context email draft, and a one-click push to your CRM or sequencer."
+            title="From trigger to send"
+            body="Each alert lands with a verified contact, a buying-context email draft, and one-click push to your CRM or sequencer. Hit send and book the meeting."
           />
         </div>
       </section>
