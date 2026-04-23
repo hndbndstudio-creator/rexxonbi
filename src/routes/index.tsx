@@ -340,6 +340,71 @@ function LandingPage() {
         </div>
       </section>
 
+      {/* Pricing */}
+      <section id="pricing" className="mx-auto max-w-7xl px-6 py-24">
+        <SectionHeader
+          eyebrow="Pricing"
+          title="Built for revenue teams of every size"
+          subtitle="All plans include verified contacts, AI outreach, and Slack alerts."
+        />
+        <div className="mt-8 flex justify-center">
+          <div className="inline-flex items-center rounded-full border border-border bg-card p-1 text-sm">
+            <button
+              onClick={() => setAnnual(false)}
+              className={`rounded-full px-4 py-1.5 transition-colors ${!annual ? 'bg-brand text-brand-foreground' : 'text-muted-foreground'}`}
+            >
+              Monthly
+            </button>
+            <button
+              onClick={() => setAnnual(true)}
+              className={`rounded-full px-4 py-1.5 transition-colors ${annual ? 'bg-brand text-brand-foreground' : 'text-muted-foreground'}`}
+            >
+              Annual <span className="ml-1 text-xs opacity-80">−20%</span>
+            </button>
+          </div>
+        </div>
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          {[
+            { name: 'Starter', price: 79, accounts: '75 accounts', users: '1 user', highlight: false, features: ['75 monitored accounts', '1 user seat', 'Real-time signal feed', 'AI outreach drafts', 'Verified contacts', 'Slack alerts', 'Email digest'] },
+            { name: 'Pro', price: 199, accounts: '250 accounts', users: '3 users', highlight: true, features: ['250 monitored accounts', '3 user seats', 'Everything in Starter', 'CRM push (Salesforce, HubSpot)', 'Outreach.io / Salesloft sync', 'Custom signal weighting', 'Priority support'] },
+            { name: 'Team', price: 349, accounts: '750 accounts', users: '10 users', highlight: false, features: ['750 monitored accounts', '10 user seats', 'Everything in Pro', 'Territory routing', 'Win/loss feedback loop', 'Dedicated CSM', 'SAML SSO'] },
+          ].map((plan) => {
+            const price = annual ? Math.round(plan.price * 0.8) : plan.price;
+            return (
+              <div
+                key={plan.name}
+                className={`hover-lift relative rounded-2xl border p-7 backdrop-blur-sm ${plan.highlight ? 'border-brand bg-card shadow-elevated glow-brand' : 'border-border bg-card/60 shadow-soft'}`}
+              >
+                {plan.highlight && (
+                  <div className="absolute -top-3 left-7 rounded-full bg-gradient-to-r from-brand to-brand-glow px-3 py-0.5 text-[11px] font-semibold text-brand-foreground shadow-inset-glow">
+                    Most popular
+                  </div>
+                )}
+                <h3 className="text-lg font-semibold">{plan.name}</h3>
+                <div className="mt-3 flex items-baseline gap-1">
+                  <span className="text-5xl font-bold tracking-tight">${price}</span>
+                  <span className="text-sm text-muted-foreground">/mo</span>
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">{plan.accounts} · {plan.users}</p>
+                <Link to="/signup">
+                  <Button className={`mt-6 w-full ${plan.highlight ? 'bg-brand text-brand-foreground shadow-inset-glow hover:opacity-95' : ''}`} variant={plan.highlight ? 'default' : 'outline'}>
+                    Start free trial
+                  </Button>
+                </Link>
+                <ul className="mt-6 space-y-2.5 border-t border-border pt-5">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+                      <span className="text-foreground/85">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
       {/* Sources */}
       <section className="border-y border-border bg-card/30 py-20">
         <div className="mx-auto max-w-7xl px-6">
