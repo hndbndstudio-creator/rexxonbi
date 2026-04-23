@@ -372,3 +372,73 @@ function TourPopover({
     </>
   );
 }
+
+function WelcomeModal({
+  onStart,
+  onSkip,
+  totalSteps,
+}: {
+  onStart: () => void;
+  onSkip: () => void;
+  totalSteps: number;
+}) {
+  return (
+    <>
+      <div
+        className="fixed inset-0 z-[60] bg-background/70 backdrop-blur-sm animate-in fade-in"
+        onClick={onSkip}
+      />
+      <div
+        role="dialog"
+        aria-modal="true"
+        className="fixed left-1/2 top-1/2 z-[70] w-[92vw] max-w-md -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in-95 rounded-2xl border border-border bg-card p-7 shadow-2xl"
+      >
+        <button
+          onClick={onSkip}
+          className="absolute right-3 top-3 rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+          aria-label="Close"
+        >
+          <X className="h-4 w-4" />
+        </button>
+
+        <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand/15 text-brand ring-1 ring-brand/30">
+          <Sparkles className="h-5 w-5" />
+        </div>
+
+        <h2 className="text-xl font-semibold">Welcome to Rexxon AI</h2>
+        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+          Your AI-powered sales intelligence platform. Let's take a quick {totalSteps}-step tour so
+          you know exactly where to find your signals, accounts, contacts, and outreach tools.
+        </p>
+
+        <ul className="mt-4 space-y-2 text-sm">
+          {[
+            'Spot real-time buying signals',
+            'Track target accounts on autopilot',
+            'Reach decision-makers in seconds',
+          ].map((item) => (
+            <li key={item} className="flex items-center gap-2">
+              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-brand/15 text-brand">
+                <Check className="h-2.5 w-2.5" strokeWidth={3} />
+              </span>
+              <span className="text-muted-foreground">{item}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-6 flex items-center justify-between gap-3">
+          <button
+            onClick={onSkip}
+            className="text-xs text-muted-foreground hover:text-foreground"
+          >
+            Skip for now
+          </button>
+          <Button onClick={onStart} className="bg-brand text-brand-foreground hover:opacity-90">
+            Show me around
+            <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+          </Button>
+        </div>
+      </div>
+    </>
+  );
+}
