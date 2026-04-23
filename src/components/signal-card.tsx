@@ -88,15 +88,71 @@ export function SignalCard({ signal, onClaim, onDismiss, onDraft, isPending, isD
           </div>
         </div>
 
-        <div
-          className="shrink-0 rounded-md border px-2 py-1 text-center"
-          style={{ borderColor: `color-mix(in oklab, ${conf.color} 35%, transparent)` }}
-        >
-          <div className="text-[9px] font-mono uppercase text-muted-foreground">Confidence</div>
-          <div className="text-xs font-semibold" style={{ color: conf.color }}>
+        <div className="shrink-0 w-16 sm:w-20">
+          <div className="flex items-baseline justify-between gap-1">
+            <span className="text-[9px] font-mono uppercase text-muted-foreground">Conf</span>
+            <span className="text-[11px] font-semibold tabular-nums" style={{ color: conf.color }}>
+              {Math.round(signal.confidence_score * 100)}
+            </span>
+          </div>
+          <div
+            className="mt-1 h-1.5 w-full overflow-hidden rounded-full"
+            style={{ backgroundColor: `color-mix(in oklab, ${conf.color} 15%, transparent)` }}
+            role="progressbar"
+            aria-valuenow={Math.round(signal.confidence_score * 100)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`Confidence ${conf.label}`}
+          >
+            <div
+              className="h-full rounded-full transition-all"
+              style={{
+                width: `${Math.min(100, Math.max(0, signal.confidence_score * 100))}%`,
+                backgroundColor: conf.color,
+              }}
+            />
+          </div>
+          <div className="mt-0.5 text-center text-[9px] font-mono uppercase tracking-wider" style={{ color: conf.color }}>
             {conf.label}
           </div>
         </div>
+      </div>
+
+      {/* Metadata strip — fast-scan key info */}
+      <div className="mt-2.5 -mx-1 flex items-center gap-1 overflow-x-auto px-1 pb-0.5 text-[10.5px] text-muted-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {company?.employee_range && (
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-md border border-border bg-background/40 px-1.5 py-0.5">
+            <Users className="h-3 w-3" />
+            <span className="tabular-nums">{company.employee_range}</span>
+          </span>
+        )}
+        {(company?.hq_city || company?.hq_country) && (
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-md border border-border bg-background/40 px-1.5 py-0.5">
+            <MapPin className="h-3 w-3" />
+            <span className="truncate max-w-[10rem]">
+              {[company.hq_city, company.hq_country].filter(Boolean).join(', ')}
+            </span>
+          </span>
+        )}
+        {signal.role_category && (
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-md border border-border bg-background/40 px-1.5 py-0.5">
+            <Briefcase className="h-3 w-3" />
+            <span>{signal.role_category}</span>
+            {signal.seniority_level && (
+              <span className="font-mono uppercase opacity-70">· {signal.seniority_level.replace('_', ' ')}</span>
+            )}
+          </span>
+        )}
+        {company?.funding_stage && (
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-md border border-border bg-background/40 px-1.5 py-0.5">
+            <Sparkles className="h-3 w-3" />
+            <span>{company.funding_stage}</span>
+          </span>
+        )}
+        <span className="inline-flex shrink-0 items-center gap-1 rounded-md border border-border bg-background/40 px-1.5 py-0.5 sm:hidden">
+          <Clock className="h-3 w-3" />
+          <span>{formatDistanceToNow(new Date(signal.published_at), { addSuffix: true })}</span>
+        </span>
       </div>
 
       {/* Title */}
