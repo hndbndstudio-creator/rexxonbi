@@ -69,114 +69,142 @@ function LandingPage() {
 
   return (
     <div className="min-h-screen overflow-x-hidden">
+      {/* Announcement bar */}
+      <div className="border-b border-border/60 bg-gradient-to-r from-brand/20 via-brand/10 to-brand-glow/20 backdrop-blur-sm">
+        <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-6 py-2 text-xs">
+          <span className="rounded-full bg-brand/20 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-brand">
+            New
+          </span>
+          <span className="text-foreground/90">
+            Rexxon Agents now run 24/7 — every account researched, every signal drafted.
+          </span>
+          <a href="#product" className="hidden font-medium text-brand hover:underline sm:inline">
+            See it live →
+          </a>
+        </div>
+      </div>
+
       {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
+      <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-2xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2.5">
             <Logo />
-            <span className="text-lg font-semibold tracking-tight">Rexxon AI</span>
+            <span className="text-base font-semibold tracking-tight">Rexxon AI</span>
           </Link>
           <div className="hidden items-center gap-8 md:flex">
-            <a href="#product" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Product</a>
-            <a href="#signals" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Signals</a>
-            <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
-            <a href="https://docs.rexxon.ai" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Docs</a>
+            <a href="#product" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Product</a>
+            <a href="#signals" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Signals</a>
+            <a href="#pricing" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Pricing</a>
+            <a href="https://docs.rexxon.ai" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Docs</a>
           </div>
           <div className="flex items-center gap-2">
             <Link to="/login">
               <Button variant="ghost" size="sm">Sign in</Button>
             </Link>
             <Link to="/signup">
-              <Button size="sm" className="bg-brand text-brand-foreground hover:opacity-90">Start free</Button>
+              <Button size="sm" className="bg-brand text-brand-foreground shadow-inset-glow transition-transform hover:-translate-y-0.5 hover:opacity-95">
+                Start free
+              </Button>
             </Link>
           </div>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="relative bg-radial-brand">
+      <section className="relative bg-aurora">
         <div className="mx-auto max-w-7xl px-6 pt-20 pb-24">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium text-muted-foreground">
+            <div className="animate-fade-up">
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium text-muted-foreground shadow-soft backdrop-blur-sm">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
                 </span>
-                Live signal engine · 12 sources monitored
+                Live signal engine · 12 sources · &lt;5 min latency
               </div>
-              <h1 className="mt-6 text-5xl font-bold tracking-tight md:text-6xl">
-                Catch buying signals
+              <h1 className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
+                Pipeline on
                 <br />
                 <span className="bg-gradient-to-r from-brand via-brand-glow to-brand bg-clip-text text-transparent">
-                  before your competitors do.
+                  autopilot.
                 </span>
+                <br />
+                <span className="text-foreground/90">No excuses.</span>
               </h1>
-              <p className="mt-6 text-lg text-muted-foreground">
-                Rexxon AI monitors 12 data sources for hiring spikes, leadership changes, funding events, and compliance moves — then delivers real-time alerts with AI-drafted outreach and verified contact data.
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl">
+                Every rep wakes up to fresh buying signals, verified contacts, and drafted emails — no research required. Rexxon's AI agents run deep account intel 24/7 and surface the moment a budget activates. The only thing left is to hit send.
               </p>
-              <ul className="mt-6 space-y-2">
+              <ul className="mt-7 space-y-2.5">
                 {[
-                  'Real-time alerts within minutes of a signal firing',
-                  'AI-drafted outreach with persona and tone tuning',
-                  'Verified email + phone for the hiring manager',
+                  'Real-time alerts within 5 min of a signal firing',
+                  'AI outreach drafts tuned to persona, tone, and trigger',
+                  'Verified email + phone for the buying committee',
                 ].map((bullet) => (
-                  <li key={bullet} className="flex items-start gap-2 text-sm">
+                  <li key={bullet} className="flex items-start gap-2.5 text-sm">
                     <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
                     <span className="text-foreground/90">{bullet}</span>
                   </li>
                 ))}
               </ul>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="mt-9 flex flex-wrap items-center gap-3">
                 <Link to="/signup">
-                  <Button size="lg" className="bg-brand text-brand-foreground hover:opacity-90">
+                  <Button size="lg" className="bg-brand text-brand-foreground shadow-inset-glow transition-transform hover:-translate-y-0.5 hover:opacity-95">
                     Start 14-day free trial
                     <ArrowRight className="ml-1.5 h-4 w-4" />
                   </Button>
                 </Link>
-                <Button size="lg" variant="outline">Watch 2-min demo</Button>
+                <Button size="lg" variant="outline" className="hover-lift backdrop-blur-sm">
+                  Watch 2-min demo
+                </Button>
               </div>
               <div className="mt-12 grid grid-cols-3 gap-6 border-t border-border pt-6">
-                <Stat value="12" label="Signal sources" />
-                <Stat value="<5min" label="Alert latency" />
-                <Stat value="89%" label="Email accuracy" />
+                <Stat value="2×" label="More meetings" />
+                <Stat value="40%" label="More pipeline" />
+                <Stat value="6h" label="Saved per rep / week" />
               </div>
             </div>
 
             {/* Live feed panel */}
-            <div className="relative">
-              <div className="absolute -inset-4 rounded-3xl bg-brand/10 blur-3xl" />
-              <div className="relative rounded-2xl border border-border bg-card/80 p-1 shadow-2xl backdrop-blur-xl glow-brand">
-                <div className="flex items-center justify-between border-b border-border px-4 py-3">
+            <div className="relative animate-fade-up [animation-delay:120ms]">
+              <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-brand/25 via-brand/10 to-brand-glow/20 blur-3xl" />
+              <div className="relative overflow-hidden rounded-2xl border border-border bg-card/85 p-1 shadow-elevated backdrop-blur-2xl glow-brand">
+                <div className="flex items-center justify-between border-b border-border bg-gradient-to-b from-card/50 to-transparent px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <Radio className="h-4 w-4 text-brand" />
-                    <span className="text-sm font-medium">Live signal feed</span>
+                    <div className="relative flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-brand to-brand-glow text-brand-foreground shadow-inset-glow">
+                      <Radio className="h-3.5 w-3.5" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold leading-tight">Signal Agent</div>
+                      <div className="font-mono text-[10px] text-muted-foreground">streaming · v1.42</div>
+                    </div>
                   </div>
-                  <span className="font-mono text-xs text-muted-foreground">v1.42 · streaming</span>
+                  <span className="rounded-full bg-green-500/15 px-2 py-0.5 font-mono text-[10px] font-medium text-green-300">
+                    ● live
+                  </span>
                 </div>
                 <div className="space-y-2 p-3">
                   {feed.map((s, i) => (
                     <div
                       key={`${s.company}-${i}`}
-                      className="animate-signal-in rounded-lg border border-border bg-background/40 p-3"
+                      className="animate-signal-in rounded-xl border border-border bg-background/60 p-3 shadow-soft backdrop-blur-sm"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <div
                             className="h-2 w-2 rounded-full"
-                            style={{ background: s.tone, boxShadow: `0 0 8px ${s.tone}` }}
+                            style={{ background: s.tone, boxShadow: `0 0 10px ${s.tone}, 0 0 2px ${s.tone}` }}
                           />
                           <span className="text-sm font-semibold">{s.company}</span>
                           <span
-                            className="rounded-md px-1.5 py-0.5 font-mono text-[10px] uppercase"
-                            style={{ background: `color-mix(in oklab, ${s.tone} 18%, transparent)`, color: s.tone }}
+                            className="rounded-md px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider"
+                            style={{ background: `color-mix(in oklab, ${s.tone} 18%, transparent)`, color: s.tone, boxShadow: `inset 0 0 0 1px color-mix(in oklab, ${s.tone} 30%, transparent)` }}
                           >
                             {s.type}
                           </span>
                         </div>
                         <span className="font-mono text-[10px] text-muted-foreground">just now</span>
                       </div>
-                      <p className="mt-1.5 text-sm text-muted-foreground">{s.text}</p>
+                      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{s.text}</p>
                     </div>
                   ))}
                 </div>
@@ -186,11 +214,11 @@ function LandingPage() {
         </div>
 
         {/* Ticker */}
-        <div className="border-y border-border bg-card/40 py-3">
+        <div className="border-y border-border bg-card/40 py-3 backdrop-blur-sm">
           <div className="flex w-max animate-ticker gap-12 whitespace-nowrap font-mono text-xs text-muted-foreground">
             {[...SAMPLE_TICKER, ...SAMPLE_TICKER].map((t, i) => (
               <div key={i} className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+                <span className="h-1.5 w-1.5 rounded-full bg-brand shadow-[0_0_8px_var(--brand)]" />
                 {t}
               </div>
             ))}
@@ -199,46 +227,53 @@ function LandingPage() {
       </section>
 
       {/* What is Rexxon */}
-      <section id="product" className="mx-auto max-w-7xl px-6 py-24">
+      <section id="product" className="mx-auto max-w-7xl px-6 py-28">
         <SectionHeader
-          eyebrow="What is Rexxon"
-          title="A signal engine, not another database"
-          subtitle="Static data is a snapshot. Rexxon watches for moments of change — when budgets activate, stacks evolve, and decision-makers move."
+          eyebrow="The signal engine"
+          title="A research analyst that never sleeps"
+          subtitle="Static databases give you a snapshot. Rexxon watches for the moment that matters — when budgets activate, stacks evolve, and decision-makers move."
         />
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="mt-14 grid gap-6 md:grid-cols-3">
           <ExplainCard
             icon={<Bell className="h-5 w-5" />}
             title="Real-time, not weekly"
-            body="Most platforms refresh weekly. Rexxon polls every 4 minutes and pushes alerts within five minutes of a signal firing."
+            body="While other tools refresh on a Monday, Rexxon polls every 4 minutes and alerts you within five of a signal firing. You move first, every time."
           />
           <ExplainCard
             icon={<Sparkles className="h-5 w-5" />}
             title="Insight, not just data"
-            body="Every signal is interpreted by AI: what it means, what budget it activates, and which vendors should be in motion."
+            body="Every signal ships with AI interpretation: what it means, which budget just activated, and the exact vendor categories now in motion."
           />
           <ExplainCard
             icon={<Zap className="h-5 w-5" />}
-            title="From trigger to outreach"
-            body="Each alert ships with a verified contact, a buying-context email draft, and a one-click push to your CRM or sequencer."
+            title="From trigger to send"
+            body="Each alert lands with a verified contact, a buying-context email draft, and one-click push to your CRM or sequencer. Hit send and book the meeting."
           />
         </div>
       </section>
 
       {/* How it works */}
-      <section className="border-y border-border bg-card/30 py-24">
+      <section className="border-y border-border bg-card/30 py-28">
         <div className="mx-auto max-w-7xl px-6">
-          <SectionHeader eyebrow="How it works" title="Trigger → Insight → Action" />
-          <div className="mt-12 grid gap-6 md:grid-cols-4">
+          <SectionHeader
+            eyebrow="How it works"
+            title="Trigger → Insight → Action"
+            subtitle="Four steps from signal detection to a meeting on your calendar. Set it up once. Let it run."
+          />
+          <div className="mt-14 grid gap-6 md:grid-cols-4">
             {[
-              { n: '01', t: 'Define territory', d: 'Pick industries, employee bands, funding stages, and named accounts you want to monitor.' },
+              { n: '01', t: 'Define your territory', d: 'Pick industries, employee bands, funding stages, and named accounts you want to monitor.' },
               { n: '02', t: 'Signals fire', d: 'Job posts, news, filings, and leadership moves are scored against your buying-trigger taxonomy.' },
               { n: '03', t: 'AI interprets', d: 'Each signal is enriched with insight, vendor categories, and the right hiring manager.' },
-              { n: '04', t: 'You act', d: 'Drafted outreach lands in your inbox or Slack. One click pushes it to your sequence.' },
-            ].map((step) => (
-              <div key={step.n} className="rounded-xl border border-border bg-background/40 p-5">
-                <div className="font-mono text-xs text-brand">{step.n}</div>
-                <h3 className="mt-2 font-semibold">{step.t}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{step.d}</p>
+              { n: '04', t: 'You hit send', d: 'Drafted outreach lands in your inbox or Slack. One click pushes it to your sequence.' },
+            ].map((step, idx) => (
+              <div key={step.n} className="hover-lift relative rounded-2xl border border-border bg-background/50 p-6 shadow-soft backdrop-blur-sm">
+                <div className="flex items-center justify-between">
+                  <div className="font-mono text-xs font-semibold tracking-wider text-brand">{step.n}</div>
+                  {idx < 3 && <ArrowRight className="hidden h-4 w-4 text-muted-foreground/40 md:block" />}
+                </div>
+                <h3 className="mt-3 text-base font-semibold">{step.t}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{step.d}</p>
               </div>
             ))}
           </div>
@@ -267,12 +302,12 @@ function LandingPage() {
             { cat: 'Compliance', spend: 'SOC 2, ISO, GDPR, HIPAA tools' },
             { cat: 'Executive', spend: 'Strategy, board reporting' },
           ].map((c) => (
-            <div key={c.cat} className="flex items-center justify-between rounded-lg border border-border bg-card/40 px-4 py-3">
+            <div key={c.cat} className="hover-lift flex items-center justify-between rounded-xl border border-border bg-card/50 px-4 py-3.5 shadow-soft backdrop-blur-sm">
               <div>
                 <div className="text-sm font-medium">{c.cat}</div>
-                <div className="text-xs text-muted-foreground">{c.spend}</div>
+                <div className="mt-0.5 text-xs text-muted-foreground">{c.spend}</div>
               </div>
-              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+              <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
             </div>
           ))}
         </div>
@@ -297,9 +332,9 @@ function LandingPage() {
               { i: <Shield className="h-4 w-4" />, n: 'ISACA' },
               { i: <Shield className="h-4 w-4" />, n: 'CyberSeek' },
             ].map((s) => (
-              <div key={s.n} className="flex items-center gap-2 rounded-lg border border-border bg-background/40 px-3 py-2.5 text-sm">
-                <span className="text-brand">{s.i}</span>
-                {s.n}
+              <div key={s.n} className="hover-lift flex items-center gap-2.5 rounded-xl border border-border bg-background/50 px-3.5 py-3 text-sm shadow-soft backdrop-blur-sm">
+                <span className="flex h-7 w-7 items-center justify-center rounded-md bg-brand/15 text-brand shadow-inset-glow">{s.i}</span>
+                <span className="font-medium">{s.n}</span>
               </div>
             ))}
           </div>
@@ -339,29 +374,29 @@ function LandingPage() {
             return (
               <div
                 key={plan.name}
-                className={`relative rounded-2xl border p-6 ${plan.highlight ? 'border-brand bg-card glow-brand' : 'border-border bg-card/60'}`}
+                className={`hover-lift relative rounded-2xl border p-7 backdrop-blur-sm ${plan.highlight ? 'border-brand bg-card shadow-elevated glow-brand' : 'border-border bg-card/60 shadow-soft'}`}
               >
                 {plan.highlight && (
-                  <div className="absolute -top-3 left-6 rounded-full bg-brand px-3 py-0.5 text-xs font-medium text-brand-foreground">
+                  <div className="absolute -top-3 left-7 rounded-full bg-gradient-to-r from-brand to-brand-glow px-3 py-0.5 text-[11px] font-semibold text-brand-foreground shadow-inset-glow">
                     Most popular
                   </div>
                 )}
                 <h3 className="text-lg font-semibold">{plan.name}</h3>
                 <div className="mt-3 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold">${price}</span>
+                  <span className="text-5xl font-bold tracking-tight">${price}</span>
                   <span className="text-sm text-muted-foreground">/mo</span>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">{plan.accounts} · {plan.users}</p>
                 <Link to="/signup">
-                  <Button className={`mt-5 w-full ${plan.highlight ? 'bg-brand text-brand-foreground hover:opacity-90' : ''}`} variant={plan.highlight ? 'default' : 'outline'}>
+                  <Button className={`mt-6 w-full ${plan.highlight ? 'bg-brand text-brand-foreground shadow-inset-glow hover:opacity-95' : ''}`} variant={plan.highlight ? 'default' : 'outline'}>
                     Start free trial
                   </Button>
                 </Link>
-                <ul className="mt-6 space-y-2 border-t border-border pt-5">
+                <ul className="mt-6 space-y-2.5 border-t border-border pt-5">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
-                      <span className="text-muted-foreground">{f}</span>
+                      <span className="text-foreground/85">{f}</span>
                     </li>
                   ))}
                 </ul>
@@ -372,24 +407,29 @@ function LandingPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="border-y border-border bg-card/30 py-24">
+      <section className="border-y border-border bg-card/30 py-28">
         <div className="mx-auto max-w-7xl px-6">
-          <SectionHeader eyebrow="Loved by sales teams" title="Reps don't prospect cold anymore" />
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <SectionHeader
+            eyebrow="Loved by revenue teams"
+            title="Reps don't prospect cold anymore"
+            subtitle="From scrappy startups to scaling RevOps teams — Rexxon is the unfair advantage in their stack."
+          />
+          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {[
               { q: 'We replaced a $40k/year intent vendor with Rexxon and now book 3× the meetings.', n: 'Maya Patel', r: 'VP Sales', c: 'Helio Cloud', res: '+212% meetings' },
               { q: 'The AI insight on every signal is the unlock. My SDRs stopped guessing what to say.', n: 'Jordan Lee', r: 'Head of SDRs', c: 'Forge Security', res: '38% reply rate' },
               { q: 'A new VP of Eng hire in our ICP used to take a week to surface. Now it lands in Slack in 4 minutes.', n: 'Sam Chen', r: 'AE Manager', c: 'Quant Labs', res: '4-min latency' },
               { q: 'Outreach drafts are the best I\'ve seen. We send them with one edit, not five.', n: 'Alex Rivers', r: 'Founder', c: 'Vector Agency', res: '6× pipeline' },
             ].map((t) => (
-              <div key={t.n} className="rounded-xl border border-border bg-background/40 p-5">
-                <p className="text-sm leading-relaxed text-foreground/90">"{t.q}"</p>
-                <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
+              <div key={t.n} className="hover-lift rounded-2xl border border-border bg-background/50 p-6 shadow-soft backdrop-blur-sm">
+                <div className="font-serif text-3xl leading-none text-brand/40">"</div>
+                <p className="mt-2 text-sm leading-relaxed text-foreground/90">{t.q}</p>
+                <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
                   <div>
-                    <div className="text-sm font-medium">{t.n}</div>
+                    <div className="text-sm font-semibold">{t.n}</div>
                     <div className="text-xs text-muted-foreground">{t.r} · {t.c}</div>
                   </div>
-                  <div className="rounded-md bg-brand/15 px-2 py-1 font-mono text-xs text-brand">{t.res}</div>
+                  <div className="rounded-md bg-brand/15 px-2 py-1 font-mono text-xs font-semibold text-brand shadow-inset-glow">{t.res}</div>
                 </div>
               </div>
             ))}
@@ -399,12 +439,12 @@ function LandingPage() {
 
       {/* Integrations */}
       <section className="mx-auto max-w-7xl px-6 py-20">
-        <p className="text-center text-sm font-medium uppercase tracking-widest text-muted-foreground">
+        <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
           Plays nicely with your stack
         </p>
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-6 opacity-80">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
           {['Slack', 'Salesforce', 'HubSpot', 'Outreach', 'Salesloft', 'Zapier'].map((logo) => (
-            <div key={logo} className="font-semibold text-lg text-muted-foreground">
+            <div key={logo} className="text-lg font-semibold tracking-tight text-muted-foreground/70 transition-colors hover:text-foreground">
               {logo}
             </div>
           ))}
@@ -412,21 +452,29 @@ function LandingPage() {
       </section>
 
       {/* Footer CTA */}
-      <section className="mx-auto max-w-7xl px-6 pb-24">
-        <div className="rounded-3xl border border-border bg-card bg-radial-brand p-12 text-center">
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-            Stop guessing. Start signaling.
-          </h2>
-          <p className="mt-3 text-muted-foreground">
-            14 days free. No credit card. Setup in 10 minutes.
-          </p>
-          <div className="mt-6 flex justify-center gap-3">
-            <Link to="/signup">
-              <Button size="lg" className="bg-brand text-brand-foreground hover:opacity-90">
-                Start free trial <ArrowRight className="ml-1.5 h-4 w-4" />
+      <section className="mx-auto max-w-7xl px-6 pb-28">
+        <div className="relative overflow-hidden rounded-[2rem] border border-border bg-card p-14 text-center shadow-elevated bg-aurora">
+          <div className="absolute inset-0 bg-grid opacity-[0.15]" />
+          <div className="relative">
+            <h2 className="text-4xl font-bold tracking-tight md:text-5xl">
+              Stop guessing.{' '}
+              <span className="bg-gradient-to-r from-brand via-brand-glow to-brand bg-clip-text text-transparent">
+                Start signaling.
+              </span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-base text-muted-foreground md:text-lg">
+              14 days free. No credit card. Live in under 10 minutes.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Link to="/signup">
+                <Button size="lg" className="bg-brand text-brand-foreground shadow-inset-glow transition-transform hover:-translate-y-0.5 hover:opacity-95">
+                  Start free trial <ArrowRight className="ml-1.5 h-4 w-4" />
+                </Button>
+              </Link>
+              <Button size="lg" variant="outline" className="hover-lift backdrop-blur-sm">
+                Talk to sales
               </Button>
-            </Link>
-            <Button size="lg" variant="outline">Talk to sales</Button>
+            </div>
           </div>
         </div>
       </section>
@@ -451,10 +499,12 @@ function LandingPage() {
   );
 }
 
-function Logo() {
+function Logo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
+  const dims = size === 'lg' ? 'h-9 w-9 rounded-lg' : size === 'sm' ? 'h-6 w-6 rounded-md' : 'h-8 w-8 rounded-md';
+  const icon = size === 'lg' ? 'h-5 w-5' : size === 'sm' ? 'h-3.5 w-3.5' : 'h-4 w-4';
   return (
-    <div className="relative flex h-7 w-7 items-center justify-center rounded-md bg-brand text-brand-foreground">
-      <Activity className="h-4 w-4" />
+    <div className={`logo-badge relative flex items-center justify-center text-brand-foreground ${dims}`}>
+      <Activity className={`relative z-10 ${icon} drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]`} strokeWidth={2.5} />
     </div>
   );
 }
@@ -471,19 +521,21 @@ function Stat({ value, label }: { value: string; label: string }) {
 function SectionHeader({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle?: string }) {
   return (
     <div className="text-center">
-      <p className="text-sm font-medium text-brand">{eyebrow}</p>
-      <h2 className="mt-2 text-3xl font-bold tracking-tight md:text-4xl">{title}</h2>
-      {subtitle && <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">{subtitle}</p>}
+      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">{eyebrow}</p>
+      <h2 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">{title}</h2>
+      {subtitle && <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground md:text-lg">{subtitle}</p>}
     </div>
   );
 }
 
 function ExplainCard({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {
   return (
-    <div className="rounded-xl border border-border bg-card/60 p-6">
-      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand/15 text-brand">{icon}</div>
-      <h3 className="mt-4 font-semibold">{title}</h3>
-      <p className="mt-2 text-sm text-muted-foreground">{body}</p>
+    <div className="hover-lift rounded-2xl border border-border bg-card/60 p-6 shadow-soft backdrop-blur-sm">
+      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-brand/25 to-brand/5 text-brand shadow-inset-glow">
+        {icon}
+      </div>
+      <h3 className="mt-5 text-lg font-semibold">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
     </div>
   );
 }
