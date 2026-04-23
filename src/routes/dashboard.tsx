@@ -141,8 +141,16 @@ function SignalFeed() {
 
   const unreadCount = signals.filter((s) => !s.is_read).length;
 
+  const { data: activity = [] } = useQuery({
+    queryKey: ['activity', user?.id],
+    enabled: !!user,
+    queryFn: () => fetchActivity(user!.id, 15),
+    refetchInterval: 30_000,
+  });
+
   return (
-    <div className="mx-auto max-w-5xl px-4 py-6 md:px-8">
+    <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:px-8 lg:grid-cols-[1fr_320px]">
+      <div className="min-w-0">
       {/* Header */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
