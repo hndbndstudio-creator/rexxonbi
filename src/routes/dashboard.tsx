@@ -1,8 +1,21 @@
-import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
-import { useEffect } from 'react';
-import { useAuth } from '@/lib/use-auth';
+import { createFileRoute } from '@tanstack/react-router';
+import { useState } from 'react';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { DashboardShell } from '@/components/dashboard-shell';
+import { SignalCard } from '@/components/signal-card';
+import { fetchSignals, type SignalWithRelations } from '@/lib/queries';
+import { SIGNAL_TYPE_LABELS, type SignalType } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import { Activity, LogOut } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
+import { CheckCheck, Sparkles, Radio, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 export const Route = createFileRoute('/dashboard')({
@@ -10,70 +23,197 @@ export const Route = createFileRoute('/dashboard')({
 });
 
 function DashboardPage() {
-  const { user, loading, signOut } = useAuth();
-  const router = useRouter();
+  return (
+    <DashboardShell>
+      <SignalFeed />
+    </DashboardShell>
+  );
+}
 
-  useEffect(() => {
-    if (!loading && !user) router.navigate({ to: '/login' });
-  }, [user, loading, router]);
+function SignalFeed() {
+  const [type, setType] = useState<'ALL' | SignalType>('ALL');
+  const [minConf, setMinConf] = useState(60);
+  const qc = useQueryClient();
 
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      router.navigate({ to: '/' });
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Sign out failed');
-    }
-  };
+  const { data: signals = [], isLoading, isError, refetch } = useQuery({
+    queryKey: ['signals', type, minConf],
+    queryFn: () => fetchSignals({ type, minConfidence: minConf }),
+  });
 
-  if (loading || !user) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-brand border-t-transparent" />
-      </div>
-    );
-  }
+  const actionMut = useMutation({
+    mutationFn: async ({ id, status }: { id: string; status: 'CLAIMED' | 'DISMISSED' }) => {
+      const { error } = await supabase
+        .from('signals')
+        .update({ status, is_read: true })
+        .eq('id', id);
+      if (error) throw error;
+    },
+    onMutate: async ({ id, status }) => {
+      await qc.cancelQueries({ queryKey: ['signals'] });
+      const prev = qc.getQueryData<SignalWithRelations[]>(['signals', type, minConf]);
+      qc.setQueryData<SignalWithRelations[]>(['signals', type, minConf], (old) =>
+        (old ?? []).map((s) => (s.id === id ? { ...s, status, is_read: true } : s))
+      );
+      return { prev };
+    },
+    onError: (e, _v, ctx) => {
+      if (ctx?.prev) qc.setQueryData(['signals', type, minConf], ctx.prev);
+      toast.error(e instanceof Error ? e.message : 'Action failed');
+    },
+    onSuccess: (_d, v) => {
+      toast.success(v.status === 'CLAIMED' ? 'Lead claimed' : 'Signal dismissed');
+    },
+  });
+
+  const markAllReadMut = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase
+        .from('signals')
+        .update({ is_read: true })
+        .eq('is_read', false);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success('All signals marked as read');
+      qc.invalidateQueries({ queryKey: ['signals'] });
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : 'Failed'),
+  });
+
+  const generateMut = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.functions.invoke('generate-signal');
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      toast.success('AI generated a new signal');
+      refetch();
+    },
+    onError: (e: any) => {
+      const msg = e?.message || 'Generation failed';
+      if (/429/.test(msg)) toast.error('Rate limit reached. Try again in a moment.');
+      else if (/402/.test(msg)) toast.error('AI credits exhausted. Add credits in Workspace settings.');
+      else toast.error(msg);
+    },
+  });
+
+  const unreadCount = signals.filter((s) => !s.is_read).length;
 
   return (
-    <div className="min-h-screen bg-background bg-grid">
-      <header className="border-b border-border bg-card/40 backdrop-blur-xl">
-        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-6">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-brand text-brand-foreground">
-              <Activity className="h-4 w-4" />
-            </div>
-            <span className="font-semibold">Rexxon AI</span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">{user.email}</span>
-            <Button size="sm" variant="ghost" onClick={handleSignOut}>
-              <LogOut className="mr-1.5 h-4 w-4" /> Sign out
-            </Button>
-          </div>
+    <div className="mx-auto max-w-5xl px-4 py-6 md:px-8">
+      {/* Header */}
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
+            <Radio className="h-5 w-5 text-brand" />
+            Signal Feed
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {signals.length} signals · {unreadCount} unread
+          </p>
         </div>
-      </header>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => generateMut.mutate()}
+            disabled={generateMut.isPending}
+          >
+            {generateMut.isPending ? (
+              <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Sparkles className="mr-1.5 h-3.5 w-3.5" />
+            )}
+            Generate signal
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => markAllReadMut.mutate()}
+            disabled={markAllReadMut.isPending || unreadCount === 0}
+          >
+            <CheckCheck className="mr-1.5 h-3.5 w-3.5" />
+            Mark all read
+          </Button>
+        </div>
+      </div>
 
-      <main className="mx-auto max-w-4xl px-6 py-20 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/10 px-3 py-1 text-xs text-brand">
-          <span className="h-1.5 w-1.5 rounded-full bg-brand" />
-          Phase 1 foundation ready
+      {/* Filters */}
+      <div className="mb-5 flex flex-wrap items-end gap-3 rounded-xl border border-border bg-card/40 p-3">
+        <div className="min-w-[180px] flex-1">
+          <label className="mb-1 block text-[10px] font-mono uppercase text-muted-foreground">
+            Signal type
+          </label>
+          <Select value={type} onValueChange={(v) => setType(v as any)}>
+            <SelectTrigger className="h-9">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ALL">All types</SelectItem>
+              {(Object.keys(SIGNAL_TYPE_LABELS) as SignalType[]).map((k) => (
+                <SelectItem key={k} value={k}>
+                  {SIGNAL_TYPE_LABELS[k]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-        <h1 className="mt-6 text-4xl font-bold tracking-tight">Welcome to Rexxon AI</h1>
-        <p className="mt-3 text-muted-foreground">
-          Auth, dark theme, landing page, and the full Rexxon database (companies, signals, contacts, outreach, territory) are live.
-        </p>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Next up: signal feed UI, AI signal generator, accounts list, account detail, and contacts table.
-        </p>
-        <div className="mt-8 grid gap-3 sm:grid-cols-3 text-left">
-          {['Signal Feed', 'Accounts', 'Contacts'].map((label) => (
-            <div key={label} className="rounded-xl border border-border bg-card/60 p-4">
-              <div className="text-sm font-medium">{label}</div>
-              <div className="mt-1 text-xs text-muted-foreground">Coming in next iteration</div>
-            </div>
+        <div className="min-w-[220px] flex-1">
+          <label className="mb-1 flex items-center justify-between text-[10px] font-mono uppercase text-muted-foreground">
+            <span>Min confidence</span>
+            <span className="text-foreground">{minConf}</span>
+          </label>
+          <Slider
+            value={[minConf]}
+            min={0}
+            max={100}
+            step={5}
+            onValueChange={(v) => setMinConf(v[0])}
+            className="py-2"
+          />
+        </div>
+      </div>
+
+      {/* Feed */}
+      {isLoading && (
+        <div className="space-y-3">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-44 animate-pulse rounded-xl border border-border bg-card/40" />
           ))}
         </div>
-      </main>
+      )}
+
+      {isError && (
+        <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-6 text-center">
+          <p className="text-sm text-destructive">Failed to load signals.</p>
+          <Button size="sm" variant="outline" className="mt-3" onClick={() => refetch()}>
+            Retry
+          </Button>
+        </div>
+      )}
+
+      {!isLoading && !isError && signals.length === 0 && (
+        <div className="rounded-xl border border-border bg-card/40 p-10 text-center">
+          <Radio className="mx-auto h-8 w-8 text-muted-foreground" />
+          <h3 className="mt-3 font-semibold">No signals match your filters</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Try lowering the confidence threshold or selecting all types.
+          </p>
+        </div>
+      )}
+
+      <div className="space-y-3">
+        {signals.map((s) => (
+          <SignalCard
+            key={s.id}
+            signal={s}
+            isPending={actionMut.isPending && actionMut.variables?.id === s.id}
+            onClaim={(id) => actionMut.mutate({ id, status: 'CLAIMED' })}
+            onDismiss={(id) => actionMut.mutate({ id, status: 'DISMISSED' })}
+          />
+        ))}
+      </div>
     </div>
   );
 }
