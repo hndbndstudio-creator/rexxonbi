@@ -1,19 +1,21 @@
 import { cn } from "@/lib/utils";
-import logoFull from "@/assets/rexxon-logo-full.webp";
+import logoFull from "@/assets/rexxon-logo-full.jpg";
 
 type Size = "sm" | "md" | "lg";
 
-// Full horizontal logo (wordmark + brain icon). Width-driven sizing keeps
-// the natural aspect ratio of the source image (~1500x640).
+// Rectangular container sizes — image fills the box and blends with the
+// surrounding dark UI via matching background color.
 const SIZES: Record<Size, string> = {
-  sm: "h-[180px] w-[750px] max-w-full",
-  md: "h-[240px] w-[1000px] max-w-full",
-  lg: "h-[320px] w-[1300px] max-w-full",
+  sm: "h-20 w-full max-w-[220px]",
+  md: "h-28 w-full max-w-[320px]",
+  lg: "h-40 w-full max-w-[440px]",
 };
 
 /**
- * Rexxon AI logo — full horizontal lockup used across nav bars, footer,
- * marketing pages, and email headers.
+ * Rexxon AI logo — rectangular lockup container. The source artwork has a
+ * black background, so we wrap it in a matching black container and use
+ * `object-cover` so the mark fills the rectangle edge-to-edge and blends
+ * seamlessly into dark surfaces (sidebar, footer, nav).
  */
 export function RexxonLogo({
   size = "md",
@@ -23,12 +25,20 @@ export function RexxonLogo({
   className?: string;
 }) {
   return (
-    <img
-      src={logoFull}
-      alt="Rexxon AI"
-      className={cn("shrink-0 object-contain", SIZES[size], className)}
-      draggable={false}
-    />
+    <div
+      className={cn(
+        "overflow-hidden rounded-md bg-black",
+        SIZES[size],
+        className
+      )}
+    >
+      <img
+        src={logoFull}
+        alt="Rexxon AI — Business Intelligence Unleashed"
+        className="h-full w-full object-cover object-center"
+        draggable={false}
+      />
+    </div>
   );
 }
 
