@@ -5,3 +5,9 @@ verify_jwt = true
 
 [functions.generate-outreach]
 verify_jwt = true
+
+[functions.generate-brief]
+verify_jwt = true
+
+[functions.generate-sequence]
+verify_jwt = true
