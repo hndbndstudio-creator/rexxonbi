@@ -10,13 +10,14 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/lib/use-auth';
-import { Sparkles, Copy, Send, Mail, RefreshCw, Layers, Play, Pause, Trash2, Loader2 } from 'lucide-react';
+import { Sparkles, Copy, Send, Mail, RefreshCw, Layers, Play, Pause, Trash2, Loader2, Inbox, Clock, CheckCircle2, Edit3 } from 'lucide-react';
 import { toast } from 'sonner';
 import { SIGNAL_TYPE_LABELS, getInitials } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { formatDistanceToNow } from 'date-fns';
 import { fetchSequences, setSequenceStatus, deleteSequence, type SequenceRow, type SequenceStatus } from '@/lib/sequences';
 import { logActivity } from '@/lib/activity';
+import { PageHeader } from '@/components/page-header';
 
 export const Route = createFileRoute('/outreach')({
   head: () => ({
@@ -143,34 +144,20 @@ function OutreachPage() {
 
   return (
     <DashboardShell>
-      {/* Agent header */}
-      <div className="border-b border-border bg-card/30">
-        <div className="px-6 py-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-brand/15 text-brand">
-              <Mail className="h-4 w-4" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-lg font-bold tracking-tight">Outreach Agent</h1>
-                <span className="rounded-full bg-green-500/15 px-2 py-0.5 text-[10px] font-medium text-green-300">
-                  Active
-                </span>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Drafts & multi-step cadences for every signal — verified contact, buyer context, ready to send.
-              </p>
-            </div>
-          </div>
-          <div className="mt-4 flex flex-wrap items-center gap-6 text-xs">
-            <Stat label="Drafts" value={counts.total} />
-            <Stat label="Pending" value={counts.pending} accent="text-amber-300" />
-            <Stat label="Edited" value={counts.edited} accent="text-blue-300" />
-            <Stat label="Sent" value={counts.sent} accent="text-green-300" />
-            <Stat label="Sequences" value={sequences.length} accent="text-brand" />
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        icon={Mail}
+        eyebrow="Outreach agent"
+        title="Outreach"
+        subtitle="Drafts and multi-step cadences for every signal — verified contact, buyer context, ready to send."
+        badge="Active"
+        badgeTone="green"
+        stats={[
+          { label: 'Total drafts', value: counts.total, icon: Inbox },
+          { label: 'Pending', value: counts.pending, accent: 'amber', icon: Clock },
+          { label: 'Edited', value: counts.edited, accent: 'cyan', icon: Edit3 },
+          { label: 'Sent', value: counts.sent, accent: 'green', icon: CheckCircle2 },
+        ]}
+      />
 
       <Tabs defaultValue="drafts" className="px-6 pt-4">
         <TabsList>
@@ -178,7 +165,7 @@ function OutreachPage() {
             <Mail className="mr-1.5 h-3.5 w-3.5" /> Drafts
           </TabsTrigger>
           <TabsTrigger value="sequences">
-            <Layers className="mr-1.5 h-3.5 w-3.5" /> Sequences
+            <Layers className="mr-1.5 h-3.5 w-3.5" /> Sequences ({sequences.length})
           </TabsTrigger>
         </TabsList>
 
