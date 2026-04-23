@@ -408,32 +408,7 @@ function AccountDetail() {
   );
 }
 
-function BriefPanel({
-  brief,
-  loading,
-  onGenerate,
-  onRegenerate,
-}: {
-  brief: Brief | null;
-  loading: boolean;
-  onGenerate: () => void;
-  onRegenerate: () => void;
-}) {
-  if (!brief) {
-    return (
-      <div className="rounded-xl border border-border bg-card/40 p-10 text-center">
-        <Brain className="mx-auto h-10 w-10 text-muted-foreground/30" />
-        <h3 className="mt-3 font-semibold">No brief yet</h3>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Get a sales-actionable AI brief: pain points, buying committee, conversation starters, risks.
-        </p>
-        <Button className="mt-4" onClick={onGenerate} disabled={loading}>
-          {loading ? <RefreshCw className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-          Generate AI brief
-        </Button>
-      </div>
-    );
-  }
+
 
 function BriefPanel({
   brief,
