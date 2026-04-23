@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/lib/use-auth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Settings as SettingsIcon, Users, Plug, CreditCard, Bell, CheckCircle2 } from 'lucide-react';
+import { Settings as SettingsIcon, Users, CreditCard, CheckCircle2, Radio, Mail, Sparkles } from 'lucide-react';
 
 export const Route = createFileRoute('/settings')({
   component: SettingsPage,
@@ -36,7 +36,25 @@ function SettingsPage() {
             <SettingsIcon className="h-6 w-6 text-brand" />
             Settings
           </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Manage your agents, integrations, and team.
+          </p>
         </header>
+
+        {/* Agent status banner */}
+        <div className="rounded-xl border border-border bg-card/40 p-5">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-sm font-semibold flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-brand" />
+              Your AI Agents
+            </h2>
+            <span className="text-xs text-muted-foreground">All systems operational</span>
+          </div>
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+            <AgentCard icon={Radio} name="Signal Agent" desc="Monitors 12 sources 24/7 for buying signals." status="Active" />
+            <AgentCard icon={Mail} name="Outreach Agent" desc="Drafts hyper-relevant emails the moment a signal fires." status="Active" />
+          </div>
+        </div>
 
         <Tabs defaultValue="profile">
           <TabsList>
@@ -187,6 +205,25 @@ function Stat({ label, value }: { label: string; value: string }) {
     <div>
       <div className="text-xs text-muted-foreground">{label}</div>
       <div className="mt-1 font-semibold">{value}</div>
+    </div>
+  );
+}
+
+function AgentCard({ icon: Icon, name, desc, status }: { icon: typeof Radio; name: string; desc: string; status: string }) {
+  return (
+    <div className="rounded-lg border border-border bg-background/40 p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-brand/15 text-brand">
+            <Icon className="h-4 w-4" />
+          </div>
+          <div className="font-medium text-sm">{name}</div>
+        </div>
+        <span className="rounded-full bg-green-500/15 px-2 py-0.5 text-[10px] font-medium text-green-300">
+          {status}
+        </span>
+      </div>
+      <p className="mt-2 text-xs text-muted-foreground">{desc}</p>
     </div>
   );
 }

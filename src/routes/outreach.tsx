@@ -102,13 +102,48 @@ function OutreachPage() {
     onError: (e) => toast.error(e instanceof Error ? e.message : 'Failed to regenerate'),
   });
 
+  const counts = {
+    total: drafts.length,
+    pending: drafts.filter((d) => d.status === 'PENDING').length,
+    edited: drafts.filter((d) => d.status === 'EDITED').length,
+    sent: drafts.filter((d) => d.status === 'SENT').length,
+  };
+
   return (
     <DashboardShell>
-      <div className="flex h-screen">
+      {/* Agent header */}
+      <div className="border-b border-border bg-card/30">
+        <div className="px-6 py-5">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-brand/15 text-brand">
+              <Mail className="h-4 w-4" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-lg font-bold tracking-tight">Outreach Agent</h1>
+                <span className="rounded-full bg-green-500/15 px-2 py-0.5 text-[10px] font-medium text-green-300">
+                  Active
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Drafts hyper-relevant outreach for every signal — verified contact, buyer context, ready to send.
+              </p>
+            </div>
+          </div>
+          <div className="mt-4 flex flex-wrap items-center gap-6 text-xs">
+            <Stat label="Drafts" value={counts.total} />
+            <Stat label="Pending" value={counts.pending} accent="text-amber-300" />
+            <Stat label="Edited" value={counts.edited} accent="text-blue-300" />
+            <Stat label="Sent" value={counts.sent} accent="text-green-300" />
+          </div>
+        </div>
+      </div>
+
+      <div className="flex h-[calc(100vh-9rem)]">
         {/* Left panel — drafts list */}
         <aside className="w-80 shrink-0 border-r border-border bg-card/30 overflow-y-auto">
           <div className="sticky top-0 z-10 border-b border-border bg-card/80 backdrop-blur px-4 py-3">
-            <h2 className="text-sm font-semibold">Outreach drafts</h2>
+            <h2 className="text-sm font-semibold">All drafts</h2>
             <p className="text-xs text-muted-foreground">{drafts.length} total</p>
           </div>
           {isLoading ? (
@@ -153,11 +188,12 @@ function OutreachPage() {
         <div className="flex-1 overflow-y-auto">
           {!selected ? (
             <div className="flex h-full items-center justify-center p-8 text-center">
-              <div>
+              <div className="max-w-md">
                 <Mail className="mx-auto h-12 w-12 text-muted-foreground/30" />
-                <h3 className="mt-4 text-lg font-semibold">No draft selected</h3>
+                <h3 className="mt-4 text-lg font-semibold">Your Outreach Agent is ready</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Pick a draft on the left, or create one from the Signal Feed.
+                  When you draft from a signal, the agent writes opener, body, and CTA tuned to the buying moment.
+                  Pick a draft on the left to review and send.
                 </p>
               </div>
             </div>
@@ -174,6 +210,15 @@ function OutreachPage() {
         </div>
       </div>
     </DashboardShell>
+  );
+}
+
+function Stat({ label, value, accent }: { label: string; value: number; accent?: string }) {
+  return (
+    <div className="flex items-baseline gap-1.5">
+      <span className={cn('font-bold tabular-nums text-base', accent ?? 'text-foreground')}>{value}</span>
+      <span className="text-muted-foreground">{label}</span>
+    </div>
   );
 }
 
