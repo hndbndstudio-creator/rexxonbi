@@ -128,14 +128,38 @@ function AnalyticsPage() {
 
   return (
     <DashboardShell>
-      <div className="mx-auto max-w-7xl px-6 py-8 space-y-6">
+      <div className="mx-auto max-w-7xl px-6 py-8 space-y-8">
         <header>
           <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
             <TrendingUp className="h-6 w-6 text-brand" />
             Analytics
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">Last 30 days of signal activity.</p>
+          <p className="text-sm text-muted-foreground mt-1">Pipeline impact from your Signal & Outreach Agents · last 30 days.</p>
         </header>
+
+        {/* Hero stat triplet — Salesmotion-style headline impact */}
+        <div className="rounded-2xl border border-border bg-gradient-to-br from-card/80 to-card/30 p-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            <HeroStat
+              icon={Zap}
+              value={`${data.actionRate}%`}
+              label="signals acted on"
+              sub={`${data.actedOn} of ${data.totalSignals} surfaced`}
+            />
+            <HeroStat
+              icon={Trophy}
+              value={`${data.conversionRate}%`}
+              label="reply → meeting rate"
+              sub={`${data.converted} converted from ${data.outreachSent} sent`}
+            />
+            <HeroStat
+              icon={Clock}
+              value={`${data.hoursSaved}h`}
+              label="research time saved"
+              sub="vs. manual prospecting"
+            />
+          </div>
+        </div>
 
         {/* Metric cards */}
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -144,6 +168,25 @@ function AnalyticsPage() {
           <Metric icon={Send} label="Outreach sent" value={data.outreachSent} />
           <Metric icon={TrendingUp} label="Converted" value={data.converted} />
         </div>
+
+        {/* Trend */}
+        <Card title="Signal volume — last 30 days">
+          <ResponsiveContainer width="100%" height={220}>
+            <AreaChart data={data.trend}>
+              <defs>
+                <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--brand)" stopOpacity={0.4} />
+                  <stop offset="100%" stopColor="var(--brand)" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+              <XAxis dataKey="date" stroke="var(--muted-foreground)" fontSize={10} interval={4} />
+              <YAxis stroke="var(--muted-foreground)" fontSize={10} />
+              <Tooltip contentStyle={{ background: 'var(--popover)', border: '1px solid var(--border)', borderRadius: 8 }} />
+              <Area type="monotone" dataKey="count" stroke="var(--brand)" strokeWidth={2} fill="url(#trendFill)" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </Card>
 
         {/* Charts */}
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -194,6 +237,19 @@ function AnalyticsPage() {
         </div>
       </div>
     </DashboardShell>
+  );
+}
+
+function HeroStat({ icon: Icon, value, label, sub }: { icon: typeof Radio; value: string; label: string; sub: string }) {
+  return (
+    <div className="text-center md:text-left">
+      <Icon className="mx-auto md:mx-0 h-5 w-5 text-brand mb-3" />
+      <div className="text-5xl font-bold tracking-tight bg-gradient-to-r from-brand via-brand-glow to-brand bg-clip-text text-transparent tabular-nums">
+        {value}
+      </div>
+      <div className="mt-2 text-sm font-medium">{label}</div>
+      <div className="mt-1 text-xs text-muted-foreground">{sub}</div>
+    </div>
   );
 }
 
