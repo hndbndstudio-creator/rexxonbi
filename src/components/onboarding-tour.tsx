@@ -225,7 +225,7 @@ function PulseDot({
       aria-label={`Onboarding step ${stepNumber}`}
     >
       {done ? (
-        <span className="flex h-4 w-4 items-center justify-center rounded-full bg-success text-success-foreground shadow-md">
+        <span className="flex h-4 w-4 items-center justify-center rounded-full bg-brand text-brand-foreground shadow-md ring-2 ring-background">
           <Check className="h-2.5 w-2.5" strokeWidth={3} />
         </span>
       ) : (
