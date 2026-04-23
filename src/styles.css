@@ -500,12 +500,103 @@ a[href]:active .logo-badge { transform: scale(0.96); transition: transform 120ms
   animation: skeleton-shimmer 1.6s linear infinite;
 }
 
+/* ─── Marquee (logo strip) ─────────────────────────────────────── */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+          mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+}
+
+/* ─── Reveal on scroll ─────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 700ms cubic-bezier(.2,.8,.2,1),
+    transform 700ms cubic-bezier(.2,.8,.2,1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Floating ambient orb (hero background depth) ─────────────── */
+@keyframes orb-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(20px, -16px) scale(1.06); }
+}
+.orb-drift {
+  animation: orb-drift 14s ease-in-out infinite;
+}
+
+/* ─── Premium gradient text shimmer (slower, tasteful) ─────────── */
+@keyframes gradient-pan {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.text-gradient-brand {
+  background: linear-gradient(90deg,
+    var(--brand) 0%,
+    var(--brand-glow) 35%,
+    color-mix(in oklab, var(--chart-2) 80%, white) 65%,
+    var(--brand) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-pan 9s linear infinite;
+}
+
+/* ─── Sticky mobile CTA enter ─────────────────────────────────── */
+@keyframes slide-up-cta {
+  from { transform: translateY(120%); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+.animate-cta-up {
+  animation: slide-up-cta 420ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+/* ─── Soft conic glow behind featured cards ────────────────────── */
+.glow-conic {
+  position: relative;
+}
+.glow-conic::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from 140deg,
+    color-mix(in oklab, var(--brand) 65%, transparent),
+    transparent 30%,
+    color-mix(in oklab, var(--brand-glow) 55%, transparent) 60%,
+    transparent 80%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .animate-rise,
   .stagger > *,
   .animate-signal-in,
   .animate-fade-up,
+  .animate-marquee,
+  .animate-ticker,
+  .orb-drift,
+  .text-gradient-brand,
+  .reveal,
   .card-interactive,
   .nav-link,
   .btn-press,
