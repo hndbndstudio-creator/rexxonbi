@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/lib/use-auth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Settings as SettingsIcon, Users, CheckCircle2, Radio, Mail, Sparkles } from 'lucide-react';
+import { Settings as SettingsIcon, Users, CheckCircle2, Radio, Mail, Sparkles, Brain, UserSearch } from 'lucide-react';
 
 export const Route = createFileRoute('/settings')({
   component: SettingsPage,
