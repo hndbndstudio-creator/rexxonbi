@@ -159,6 +159,7 @@ export function OnboardingTour() {
       {/* Active popover */}
       {activeIdx !== null && (
         <TourPopover
+          key={STEPS[activeIdx].id}
           step={STEPS[activeIdx]}
           stepIdx={activeIdx}
           total={STEPS.length}
@@ -282,9 +283,64 @@ function TourPopover({
   onCta: () => void;
 }) {
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+  const [ready, setReady] = useState(false);
   const popRef = useRef<HTMLDivElement>(null);
 
+  // Scroll the anchor into view when the step changes, then mark ready.
+  useEffect(() => {
+    setReady(false);
+    setPos(null);
+    const el = document.querySelector(`[data-tour="${step.anchor}"]`) as HTMLElement | null;
+    if (!el) {
+      // Anchor may not be mounted yet — retry briefly.
+      const retry = setTimeout(() => setReady(true), 250);
+      return () => clearTimeout(retry);
+    }
+
+    const rect = el.getBoundingClientRect();
+    const inView =
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <= window.innerHeight &&
+      rect.right <= window.innerWidth;
+
+    if (inView) {
+      setReady(true);
+      return;
+    }
+
+    el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+
+    // Wait for smooth scroll to settle before showing the popover.
+    let stableFrames = 0;
+    let lastTop = el.getBoundingClientRect().top;
+    let raf = 0;
+    const tick = () => {
+      const t = el.getBoundingClientRect().top;
+      if (Math.abs(t - lastTop) < 0.5) {
+        stableFrames += 1;
+      } else {
+        stableFrames = 0;
+        lastTop = t;
+      }
+      if (stableFrames > 4) {
+        setReady(true);
+        return;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    // Hard fallback in case scroll never settles.
+    const fallback = setTimeout(() => setReady(true), 800);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(fallback);
+    };
+  }, [step.anchor]);
+
   useLayoutEffect(() => {
+    if (!ready) return;
     const update = () => {
       const el = document.querySelector(`[data-tour="${step.anchor}"]`) as HTMLElement | null;
       if (!el) return;
@@ -305,7 +361,7 @@ function TourPopover({
       window.removeEventListener('resize', update);
       window.removeEventListener('scroll', update, true);
     };
-  }, [step.anchor]);
+  }, [step.anchor, ready]);
 
   if (!pos) return null;
 
