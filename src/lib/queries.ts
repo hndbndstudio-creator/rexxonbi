@@ -6,7 +6,7 @@ export type SignalRow = Database['public']['Tables']['signals']['Row'];
 export type ContactRow = Database['public']['Tables']['contacts']['Row'];
 
 export type SignalWithRelations = SignalRow & {
-  company: Pick<CompanyRow, 'id' | 'name' | 'domain' | 'industry' | 'employee_range'> | null;
+  company: Pick<CompanyRow, 'id' | 'name' | 'domain' | 'industry' | 'employee_range' | 'hq_city' | 'hq_country' | 'funding_stage'> | null;
   hiring_manager: Pick<ContactRow, 'id' | 'first_name' | 'last_name' | 'title' | 'email'> | null;
 };
 
