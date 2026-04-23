@@ -58,7 +58,7 @@ export function PageHeader({
             'radial-gradient(circle, color-mix(in oklab, var(--brand) 35%, transparent), transparent 70%)',
         }}
       />
-      <div className="mx-auto max-w-7xl px-4 py-7 md:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-5 md:px-8 md:py-7">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0 flex-1 animate-rise">
             <div className="flex items-center gap-3">
