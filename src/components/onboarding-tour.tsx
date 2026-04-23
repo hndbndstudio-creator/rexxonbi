@@ -1,6 +1,17 @@
 import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { X, ArrowRight, Check, Sparkles } from 'lucide-react';
+import {
+  X,
+  ArrowRight,
+  Check,
+  Sparkles,
+  Radar,
+  Building2,
+  UserSearch,
+  Send,
+  MapPinned,
+  type LucideIcon,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -10,6 +21,7 @@ type Step = {
   title: string;
   body: string;
   cta?: { label: string; to?: string };
+  preview: { icon: LucideIcon; label: string };
 };
 
 const STEPS: Step[] = [
