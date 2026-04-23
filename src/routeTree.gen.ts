@@ -17,10 +17,14 @@ import { Route as OutreachRouteImport } from './routes/outreach'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactsRouteImport } from './routes/contacts'
+import { Route as CaseStudiesRouteImport } from './routes/case-studies'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AccountsRouteImport } from './routes/accounts'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CaseStudiesSlugRouteImport } from './routes/case-studies.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AccountsIdRouteImport } from './routes/accounts.$id'
 
 const TerritoryRoute = TerritoryRouteImport.update({
@@ -63,6 +67,16 @@ const ContactsRoute = ContactsRouteImport.update({
   path: '/contacts',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CaseStudiesRoute = CaseStudiesRouteImport.update({
+  id: '/case-studies',
+  path: '/case-studies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AnalyticsRoute = AnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
@@ -83,6 +97,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CaseStudiesSlugRoute = CaseStudiesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CaseStudiesRoute,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
 const AccountsIdRoute = AccountsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -94,6 +118,8 @@ export interface FileRoutesByFullPath {
   '/accounts': typeof AccountsRouteWithChildren
   '/admin': typeof AdminRoute
   '/analytics': typeof AnalyticsRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/case-studies': typeof CaseStudiesRouteWithChildren
   '/contacts': typeof ContactsRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
@@ -103,12 +129,16 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/territory': typeof TerritoryRoute
   '/accounts/$id': typeof AccountsIdRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/case-studies/$slug': typeof CaseStudiesSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
   '/admin': typeof AdminRoute
   '/analytics': typeof AnalyticsRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/case-studies': typeof CaseStudiesRouteWithChildren
   '/contacts': typeof ContactsRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
@@ -118,6 +148,8 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/territory': typeof TerritoryRoute
   '/accounts/$id': typeof AccountsIdRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/case-studies/$slug': typeof CaseStudiesSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -125,6 +157,8 @@ export interface FileRoutesById {
   '/accounts': typeof AccountsRouteWithChildren
   '/admin': typeof AdminRoute
   '/analytics': typeof AnalyticsRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/case-studies': typeof CaseStudiesRouteWithChildren
   '/contacts': typeof ContactsRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
@@ -134,6 +168,8 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/territory': typeof TerritoryRoute
   '/accounts/$id': typeof AccountsIdRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/case-studies/$slug': typeof CaseStudiesSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -142,6 +178,8 @@ export interface FileRouteTypes {
     | '/accounts'
     | '/admin'
     | '/analytics'
+    | '/blog'
+    | '/case-studies'
     | '/contacts'
     | '/dashboard'
     | '/login'
@@ -151,12 +189,16 @@ export interface FileRouteTypes {
     | '/signup'
     | '/territory'
     | '/accounts/$id'
+    | '/blog/$slug'
+    | '/case-studies/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/accounts'
     | '/admin'
     | '/analytics'
+    | '/blog'
+    | '/case-studies'
     | '/contacts'
     | '/dashboard'
     | '/login'
@@ -166,12 +208,16 @@ export interface FileRouteTypes {
     | '/signup'
     | '/territory'
     | '/accounts/$id'
+    | '/blog/$slug'
+    | '/case-studies/$slug'
   id:
     | '__root__'
     | '/'
     | '/accounts'
     | '/admin'
     | '/analytics'
+    | '/blog'
+    | '/case-studies'
     | '/contacts'
     | '/dashboard'
     | '/login'
@@ -181,6 +227,8 @@ export interface FileRouteTypes {
     | '/signup'
     | '/territory'
     | '/accounts/$id'
+    | '/blog/$slug'
+    | '/case-studies/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -188,6 +236,8 @@ export interface RootRouteChildren {
   AccountsRoute: typeof AccountsRouteWithChildren
   AdminRoute: typeof AdminRoute
   AnalyticsRoute: typeof AnalyticsRoute
+  BlogRoute: typeof BlogRouteWithChildren
+  CaseStudiesRoute: typeof CaseStudiesRouteWithChildren
   ContactsRoute: typeof ContactsRoute
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
@@ -256,6 +306,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/case-studies': {
+      id: '/case-studies'
+      path: '/case-studies'
+      fullPath: '/case-studies'
+      preLoaderRoute: typeof CaseStudiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/analytics': {
       id: '/analytics'
       path: '/analytics'
@@ -284,6 +348,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/case-studies/$slug': {
+      id: '/case-studies/$slug'
+      path: '/$slug'
+      fullPath: '/case-studies/$slug'
+      preLoaderRoute: typeof CaseStudiesSlugRouteImport
+      parentRoute: typeof CaseStudiesRoute
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
     '/accounts/$id': {
       id: '/accounts/$id'
       path: '/$id'
@@ -306,11 +384,35 @@ const AccountsRouteWithChildren = AccountsRoute._addFileChildren(
   AccountsRouteChildren,
 )
 
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
+interface CaseStudiesRouteChildren {
+  CaseStudiesSlugRoute: typeof CaseStudiesSlugRoute
+}
+
+const CaseStudiesRouteChildren: CaseStudiesRouteChildren = {
+  CaseStudiesSlugRoute: CaseStudiesSlugRoute,
+}
+
+const CaseStudiesRouteWithChildren = CaseStudiesRoute._addFileChildren(
+  CaseStudiesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountsRoute: AccountsRouteWithChildren,
   AdminRoute: AdminRoute,
   AnalyticsRoute: AnalyticsRoute,
+  BlogRoute: BlogRouteWithChildren,
+  CaseStudiesRoute: CaseStudiesRouteWithChildren,
   ContactsRoute: ContactsRoute,
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
