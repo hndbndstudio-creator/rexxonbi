@@ -1,21 +1,19 @@
 import { cn } from "@/lib/utils";
-import logoFull from "@/assets/rexxon-logo-full.jpg";
+import logoFull from "@/assets/rexxon-logo-full.png";
 
 type Size = "sm" | "md" | "lg";
 
-// Rectangular container sizes — image fills the box and blends with the
-// surrounding dark UI via matching background color.
+// White wordmark on a transparent background — sized by height so it blends
+// into any dark surface (sidebar, footer, nav) without a visible container.
 const SIZES: Record<Size, string> = {
-  sm: "h-20 w-full max-w-[220px]",
-  md: "h-28 w-full max-w-[320px]",
-  lg: "h-40 w-full max-w-[440px]",
+  sm: "h-8",
+  md: "h-10",
+  lg: "h-14",
 };
 
 /**
- * Rexxon AI logo — rectangular lockup container. The source artwork has a
- * black background, so we wrap it in a matching black container and use
- * `object-cover` so the mark fills the rectangle edge-to-edge and blends
- * seamlessly into dark surfaces (sidebar, footer, nav).
+ * Rexxon AI logo — white wordmark, transparent background. Drops into dark
+ * UI surfaces and inherits the parent's background seamlessly.
  */
 export function RexxonLogo({
   size = "md",
@@ -25,20 +23,12 @@ export function RexxonLogo({
   className?: string;
 }) {
   return (
-    <div
-      className={cn(
-        "overflow-hidden rounded-md bg-black",
-        SIZES[size],
-        className
-      )}
-    >
-      <img
-        src={logoFull}
-        alt="Rexxon AI — Business Intelligence Unleashed"
-        className="h-full w-full object-cover object-center"
-        draggable={false}
-      />
-    </div>
+    <img
+      src={logoFull}
+      alt="Rexxon AI"
+      className={cn("w-auto object-contain", SIZES[size], className)}
+      draggable={false}
+    />
   );
 }
 
