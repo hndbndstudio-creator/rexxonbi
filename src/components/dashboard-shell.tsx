@@ -11,17 +11,20 @@ import {
   TrendingUp,
   Users,
   Mail,
+  ShieldCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { OnboardingTour } from '@/components/onboarding-tour';
+import { useIsAdmin } from '@/lib/use-admin';
 
 type NavItem = {
-  to: '/dashboard' | '/accounts' | '/contacts' | '/outreach' | '/territory' | '/analytics' | '/settings';
+  to: '/dashboard' | '/accounts' | '/contacts' | '/outreach' | '/territory' | '/analytics' | '/settings' | '/admin';
   label: string;
   icon: typeof Radio;
   tourId?: string;
+  adminOnly?: boolean;
 };
 
 const NAV: NavItem[] = [
@@ -32,6 +35,7 @@ const NAV: NavItem[] = [
   { to: '/territory', label: 'Territory', icon: Target, tourId: 'nav-territory' },
   { to: '/analytics', label: 'Analytics', icon: TrendingUp },
   { to: '/settings', label: 'Settings', icon: Settings },
+  { to: '/admin', label: 'Admin', icon: ShieldCheck, adminOnly: true },
 ];
 
 export function DashboardShell({ children }: { children: ReactNode }) {
