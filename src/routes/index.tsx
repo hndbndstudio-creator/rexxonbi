@@ -115,9 +115,8 @@ function LandingPage() {
       {/* Nav */}
       <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-2xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <Link to="/" className="flex items-center gap-2.5">
+          <Link to="/" className="flex items-center">
             <Logo />
-            <span className="text-base font-semibold tracking-tight">Rexxon AI</span>
           </Link>
           <div className="hidden items-center gap-8 md:flex">
             <a href="#product" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Product</a>
@@ -702,9 +701,8 @@ function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-border">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 sm:flex-row">
-          <div className="flex items-center gap-2">
-            <Logo />
-            <span className="text-sm font-medium">Rexxon AI</span>
+          <div className="flex items-center">
+            <Logo size="sm" />
           </div>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
             <a href="#product" className="hover:text-foreground">Product</a>
