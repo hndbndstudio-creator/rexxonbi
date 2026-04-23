@@ -16,18 +16,20 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
-type NavItem =
-  | { to: '/dashboard' | '/accounts' | '/contacts'; label: string; icon: typeof Radio; soon?: false }
-  | { label: string; icon: typeof Radio; soon: true; to: string };
+type NavItem = {
+  to: '/dashboard' | '/accounts' | '/contacts' | '/outreach' | '/territory' | '/analytics' | '/settings';
+  label: string;
+  icon: typeof Radio;
+};
 
 const NAV: NavItem[] = [
   { to: '/dashboard', label: 'Signal Feed', icon: Radio },
   { to: '/accounts', label: 'Accounts', icon: Building2 },
   { to: '/contacts', label: 'Contacts', icon: Users },
-  { to: '/outreach', label: 'Outreach', icon: Mail, soon: true },
-  { to: '/territory', label: 'Territory', icon: Target, soon: true },
-  { to: '/analytics', label: 'Analytics', icon: TrendingUp, soon: true },
-  { to: '/settings', label: 'Settings', icon: Settings, soon: true },
+  { to: '/outreach', label: 'Outreach', icon: Mail },
+  { to: '/territory', label: 'Territory', icon: Target },
+  { to: '/analytics', label: 'Analytics', icon: TrendingUp },
+  { to: '/settings', label: 'Settings', icon: Settings },
 ];
 
 export function DashboardShell({ children }: { children: ReactNode }) {
@@ -72,31 +74,19 @@ export function DashboardShell({ children }: { children: ReactNode }) {
             const active = location.pathname === item.to ||
               (item.to !== '/dashboard' && location.pathname.startsWith(item.to));
             const Icon = item.icon;
-            const node = (
-              <div
-                className={cn(
-                  'group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors',
-                  active
-                    ? 'bg-sidebar-accent text-sidebar-accent-foreground'
-                    : 'text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground',
-                  item.soon && 'cursor-not-allowed opacity-50'
-                )}
-              >
-                <Icon className={cn('h-4 w-4', active && 'text-brand')} />
-                <span className="flex-1">{item.label}</span>
-                {item.soon && (
-                  <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono uppercase text-muted-foreground">
-                    Soon
-                  </span>
-                )}
-              </div>
-            );
-            if (item.soon) {
-              return <div key={item.to}>{node}</div>;
-            }
             return (
               <Link key={item.to} to={item.to}>
-                {node}
+                <div
+                  className={cn(
+                    'group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors',
+                    active
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground'
+                      : 'text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground'
+                  )}
+                >
+                  <Icon className={cn('h-4 w-4', active && 'text-brand')} />
+                  <span className="flex-1">{item.label}</span>
+                </div>
               </Link>
             );
           })}
