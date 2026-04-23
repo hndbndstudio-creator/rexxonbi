@@ -59,7 +59,7 @@ export const Route = createFileRoute('/')({
       {
         name: 'description',
         content:
-          'Rexxon\'s AI agents watch 10M+ companies 24/7 and surface the moment a budget activates — with verified contacts and ready-to-send outreach. Book 2× more meetings. 14-day free trial.',
+          'Rexxon\'s AI agents watch 10M+ companies 24/7 and surface the moment a budget activates — with verified contacts and ready-to-send outreach. Book 2× more meetings. 7-day free trial.',
       },
       { property: 'og:title', content: 'Rexxon AI — Real-time B2B buying signals & AI outreach' },
       {
@@ -288,7 +288,7 @@ function LandingPage() {
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 <Link to="/signup">
                   <Button size="lg" className="btn-press group bg-brand text-brand-foreground shadow-inset-glow">
-                    Start 14-day free trial
+                    Start 7-day free trial
                     <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </Button>
                 </Link>
@@ -797,7 +797,7 @@ function LandingPage() {
               <span className="text-gradient-brand">already calling.</span>
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground md:text-lg">
-              14 days free. No credit card. Live in under 10 minutes. The first signal usually fires within the hour.
+              7 days free. No credit card. Live in under 10 minutes. The first signal usually fires within the hour.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link to="/signup">
@@ -851,7 +851,7 @@ function LandingPage() {
               <CloseIcon className="h-4 w-4" />
             </button>
             <div className="min-w-0 flex-1">
-              <div className="truncate text-sm font-semibold">Start free · 14 days</div>
+              <div className="truncate text-sm font-semibold">Start free · 7 days</div>
               <div className="truncate text-xs text-muted-foreground">No credit card required</div>
             </div>
             <Link to="/signup" className="shrink-0">
@@ -1014,7 +1014,7 @@ const FAQS = [
   },
   {
     q: 'What\'s included in the free trial?',
-    a: 'Full Pro-tier access for 14 days. Real-time signals, AI briefs, verified contact reveals, AI outreach drafts, Slack alerts and CRM push. No credit card required.',
+    a: 'Full Pro-tier access for 7 days. Real-time signals, AI briefs, verified contact reveals, AI outreach drafts, Slack alerts and CRM push. No credit card required.',
   },
   {
     q: 'Do you have an ROI guarantee?',

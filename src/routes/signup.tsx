@@ -87,7 +87,7 @@ function SignupPage() {
             <RexxonLogo size="sm" />
           </Link>
           <h1 className="text-2xl font-bold tracking-tight">Start your free trial</h1>
-          <p className="mt-1 text-sm text-muted-foreground">14 days free · No credit card · Live in 10 min</p>
+          <p className="mt-1 text-sm text-muted-foreground">7 days free · No credit card · Live in 10 min</p>
         </div>
 
         {/* Glow wrapper */}
@@ -137,7 +137,7 @@ function SignupPage() {
                 <Input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="At least 6 characters" />
               </div>
               <Button type="submit" className="btn-press w-full bg-brand text-brand-foreground shadow-inset-glow" disabled={submitting}>
-                {submitting ? 'Creating account…' : 'Start 14-day free trial'}
+                {submitting ? 'Creating account…' : 'Start 7-day free trial'}
               </Button>
               <p className="text-center text-xs text-muted-foreground">
                 No charges until day 15 · Cancel anytime · Setup in 10 minutes
