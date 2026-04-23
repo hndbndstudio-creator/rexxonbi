@@ -16,14 +16,18 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
-const NAV = [
-  { to: '/dashboard' as const, label: 'Signal Feed', icon: Radio },
-  { to: '/accounts' as const, label: 'Accounts', icon: Building2 },
-  { to: '/contacts' as const, label: 'Contacts', icon: Users },
-  { to: '/outreach' as const, label: 'Outreach', icon: Mail, soon: true },
-  { to: '/territory' as const, label: 'Territory', icon: Target, soon: true },
-  { to: '/analytics' as const, label: 'Analytics', icon: TrendingUp, soon: true },
-  { to: '/settings' as const, label: 'Settings', icon: Settings, soon: true },
+type NavItem =
+  | { to: '/dashboard' | '/accounts' | '/contacts'; label: string; icon: typeof Radio; soon?: false }
+  | { label: string; icon: typeof Radio; soon: true; to: string };
+
+const NAV: NavItem[] = [
+  { to: '/dashboard', label: 'Signal Feed', icon: Radio },
+  { to: '/accounts', label: 'Accounts', icon: Building2 },
+  { to: '/contacts', label: 'Contacts', icon: Users },
+  { to: '/outreach', label: 'Outreach', icon: Mail, soon: true },
+  { to: '/territory', label: 'Territory', icon: Target, soon: true },
+  { to: '/analytics', label: 'Analytics', icon: TrendingUp, soon: true },
+  { to: '/settings', label: 'Settings', icon: Settings, soon: true },
 ];
 
 export function DashboardShell({ children }: { children: ReactNode }) {

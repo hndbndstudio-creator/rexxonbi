@@ -1,1 +1,4 @@
 project_id = "kutfhwfxzhqmrhqgguee"
+
+[functions.generate-signal]
+verify_jwt = true
