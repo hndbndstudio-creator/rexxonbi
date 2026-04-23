@@ -265,6 +265,37 @@ function SignalFeed() {
           />
         ))}
       </div>
+      </div>
+
+      {/* Activity sidebar */}
+      <aside className="hidden lg:block">
+        <div className="sticky top-6 rounded-xl border border-border bg-card/40 p-4">
+          <h2 className="flex items-center gap-2 text-sm font-semibold">
+            <Activity className="h-4 w-4 text-brand" />
+            Recent activity
+          </h2>
+          <p className="mt-0.5 text-xs text-muted-foreground">Live feed of your team's actions</p>
+          {activity.length === 0 ? (
+            <div className="mt-4 rounded-md border border-dashed border-border p-6 text-center text-xs text-muted-foreground">
+              No activity yet. Claim a signal or draft outreach to get started.
+            </div>
+          ) : (
+            <ol className="mt-3 space-y-2.5">
+              {activity.map((a) => (
+                <li key={a.id} className="flex items-start gap-2 border-l-2 border-brand/40 pl-2.5 text-xs">
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium">{ACTIVITY_LABELS[a.type] ?? a.type}</div>
+                    <div className="text-muted-foreground">
+                      {formatDistanceToNow(new Date(a.created_at), { addSuffix: true })}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+      </aside>
     </div>
   );
 }
+
