@@ -276,7 +276,7 @@ function LandingPage() {
           <div className="absolute inset-0 bg-grid opacity-[0.08]" />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-24">
+        <div className="relative mx-auto max-w-7xl px-4 pt-12 pb-16 md:px-6 md:pt-20 md:pb-12 md:pb-24">
           <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-center">
             {/* Copy */}
             <div className="animate-fade-up">
@@ -437,8 +437,8 @@ function LandingPage() {
       </section>
 
       {/* ============================ LOGO STRIP ============================ */}
-      <section className="border-b border-border/60 bg-background py-10">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="border-b border-border/60 bg-background py-6 md:py-10">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
           <p className="text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Trusted by revenue teams at fast-growing companies
           </p>
@@ -458,7 +458,7 @@ function LandingPage() {
       </section>
 
       {/* ============================ PRODUCT SHOWCASE ============================ */}
-      <section className="relative mx-auto max-w-7xl px-6 py-24">
+      <section className="relative mx-auto max-w-7xl px-4 md:px-6 py-12 md:py-24">
         <div className="reveal mx-auto max-w-3xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">Bird's-eye view</p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">
@@ -518,7 +518,7 @@ function LandingPage() {
       </section>
 
       {/* ============================ PROBLEM/SOLUTION ============================ */}
-      <section className="mx-auto max-w-7xl px-6 py-24">
+      <section className="mx-auto max-w-7xl px-4 md:px-6 py-12 md:py-24">
         <div className="reveal grid gap-10 md:grid-cols-2">
           <div className="surface-2 rounded-2xl border border-border p-8">
             <div className="inline-flex items-center gap-2 rounded-full bg-destructive/15 px-3 py-1 text-xs font-medium text-destructive">
@@ -566,7 +566,7 @@ function LandingPage() {
 
       {/* ============================ STATS BAND ============================ */}
       <section className="border-y border-border bg-card/30">
-        <div className="mx-auto max-w-7xl px-6 py-16">
+        <div className="mx-auto max-w-7xl px-4 md:px-6 py-10 md:py-16">
           <div className="reveal grid grid-cols-2 gap-8 md:grid-cols-4">
             <BigStat value={<Counter to={2.1} decimals={1} suffix="×" />} label="Pipeline lift in Q1" sub="avg across paying teams" />
             <BigStat value={<Counter to={3.4} decimals={1} suffix="×" />} label="Higher reply rates" sub="vs. cold outbound baselines" />
@@ -577,7 +577,7 @@ function LandingPage() {
       </section>
 
       {/* ============================ HOW IT WORKS ============================ */}
-      <section id="how" className="mx-auto max-w-7xl px-6 py-28">
+      <section id="how" className="mx-auto max-w-7xl px-4 md:px-6 py-14 md:py-28">
         <SectionHeader
           eyebrow="How it works"
           title="From buying signal to booked meeting"
@@ -606,8 +606,8 @@ function LandingPage() {
       </section>
 
       {/* ============================ SIGNAL TABS ============================ */}
-      <section id="signals" className="border-y border-border bg-card/30 py-28">
-        <div className="mx-auto max-w-7xl px-6">
+      <section id="signals" className="border-y border-border bg-card/30 py-14 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
           <SectionHeader
             eyebrow="Signal taxonomy"
             title="Every buying trigger your team should be calling on"
@@ -681,7 +681,7 @@ function LandingPage() {
       </section>
 
       {/* ============================ FEATURES (3 BIG) ============================ */}
-      <section id="features" className="mx-auto max-w-7xl px-6 py-28">
+      <section id="features" className="mx-auto max-w-7xl px-4 md:px-6 py-14 md:py-28">
         <SectionHeader
           eyebrow="The platform"
           title="One workflow. Three superpowers."
@@ -719,8 +719,8 @@ function LandingPage() {
       </section>
 
       {/* ============================ TESTIMONIALS ============================ */}
-      <section className="border-y border-border bg-card/30 py-28">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="border-y border-border bg-card/30 py-14 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
           <SectionHeader
             eyebrow="Proof"
             title="Reps don't prospect cold anymore"
@@ -763,7 +763,7 @@ function LandingPage() {
       </section>
 
       {/* ============================ PRICING ============================ */}
-      <section id="pricing" className="mx-auto max-w-7xl px-6 py-28">
+      <section id="pricing" className="mx-auto max-w-7xl px-4 md:px-6 py-14 md:py-28">
         <SectionHeader
           eyebrow="Pricing"
           title="Simple. Transparent. Built to pay for itself."
@@ -852,8 +852,8 @@ function LandingPage() {
       </section>
 
       {/* ============================ FAQ ============================ */}
-      <section id="faq" className="border-y border-border bg-card/30 py-28">
-        <div className="mx-auto max-w-3xl px-6">
+      <section id="faq" className="border-y border-border bg-card/30 py-14 md:py-28">
+        <div className="mx-auto max-w-3xl px-4 md:px-6">
           <SectionHeader eyebrow="FAQ" title="Common questions" />
           <div className="reveal mt-12">
             <Accordion type="single" collapsible className="w-full">
@@ -873,7 +873,7 @@ function LandingPage() {
       </section>
 
       {/* ============================ CASE STUDIES ============================ */}
-      <section className="mx-auto max-w-7xl px-6 py-24">
+      <section className="mx-auto max-w-7xl px-4 md:px-6 py-12 md:py-24">
         <div className="reveal flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">Customer wins</p>
@@ -922,7 +922,7 @@ function LandingPage() {
       </section>
 
       {/* ============================ FROM THE BLOG ============================ */}
-      <section className="mx-auto max-w-7xl px-6 pb-24">
+      <section className="mx-auto max-w-7xl px-4 md:px-6 pb-12 md:pb-24">
         <div className="reveal flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">From the playbook</p>
@@ -960,7 +960,7 @@ function LandingPage() {
       </section>
 
       {/* ============================ FINAL CTA ============================ */}
-      <section className="mx-auto max-w-7xl px-6 py-24">
+      <section className="mx-auto max-w-7xl px-4 md:px-6 py-12 md:py-24">
         <div className="reveal relative overflow-hidden rounded-[2rem] border border-border bg-card p-14 text-center shadow-elevated bg-aurora">
           <div className="absolute inset-0 bg-grid opacity-[0.12]" />
           <div className="orb-drift absolute -top-20 left-1/4 h-72 w-72 rounded-full bg-brand/30 blur-[100px]" />
