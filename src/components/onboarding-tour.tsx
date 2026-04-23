@@ -140,6 +140,11 @@ export function OnboardingTour() {
 
   return (
     <>
+      {/* Welcome modal */}
+      {showWelcome && (
+        <WelcomeModal onStart={startTour} onSkip={skipWelcome} totalSteps={STEPS.length} />
+      )}
+
       {/* Pulsing dots on nav items */}
       {STEPS.map((step, idx) => (
         <PulseDot
