@@ -150,27 +150,27 @@ export function SignalCard({ signal, onClaim, onDismiss, onDraft, isPending, isD
         <Button
           size="sm"
           variant={isClaimed ? 'secondary' : 'default'}
-          className={cn('h-8 text-xs', !isClaimed && 'bg-brand text-brand-foreground hover:opacity-90')}
+          className={cn('btn-press h-8 text-xs', !isClaimed && 'bg-brand text-brand-foreground hover:opacity-90')}
           onClick={() => onClaim?.(signal.id)}
           disabled={isClaimed || isDismissed || isPending}
         >
           <CheckCircle2 className="mr-1 h-3.5 w-3.5" />
           {isClaimed ? 'Claimed' : 'Claim Lead'}
         </Button>
-        <Button size="sm" variant="ghost" asChild className="h-8 text-xs">
+        <Button size="sm" variant="ghost" asChild className="btn-press h-8 text-xs">
           <Link
             to="/accounts/$id"
             params={{ id: signal.company_id }}
             hash="brief"
           >
-            View Account <ArrowRight className="ml-1 h-3 w-3" />
+            View Account <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </Button>
         {onDraft && (
           <Button
             size="sm"
             variant="outline"
-            className="h-8 text-xs"
+            className="btn-press h-8 text-xs"
             onClick={() => onDraft(signal)}
             disabled={isDrafting}
           >
@@ -182,7 +182,7 @@ export function SignalCard({ signal, onClaim, onDismiss, onDraft, isPending, isD
         <Button
           size="sm"
           variant="ghost"
-          className="h-8 text-xs text-muted-foreground hover:text-destructive"
+          className="btn-press h-8 text-xs text-muted-foreground hover:text-destructive"
           onClick={() => onDismiss?.(signal.id)}
           disabled={isDismissed || isPending}
         >
