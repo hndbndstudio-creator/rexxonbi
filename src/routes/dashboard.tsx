@@ -16,8 +16,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { CheckCheck, Sparkles, Radio, Loader2 } from 'lucide-react';
+import { CheckCheck, Sparkles, Radio, Loader2, Activity } from 'lucide-react';
 import { toast } from 'sonner';
+import { ACTIVITY_LABELS, fetchActivity, logActivity } from '@/lib/activity';
+import { formatDistanceToNow } from 'date-fns';
 
 export const Route = createFileRoute('/dashboard')({
   component: DashboardPage,
