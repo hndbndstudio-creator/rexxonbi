@@ -252,14 +252,7 @@ function OutreachPage() {
   );
 }
 
-function Stat({ label, value, accent }: { label: string; value: number; accent?: string }) {
-  return (
-    <div className="flex items-baseline gap-1.5">
-      <span className={cn('font-bold tabular-nums text-base', accent ?? 'text-foreground')}>{value}</span>
-      <span className="text-muted-foreground">{label}</span>
-    </div>
-  );
-}
+
 
 function StatusBadge({ status }: { status: DraftRow['status'] }) {
   const map = {
