@@ -51,16 +51,17 @@ const STEPS: Step[] = [
 
 const STORAGE_KEY = 'rexxon.onboarding.v1';
 
-type Status = { completed: string[]; dismissed: boolean };
+type Status = { completed: string[]; dismissed: boolean; welcomed: boolean };
 
 function loadStatus(): Status {
-  if (typeof window === 'undefined') return { completed: [], dismissed: false };
+  if (typeof window === 'undefined') return { completed: [], dismissed: false, welcomed: false };
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { completed: [], dismissed: false };
-    return JSON.parse(raw);
+    if (!raw) return { completed: [], dismissed: false, welcomed: false };
+    const parsed = JSON.parse(raw);
+    return { welcomed: false, ...parsed };
   } catch {
-    return { completed: [], dismissed: false };
+    return { completed: [], dismissed: false, welcomed: false };
   }
 }
 
@@ -70,20 +71,42 @@ function saveStatus(s: Status) {
 }
 
 export function OnboardingTour() {
-  const [status, setStatus] = useState<Status>({ completed: [], dismissed: false });
+  const [status, setStatus] = useState<Status>({ completed: [], dismissed: false, welcomed: false });
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
+  const [showWelcome, setShowWelcome] = useState(false);
   const [mounted, setMounted] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     setMounted(true);
-    setStatus(loadStatus());
+    const s = loadStatus();
+    setStatus(s);
+    if (!s.welcomed && !s.dismissed) {
+      // small delay so layout settles
+      const t = setTimeout(() => setShowWelcome(true), 400);
+      return () => clearTimeout(t);
+    }
   }, []);
 
   if (!mounted || status.dismissed) return null;
 
   const allDone = STEPS.every((s) => status.completed.includes(s.id));
-  if (allDone) return null;
+  if (allDone && !showWelcome) return null;
+
+  const startTour = () => {
+    const next = { ...status, welcomed: true };
+    setStatus(next);
+    saveStatus(next);
+    setShowWelcome(false);
+    setActiveIdx(0);
+  };
+
+  const skipWelcome = () => {
+    const next = { ...status, welcomed: true };
+    setStatus(next);
+    saveStatus(next);
+    setShowWelcome(false);
+  };
 
   const dismiss = () => {
     const next = { ...status, dismissed: true };
