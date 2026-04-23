@@ -53,8 +53,12 @@ function SettingsPage() {
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             <AgentCard icon={Radio} name="Signal Agent" desc="Monitors 12 sources 24/7 for buying signals." status="Active" />
             <AgentCard icon={Mail} name="Outreach Agent" desc="Drafts hyper-relevant emails the moment a signal fires." status="Active" />
+            <AgentCard icon={Brain} name="Enrichment Agent" desc="Auto-generates account briefs and finds verified contacts on every signal." status="Active" />
           </div>
         </div>
+
+        {/* Enrichment Agent settings */}
+        <EnrichmentAgentPanel />
 
         <Tabs defaultValue="profile">
           <TabsList>
