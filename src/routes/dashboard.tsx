@@ -67,6 +67,13 @@ function SignalFeed() {
     },
     onSuccess: (_d, v) => {
       toast.success(v.status === 'CLAIMED' ? 'Lead claimed' : 'Signal dismissed');
+      if (user) {
+        logActivity(user.id, v.status === 'CLAIMED' ? 'SIGNAL_CLAIMED' : 'SIGNAL_DISMISSED', {
+          entity_type: 'signal',
+          entity_id: v.id,
+        });
+        qc.invalidateQueries({ queryKey: ['activity'] });
+      }
     },
   });
 
@@ -118,6 +125,10 @@ function SignalFeed() {
     },
     onSuccess: () => {
       toast.success('Outreach draft created');
+      if (user) {
+        logActivity(user.id, 'DRAFT_CREATED', { entity_type: 'outreach_draft' });
+        qc.invalidateQueries({ queryKey: ['activity'] });
+      }
       navigate({ to: '/outreach' });
     },
     onError: (e: any) => {
