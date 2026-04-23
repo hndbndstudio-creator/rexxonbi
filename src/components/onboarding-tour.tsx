@@ -159,6 +159,7 @@ export function OnboardingTour() {
       {/* Active popover */}
       {activeIdx !== null && (
         <TourPopover
+          key={STEPS[activeIdx].id}
           step={STEPS[activeIdx]}
           stepIdx={activeIdx}
           total={STEPS.length}
