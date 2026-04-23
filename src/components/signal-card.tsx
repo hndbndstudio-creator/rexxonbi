@@ -7,6 +7,10 @@ import {
   Sparkles,
   X,
   ArrowRight,
+  Users,
+  MapPin,
+  Briefcase,
+  Clock,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
