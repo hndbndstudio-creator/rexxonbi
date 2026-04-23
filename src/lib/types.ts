@@ -1,81 +1,89 @@
-export type AssetCondition = 'excellent' | 'good' | 'fair' | 'poor' | 'retired';
+// Rexxon AI domain types — derived from Supabase schema
 
-export interface AssetCategory {
-  id: string;
-  name: string;
-  default_useful_life_years: number;
-  created_at: string;
-}
+export type SignalType =
+  | 'GROWTH'
+  | 'COMPLIANCE'
+  | 'TECH_EXPANSION'
+  | 'SALES_OPS'
+  | 'LEADERSHIP'
+  | 'FUNDING'
+  | 'EARNINGS';
 
-export interface Employee {
-  id: string;
-  name: string;
-  department: string | null;
-  email: string | null;
-  created_at: string;
-}
+export type SignalSource =
+  | 'LINKEDIN'
+  | 'INDEED'
+  | 'CRUNCHBASE'
+  | 'SEC_EDGAR'
+  | 'BUSINESS_WIRE'
+  | 'GOOGLE_NEWS'
+  | 'SEEKING_ALPHA'
+  | 'GREENHOUSE'
+  | 'LEVER'
+  | 'ISACA'
+  | 'CYBERSEEK';
 
-export interface Asset {
-  id: string;
-  name: string;
-  category_id: string | null;
-  serial_number: string | null;
-  purchase_date: string;
-  purchase_cost: number;
-  condition: AssetCondition;
-  location: string | null;
-  notes: string | null;
-  useful_life_years: number;
-  residual_value_percent: number;
-  is_archived: boolean;
-  created_by: string | null;
-  created_at: string;
-  updated_at: string;
-  asset_categories?: AssetCategory | null;
-}
+export type SignalStatus = 'NEW' | 'CLAIMED' | 'CONVERTED' | 'DISMISSED';
+export type Seniority = 'C_LEVEL' | 'VP' | 'DIRECTOR' | 'MANAGER' | 'IC';
 
-export interface AssetAssignment {
-  id: string;
-  asset_id: string;
-  employee_id: string;
-  assigned_date: string;
-  returned_date: string | null;
-  notes: string | null;
-  created_at: string;
-  employees?: Employee | null;
-}
-
-export const CONDITION_LABELS: Record<AssetCondition, string> = {
-  excellent: 'Excellent',
-  good: 'Good',
-  fair: 'Fair',
-  poor: 'Poor',
-  retired: 'Retired',
+export const SIGNAL_TYPE_LABELS: Record<SignalType, string> = {
+  GROWTH: 'Growth',
+  COMPLIANCE: 'Compliance',
+  TECH_EXPANSION: 'Tech Expansion',
+  SALES_OPS: 'Sales Ops',
+  LEADERSHIP: 'Leadership',
+  FUNDING: 'Funding',
+  EARNINGS: 'Earnings',
 };
 
-export const CONDITION_COLORS: Record<AssetCondition, string> = {
-  excellent: 'bg-success text-success-foreground',
-  good: 'bg-primary text-primary-foreground',
-  fair: 'bg-warning text-warning-foreground',
-  poor: 'bg-destructive text-destructive-foreground',
-  retired: 'bg-muted text-muted-foreground',
+export const SIGNAL_SOURCE_LABELS: Record<SignalSource, string> = {
+  LINKEDIN: 'LinkedIn',
+  INDEED: 'Indeed',
+  CRUNCHBASE: 'Crunchbase',
+  SEC_EDGAR: 'SEC EDGAR',
+  BUSINESS_WIRE: 'Business Wire',
+  GOOGLE_NEWS: 'Google News',
+  SEEKING_ALPHA: 'Seeking Alpha',
+  GREENHOUSE: 'Greenhouse',
+  LEVER: 'Lever',
+  ISACA: 'ISACA',
+  CYBERSEEK: 'CyberSeek',
 };
 
-export function calculateDepreciation(purchaseCost: number, purchaseDate: string, usefulLifeYears: number, residualPercent: number = 0) {
-  const now = new Date();
-  const purchase = new Date(purchaseDate);
-  const totalDays = usefulLifeYears * 365.25;
-  const daysSince = Math.max(0, (now.getTime() - purchase.getTime()) / (1000 * 60 * 60 * 24));
-  const residualValue = purchaseCost * (residualPercent / 100);
-  const depreciableAmount = purchaseCost - residualValue;
-  const depreciationFraction = Math.min(1, daysSince / totalDays);
-  const currentValue = Math.max(residualValue, purchaseCost - depreciableAmount * depreciationFraction);
-  const totalDepreciation = purchaseCost - currentValue;
+export const SIGNAL_TYPE_COLOR_VAR: Record<SignalType, string> = {
+  GROWTH: 'var(--signal-growth)',
+  COMPLIANCE: 'var(--signal-compliance)',
+  TECH_EXPANSION: 'var(--signal-tech)',
+  SALES_OPS: 'var(--signal-sales)',
+  LEADERSHIP: 'var(--signal-leadership)',
+  FUNDING: 'var(--signal-funding)',
+  EARNINGS: 'var(--signal-earnings)',
+};
 
-  return {
-    currentValue: Math.round(currentValue * 100) / 100,
-    totalDepreciation: Math.round(totalDepreciation * 100) / 100,
-    percentDepreciated: Math.round(depreciationFraction * 100),
-    isFullyDepreciated: depreciationFraction >= 1,
-  };
+export function maskEmail(email: string | null | undefined): string {
+  if (!email) return '';
+  const [local, domain] = email.split('@');
+  if (!domain) return '••••••';
+  return `${'•'.repeat(Math.min(local.length, 6))}@${domain}`;
+}
+
+export function maskPhone(phone: string | null | undefined): string {
+  if (!phone) return '';
+  return phone.replace(/\d(?=\d{4})/g, '•');
+}
+
+export function confidenceLabel(score: number): { label: string; color: string } {
+  if (score >= 90) return { label: 'VERY HIGH', color: 'var(--signal-growth)' };
+  if (score >= 80) return { label: 'HIGH', color: 'var(--signal-compliance)' };
+  if (score >= 65) return { label: 'MEDIUM', color: 'var(--signal-sales)' };
+  return { label: 'LOW', color: 'var(--muted-foreground)' };
+}
+
+export function getInitials(name: string): string {
+  return name
+    .split(/\s+/)
+    .map((p) => p[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
 }

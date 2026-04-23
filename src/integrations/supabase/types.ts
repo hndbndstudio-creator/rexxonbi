@@ -14,158 +14,358 @@ export type Database = {
   }
   public: {
     Tables: {
-      asset_assignments: {
+      companies: {
         Row: {
-          asset_id: string
-          assigned_date: string
+          brief: Json | null
           created_at: string
-          employee_id: string
+          description: string | null
+          domain: string
+          employee_count: number | null
+          employee_range: string | null
+          funding_stage: string | null
+          hq_city: string | null
+          hq_country: string
+          hq_state: string | null
           id: string
-          notes: string | null
-          returned_date: string | null
+          industry: string | null
+          linkedin_url: string | null
+          name: string
+          tech_stack: string[]
+          total_funding: number | null
+          updated_at: string
         }
         Insert: {
-          asset_id: string
-          assigned_date?: string
+          brief?: Json | null
           created_at?: string
-          employee_id: string
+          description?: string | null
+          domain: string
+          employee_count?: number | null
+          employee_range?: string | null
+          funding_stage?: string | null
+          hq_city?: string | null
+          hq_country?: string
+          hq_state?: string | null
           id?: string
-          notes?: string | null
-          returned_date?: string | null
+          industry?: string | null
+          linkedin_url?: string | null
+          name: string
+          tech_stack?: string[]
+          total_funding?: number | null
+          updated_at?: string
         }
         Update: {
-          asset_id?: string
-          assigned_date?: string
+          brief?: Json | null
           created_at?: string
-          employee_id?: string
+          description?: string | null
+          domain?: string
+          employee_count?: number | null
+          employee_range?: string | null
+          funding_stage?: string | null
+          hq_city?: string | null
+          hq_country?: string
+          hq_state?: string | null
           id?: string
-          notes?: string | null
-          returned_date?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "asset_assignments_asset_id_fkey"
-            columns: ["asset_id"]
-            isOneToOne: false
-            referencedRelation: "assets"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "asset_assignments_employee_id_fkey"
-            columns: ["employee_id"]
-            isOneToOne: false
-            referencedRelation: "employees"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      asset_categories: {
-        Row: {
-          created_at: string
-          default_useful_life_years: number
-          id: string
-          name: string
-          residual_value_percent: number
-        }
-        Insert: {
-          created_at?: string
-          default_useful_life_years?: number
-          id?: string
-          name: string
-          residual_value_percent?: number
-        }
-        Update: {
-          created_at?: string
-          default_useful_life_years?: number
-          id?: string
+          industry?: string | null
+          linkedin_url?: string | null
           name?: string
-          residual_value_percent?: number
+          tech_stack?: string[]
+          total_funding?: number | null
+          updated_at?: string
         }
         Relationships: []
       }
-      assets: {
+      contacts: {
         Row: {
-          category_id: string | null
-          condition: Database["public"]["Enums"]["asset_condition"]
+          company_id: string
           created_at: string
-          created_by: string | null
+          email: string | null
+          first_name: string
           id: string
-          is_archived: boolean
-          location: string | null
-          name: string
-          notes: string | null
-          purchase_cost: number
-          purchase_date: string
-          residual_value_percent: number
-          serial_number: string | null
-          updated_at: string
-          useful_life_years: number
+          is_enriched: boolean
+          last_name: string
+          linkedin_url: string | null
+          phone: string | null
+          signal_context: string | null
+          title: string | null
         }
         Insert: {
-          category_id?: string | null
-          condition?: Database["public"]["Enums"]["asset_condition"]
+          company_id: string
           created_at?: string
-          created_by?: string | null
+          email?: string | null
+          first_name: string
           id?: string
-          is_archived?: boolean
-          location?: string | null
-          name: string
-          notes?: string | null
-          purchase_cost?: number
-          purchase_date: string
-          residual_value_percent?: number
-          serial_number?: string | null
-          updated_at?: string
-          useful_life_years?: number
+          is_enriched?: boolean
+          last_name: string
+          linkedin_url?: string | null
+          phone?: string | null
+          signal_context?: string | null
+          title?: string | null
         }
         Update: {
-          category_id?: string | null
-          condition?: Database["public"]["Enums"]["asset_condition"]
+          company_id?: string
           created_at?: string
-          created_by?: string | null
+          email?: string | null
+          first_name?: string
           id?: string
-          is_archived?: boolean
-          location?: string | null
-          name?: string
-          notes?: string | null
-          purchase_cost?: number
-          purchase_date?: string
-          residual_value_percent?: number
-          serial_number?: string | null
-          updated_at?: string
-          useful_life_years?: number
+          is_enriched?: boolean
+          last_name?: string
+          linkedin_url?: string | null
+          phone?: string | null
+          signal_context?: string | null
+          title?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "assets_category_id_fkey"
-            columns: ["category_id"]
+            foreignKeyName: "contacts_company_id_fkey"
+            columns: ["company_id"]
             isOneToOne: false
-            referencedRelation: "asset_categories"
+            referencedRelation: "companies"
             referencedColumns: ["id"]
           },
         ]
       }
-      employees: {
+      monitored_accounts: {
         Row: {
+          company_id: string
           created_at: string
-          department: string | null
-          email: string | null
           id: string
-          name: string
+          user_id: string
         }
         Insert: {
+          company_id: string
           created_at?: string
-          department?: string | null
-          email?: string | null
           id?: string
-          name: string
+          user_id: string
         }
         Update: {
+          company_id?: string
           created_at?: string
-          department?: string | null
-          email?: string | null
           id?: string
-          name?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "monitored_accounts_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      outreach_drafts: {
+        Row: {
+          body: string
+          contact_id: string | null
+          created_at: string
+          id: string
+          persona: Database["public"]["Enums"]["outreach_persona"]
+          signal_id: string
+          status: Database["public"]["Enums"]["outreach_status"]
+          subject: string
+          tone: Database["public"]["Enums"]["outreach_tone"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          contact_id?: string | null
+          created_at?: string
+          id?: string
+          persona?: Database["public"]["Enums"]["outreach_persona"]
+          signal_id: string
+          status?: Database["public"]["Enums"]["outreach_status"]
+          subject: string
+          tone?: Database["public"]["Enums"]["outreach_tone"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          contact_id?: string | null
+          created_at?: string
+          id?: string
+          persona?: Database["public"]["Enums"]["outreach_persona"]
+          signal_id?: string
+          status?: Database["public"]["Enums"]["outreach_status"]
+          subject?: string
+          tone?: Database["public"]["Enums"]["outreach_tone"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "outreach_drafts_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "outreach_drafts_signal_id_fkey"
+            columns: ["signal_id"]
+            isOneToOne: false
+            referencedRelation: "signals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      revealed_contacts: {
+        Row: {
+          contact_id: string
+          created_at: string
+          field: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          contact_id: string
+          created_at?: string
+          field: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          contact_id?: string
+          created_at?: string
+          field?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "revealed_contacts_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      signals: {
+        Row: {
+          ai_insight: string
+          company_id: string
+          confidence_score: number
+          created_at: string
+          hiring_manager_contact_id: string | null
+          id: string
+          is_read: boolean
+          published_at: string
+          role_category: string | null
+          seniority_level: Database["public"]["Enums"]["seniority_level"] | null
+          signal_type: Database["public"]["Enums"]["signal_type"]
+          source: Database["public"]["Enums"]["signal_source"]
+          spend_categories: string[]
+          status: Database["public"]["Enums"]["signal_status"]
+          title: string
+          vendor_suggestions: string[]
+        }
+        Insert: {
+          ai_insight: string
+          company_id: string
+          confidence_score?: number
+          created_at?: string
+          hiring_manager_contact_id?: string | null
+          id?: string
+          is_read?: boolean
+          published_at?: string
+          role_category?: string | null
+          seniority_level?:
+            | Database["public"]["Enums"]["seniority_level"]
+            | null
+          signal_type: Database["public"]["Enums"]["signal_type"]
+          source: Database["public"]["Enums"]["signal_source"]
+          spend_categories?: string[]
+          status?: Database["public"]["Enums"]["signal_status"]
+          title: string
+          vendor_suggestions?: string[]
+        }
+        Update: {
+          ai_insight?: string
+          company_id?: string
+          confidence_score?: number
+          created_at?: string
+          hiring_manager_contact_id?: string | null
+          id?: string
+          is_read?: boolean
+          published_at?: string
+          role_category?: string | null
+          seniority_level?:
+            | Database["public"]["Enums"]["seniority_level"]
+            | null
+          signal_type?: Database["public"]["Enums"]["signal_type"]
+          source?: Database["public"]["Enums"]["signal_source"]
+          spend_categories?: string[]
+          status?: Database["public"]["Enums"]["signal_status"]
+          title?: string
+          vendor_suggestions?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "signals_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "signals_hiring_manager_fk"
+            columns: ["hiring_manager_contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      territories: {
+        Row: {
+          email_digest: string
+          employee_max: number | null
+          employee_min: number | null
+          funding_stages: string[]
+          geographies: string[]
+          industries: string[]
+          min_confidence: number
+          named_domains: string[]
+          notify_slack: boolean
+          role_categories: string[]
+          signal_types: string[]
+          slack_channel: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          email_digest?: string
+          employee_max?: number | null
+          employee_min?: number | null
+          funding_stages?: string[]
+          geographies?: string[]
+          industries?: string[]
+          min_confidence?: number
+          named_domains?: string[]
+          notify_slack?: boolean
+          role_categories?: string[]
+          signal_types?: string[]
+          slack_channel?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          email_digest?: string
+          employee_max?: number | null
+          employee_min?: number | null
+          funding_stages?: string[]
+          geographies?: string[]
+          industries?: string[]
+          min_confidence?: number
+          named_domains?: string[]
+          notify_slack?: boolean
+          role_categories?: string[]
+          signal_types?: string[]
+          slack_channel?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -205,7 +405,31 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
-      asset_condition: "excellent" | "good" | "fair" | "poor" | "retired"
+      outreach_persona: "AE" | "SDR" | "VP_SALES" | "AGENCY"
+      outreach_status: "PENDING" | "EDITED" | "SENT"
+      outreach_tone: "PROFESSIONAL" | "DIRECT" | "CASUAL" | "FOLLOWUP"
+      seniority_level: "C_LEVEL" | "VP" | "DIRECTOR" | "MANAGER" | "IC"
+      signal_source:
+        | "LINKEDIN"
+        | "INDEED"
+        | "CRUNCHBASE"
+        | "SEC_EDGAR"
+        | "BUSINESS_WIRE"
+        | "GOOGLE_NEWS"
+        | "SEEKING_ALPHA"
+        | "GREENHOUSE"
+        | "LEVER"
+        | "ISACA"
+        | "CYBERSEEK"
+      signal_status: "NEW" | "CLAIMED" | "CONVERTED" | "DISMISSED"
+      signal_type:
+        | "GROWTH"
+        | "COMPLIANCE"
+        | "TECH_EXPANSION"
+        | "SALES_OPS"
+        | "LEADERSHIP"
+        | "FUNDING"
+        | "EARNINGS"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -334,7 +558,33 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
-      asset_condition: ["excellent", "good", "fair", "poor", "retired"],
+      outreach_persona: ["AE", "SDR", "VP_SALES", "AGENCY"],
+      outreach_status: ["PENDING", "EDITED", "SENT"],
+      outreach_tone: ["PROFESSIONAL", "DIRECT", "CASUAL", "FOLLOWUP"],
+      seniority_level: ["C_LEVEL", "VP", "DIRECTOR", "MANAGER", "IC"],
+      signal_source: [
+        "LINKEDIN",
+        "INDEED",
+        "CRUNCHBASE",
+        "SEC_EDGAR",
+        "BUSINESS_WIRE",
+        "GOOGLE_NEWS",
+        "SEEKING_ALPHA",
+        "GREENHOUSE",
+        "LEVER",
+        "ISACA",
+        "CYBERSEEK",
+      ],
+      signal_status: ["NEW", "CLAIMED", "CONVERTED", "DISMISSED"],
+      signal_type: [
+        "GROWTH",
+        "COMPLIANCE",
+        "TECH_EXPANSION",
+        "SALES_OPS",
+        "LEADERSHIP",
+        "FUNDING",
+        "EARNINGS",
+      ],
     },
   },
 } as const
