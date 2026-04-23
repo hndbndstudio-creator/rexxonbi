@@ -6,9 +6,9 @@ type Size = "sm" | "md" | "lg";
 // Full horizontal logo (wordmark + brain icon). Width-driven sizing keeps
 // the natural aspect ratio of the source image (~1500x640).
 const SIZES: Record<Size, string> = {
-  sm: "h-9 w-[150px]",
-  md: "h-12 w-[200px]",
-  lg: "h-16 w-[260px]",
+  sm: "h-[180px] w-[750px] max-w-full",
+  md: "h-[240px] w-[1000px] max-w-full",
+  lg: "h-[320px] w-[1300px] max-w-full",
 };
 
 /**
