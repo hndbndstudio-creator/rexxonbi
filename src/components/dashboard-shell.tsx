@@ -15,19 +15,21 @@ import {
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { OnboardingTour } from '@/components/onboarding-tour';
 
 type NavItem = {
   to: '/dashboard' | '/accounts' | '/contacts' | '/outreach' | '/territory' | '/analytics' | '/settings';
   label: string;
   icon: typeof Radio;
+  tourId?: string;
 };
 
 const NAV: NavItem[] = [
-  { to: '/dashboard', label: 'Signal Feed', icon: Radio },
-  { to: '/accounts', label: 'Accounts', icon: Building2 },
-  { to: '/contacts', label: 'Contacts', icon: Users },
-  { to: '/outreach', label: 'Outreach', icon: Mail },
-  { to: '/territory', label: 'Territory', icon: Target },
+  { to: '/dashboard', label: 'Signal Feed', icon: Radio, tourId: 'nav-dashboard' },
+  { to: '/accounts', label: 'Accounts', icon: Building2, tourId: 'nav-accounts' },
+  { to: '/contacts', label: 'Contacts', icon: Users, tourId: 'nav-contacts' },
+  { to: '/outreach', label: 'Outreach', icon: Mail, tourId: 'nav-outreach' },
+  { to: '/territory', label: 'Territory', icon: Target, tourId: 'nav-territory' },
   { to: '/analytics', label: 'Analytics', icon: TrendingUp },
   { to: '/settings', label: 'Settings', icon: Settings },
 ];
@@ -77,8 +79,9 @@ export function DashboardShell({ children }: { children: ReactNode }) {
             return (
               <Link key={item.to} to={item.to}>
                 <div
+                  data-tour={item.tourId}
                   className={cn(
-                    'group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors',
+                    'group relative flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors',
                     active
                       ? 'bg-sidebar-accent text-sidebar-accent-foreground'
                       : 'text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground'
@@ -110,6 +113,9 @@ export function DashboardShell({ children }: { children: ReactNode }) {
 
       {/* Main */}
       <main className="min-w-0 flex-1">{children}</main>
+
+      {/* Onboarding tour overlay */}
+      <OnboardingTour />
     </div>
   );
 }
