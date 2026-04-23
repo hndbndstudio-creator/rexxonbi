@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, Calendar, Clock } from "lucide-react";
 import { BLOG_POSTS } from "@/lib/blog-content";
+import { RexxonLogo } from "@/components/rexxon-logo";
 
 export const Route = createFileRoute("/blog")({
   component: BlogIndex,
