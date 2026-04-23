@@ -339,6 +339,47 @@ body {
   animation: pulse-ring 2s cubic-bezier(.2,.8,.2,1) infinite;
 }
 
+/* ─── Page + tab transitions ───────────────────────────────────── */
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-transition {
+  animation: page-enter 320ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes tab-enter {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+[data-slot="tabs-content"][data-state="active"],
+[role="tabpanel"][data-state="active"] {
+  animation: tab-enter 240ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+/* Tab triggers — animated underline + soft scale on press */
+[role="tab"] {
+  position: relative;
+  transition:
+    color 180ms ease,
+    background-color 220ms cubic-bezier(.2,.8,.2,1),
+    transform 140ms cubic-bezier(.2,.8,.2,1),
+    box-shadow 220ms ease;
+}
+[role="tab"]:active { transform: scale(0.97); }
+[role="tab"][data-state="active"] {
+  animation: tab-trigger-pop 240ms cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes tab-trigger-pop {
+  0%   { transform: scale(0.96); }
+  60%  { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* Nav link tactile click */
+.nav-link:active { transform: scale(0.98); }
+a[href]:active .logo-badge { transform: scale(0.96); transition: transform 120ms ease; }
+
 /* ─── Premium dashboard micro-interactions ─────────────────────── */
 
 /* Staggered entrance */
