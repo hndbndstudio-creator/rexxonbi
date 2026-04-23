@@ -451,10 +451,12 @@ function LandingPage() {
   );
 }
 
-function Logo() {
+function Logo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
+  const dims = size === 'lg' ? 'h-9 w-9 rounded-lg' : size === 'sm' ? 'h-6 w-6 rounded-md' : 'h-8 w-8 rounded-md';
+  const icon = size === 'lg' ? 'h-5 w-5' : size === 'sm' ? 'h-3.5 w-3.5' : 'h-4 w-4';
   return (
-    <div className="relative flex h-7 w-7 items-center justify-center rounded-md bg-brand text-brand-foreground">
-      <Activity className="h-4 w-4" />
+    <div className={`logo-badge relative flex items-center justify-center text-brand-foreground ${dims}`}>
+      <Activity className={`relative z-10 ${icon} drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]`} strokeWidth={2.5} />
     </div>
   );
 }
@@ -471,19 +473,21 @@ function Stat({ value, label }: { value: string; label: string }) {
 function SectionHeader({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle?: string }) {
   return (
     <div className="text-center">
-      <p className="text-sm font-medium text-brand">{eyebrow}</p>
-      <h2 className="mt-2 text-3xl font-bold tracking-tight md:text-4xl">{title}</h2>
-      {subtitle && <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">{subtitle}</p>}
+      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">{eyebrow}</p>
+      <h2 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">{title}</h2>
+      {subtitle && <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground md:text-lg">{subtitle}</p>}
     </div>
   );
 }
 
 function ExplainCard({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {
   return (
-    <div className="rounded-xl border border-border bg-card/60 p-6">
-      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand/15 text-brand">{icon}</div>
-      <h3 className="mt-4 font-semibold">{title}</h3>
-      <p className="mt-2 text-sm text-muted-foreground">{body}</p>
+    <div className="hover-lift rounded-2xl border border-border bg-card/60 p-6 shadow-soft backdrop-blur-sm">
+      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-brand/25 to-brand/5 text-brand shadow-inset-glow">
+        {icon}
+      </div>
+      <h3 className="mt-5 text-lg font-semibold">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
     </div>
   );
 }
