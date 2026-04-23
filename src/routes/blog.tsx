@@ -7,6 +7,7 @@ export const Route = createFileRoute("/blog")({
   component: BlogIndex,
   head: () => ({
     meta: [
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
       { title: "Rexxon AI Blog — B2B Buying Signals, Outbound & AI Sales Insights" },
       {
         name: "description",

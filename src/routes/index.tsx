@@ -37,6 +37,7 @@ import { RexxonLogo } from '@/components/rexxon-logo';
 export const Route = createFileRoute('/')({
   head: () => ({
     meta: [
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
       { title: "Rexxon AI — Real-time B2B buying signals & AI outreach platform" },
       { name: "description", content: "Catch every buying signal — hiring, funding, leadership, earnings, compliance — across 10M+ companies. AI-drafted outreach to verified contacts. Free trial." },
       { property: "og:title", content: "Rexxon AI — Real-time B2B buying signals" },

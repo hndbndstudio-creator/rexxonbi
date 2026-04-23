@@ -27,6 +27,12 @@ import { downloadCSV, toCSV } from '@/lib/csv';
 import { logActivity } from '@/lib/activity';
 
 export const Route = createFileRoute('/accounts')({
+  head: () => ({
+    meta: [
+      { title: "Accounts — Rexxon AI" },
+      { name: "robots", content: "noindex, nofollow, noarchive, noimageindex" },
+    ],
+  }),
   component: AccountsPage,
 });
 

@@ -10,6 +10,12 @@ import { toast } from 'sonner';
 import { Link } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/reset-password')({
+  head: () => ({
+    meta: [
+      { title: "Reset password — Rexxon AI" },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: ResetPasswordPage,
 });
 

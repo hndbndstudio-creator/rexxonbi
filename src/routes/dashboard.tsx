@@ -22,6 +22,12 @@ import { ACTIVITY_LABELS, fetchActivity, logActivity } from '@/lib/activity';
 import { formatDistanceToNow } from 'date-fns';
 
 export const Route = createFileRoute('/dashboard')({
+  head: () => ({
+    meta: [
+      { title: "Signal Feed — Rexxon AI" },
+      { name: "robots", content: "noindex, nofollow, noarchive, noimageindex" },
+    ],
+  }),
   component: DashboardPage,
 });
 

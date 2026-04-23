@@ -9,6 +9,13 @@ import { toast } from 'sonner';
 import { Activity } from 'lucide-react';
 
 export const Route = createFileRoute('/login')({
+  head: () => ({
+    meta: [
+      { title: "Sign in — Rexxon AI" },
+      { name: "description", content: "Sign in to your Rexxon AI account." },
+      { name: "robots", content: "noindex, follow" },
+    ],
+  }),
   component: LoginPage,
 });
 

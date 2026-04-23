@@ -13,6 +13,12 @@ import { downloadCSV, toCSV } from '@/lib/csv';
 import { logActivity } from '@/lib/activity';
 
 export const Route = createFileRoute('/contacts')({
+  head: () => ({
+    meta: [
+      { title: "Contacts — Rexxon AI" },
+      { name: "robots", content: "noindex, nofollow, noarchive, noimageindex" },
+    ],
+  }),
   component: ContactsPage,
 });
 

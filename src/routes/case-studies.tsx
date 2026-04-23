@@ -7,6 +7,7 @@ export const Route = createFileRoute("/case-studies")({
   component: CaseStudiesIndex,
   head: () => ({
     meta: [
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
       { title: "Customer Case Studies — Real Pipeline Built With Rexxon AI" },
       {
         name: "description",

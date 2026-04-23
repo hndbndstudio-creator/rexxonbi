@@ -18,6 +18,7 @@ export const Route = createFileRoute("/affiliates")({
   component: AffiliatesPage,
   head: () => ({
     meta: [
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
       { title: "Rexxon AI Affiliate Program — Earn 30% Recurring Commission" },
       {
         name: "description",

@@ -21,6 +21,7 @@ export const Route = createFileRoute("/blog/$slug")({
     if (!p) return { meta: [{ title: "Article not found — Rexxon AI" }] };
     return {
       meta: [
+        { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
         { title: `${p.title} | Rexxon AI` },
         { name: "description", content: p.description },
         { name: "keywords", content: p.keywords.join(", ") },

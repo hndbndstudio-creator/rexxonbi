@@ -21,6 +21,7 @@ export const Route = createFileRoute("/case-studies/$slug")({
     if (!c) return { meta: [{ title: "Case study not found — Rexxon AI" }] };
     return {
       meta: [
+        { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
         { title: `${c.title} | Rexxon AI` },
         { name: "description", content: c.description },
         { name: "keywords", content: c.keywords.join(", ") },

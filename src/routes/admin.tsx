@@ -40,6 +40,12 @@ import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';
 
 export const Route = createFileRoute('/admin')({
+  head: () => ({
+    meta: [
+      { title: "Admin — Rexxon AI" },
+      { name: "robots", content: "noindex, nofollow, noarchive, noimageindex" },
+    ],
+  }),
   component: AdminPage,
 });
 

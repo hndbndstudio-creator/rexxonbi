@@ -10,6 +10,12 @@ import { TrendingUp, Radio, Send, Trophy, Clock, Zap } from 'lucide-react';
 import { SIGNAL_TYPE_LABELS, type SignalType } from '@/lib/types';
 
 export const Route = createFileRoute('/analytics')({
+  head: () => ({
+    meta: [
+      { title: "Analytics — Rexxon AI" },
+      { name: "robots", content: "noindex, nofollow, noarchive, noimageindex" },
+    ],
+  }),
   component: AnalyticsPage,
 });
 

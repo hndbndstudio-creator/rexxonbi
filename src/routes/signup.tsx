@@ -9,6 +9,13 @@ import { toast } from 'sonner';
 import { Activity, Check } from 'lucide-react';
 
 export const Route = createFileRoute('/signup')({
+  head: () => ({
+    meta: [
+      { title: "Create your Rexxon AI account — start free" },
+      { name: "description", content: "Create a Rexxon AI account and start receiving real-time B2B buying signals in minutes." },
+      { name: "robots", content: "noindex, follow" },
+    ],
+  }),
   component: SignupPage,
 });
 
