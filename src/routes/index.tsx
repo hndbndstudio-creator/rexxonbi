@@ -98,7 +98,7 @@ function LandingPage() {
   return (
     <div className="min-h-screen overflow-x-hidden">
       {/* Announcement bar */}
-      <div className="border-b border-border/60 bg-gradient-to-r from-brand/20 via-brand/10 to-brand-glow/20 backdrop-blur-sm">
+      <div className="border-b border-border/40 bg-transparent backdrop-blur-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-6 py-2 text-xs">
           <span className="rounded-full bg-brand/20 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-brand">
             New
