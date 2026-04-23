@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/lib/use-auth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Settings as SettingsIcon, Users, Plug, CreditCard, Bell, CheckCircle2 } from 'lucide-react';
+import { Settings as SettingsIcon, Users, CreditCard, CheckCircle2, Radio, Mail, Sparkles } from 'lucide-react';
 
 export const Route = createFileRoute('/settings')({
   component: SettingsPage,
@@ -36,7 +36,25 @@ function SettingsPage() {
             <SettingsIcon className="h-6 w-6 text-brand" />
             Settings
           </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Manage your agents, integrations, and team.
+          </p>
         </header>
+
+        {/* Agent status banner */}
+        <div className="rounded-xl border border-border bg-card/40 p-5">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-sm font-semibold flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-brand" />
+              Your AI Agents
+            </h2>
+            <span className="text-xs text-muted-foreground">All systems operational</span>
+          </div>
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+            <AgentCard icon={Radio} name="Signal Agent" desc="Monitors 12 sources 24/7 for buying signals." status="Active" />
+            <AgentCard icon={Mail} name="Outreach Agent" desc="Drafts hyper-relevant emails the moment a signal fires." status="Active" />
+          </div>
+        </div>
 
         <Tabs defaultValue="profile">
           <TabsList>
