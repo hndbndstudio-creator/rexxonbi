@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/lib/use-auth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Settings as SettingsIcon, Users, CheckCircle2, Radio, Mail, Sparkles, Brain, UserSearch } from 'lucide-react';
+import { Settings as SettingsIcon, Users, CheckCircle2, Radio, Mail, Sparkles, Brain, UserSearch, User as UserIcon, Building2, Briefcase, Save } from 'lucide-react';
 
 export const Route = createFileRoute('/settings')({
   component: SettingsPage,
@@ -125,8 +125,58 @@ function SettingsPage() {
 }
 
 function ProfileTab({ email }: { email: string }) {
+  const { user } = useAuth();
   const [pw, setPw] = useState('');
   const [busy, setBusy] = useState(false);
+
+  // Personal info — used to personalize email templates and outreach
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [position, setPosition] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [savingProfile, setSavingProfile] = useState(false);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('first_name, last_name, company_name, position')
+        .eq('user_id', user.id)
+        .maybeSingle();
+      if (cancelled) return;
+      if (error) {
+        toast.error('Failed to load profile');
+      } else if (data) {
+        setFirstName(data.first_name ?? '');
+        setLastName(data.last_name ?? '');
+        setCompanyName(data.company_name ?? '');
+        setPosition(data.position ?? '');
+      }
+      setLoading(false);
+    })();
+    return () => { cancelled = true; };
+  }, [user?.id]);
+
+  const saveProfile = async () => {
+    if (!user?.id) return;
+    setSavingProfile(true);
+    const { error } = await supabase
+      .from('profiles')
+      .upsert({
+        user_id: user.id,
+        first_name: firstName.trim() || null,
+        last_name: lastName.trim() || null,
+        company_name: companyName.trim() || null,
+        position: position.trim() || null,
+      }, { onConflict: 'user_id' });
+    setSavingProfile(false);
+    if (error) toast.error(error.message);
+    else toast.success('Profile saved');
+  };
+
   const updatePw = async () => {
     if (pw.length < 6) return toast.error('Password must be at least 6 characters');
     setBusy(true);
@@ -135,23 +185,94 @@ function ProfileTab({ email }: { email: string }) {
     if (error) toast.error(error.message);
     else { toast.success('Password updated'); setPw(''); }
   };
+
   return (
-    <div className="surface-2 rounded-xl p-5 space-y-4">
-      <div>
-        <Label className="text-sm">Email</Label>
-        <Input value={email} readOnly className="mt-1.5 bg-muted/40" />
+    <>
+      <div className="surface-2 rounded-xl p-5 space-y-4">
+        <div>
+          <h3 className="text-sm font-semibold flex items-center gap-2">
+            <UserIcon className="h-4 w-4 text-brand" />
+            Personal info
+          </h3>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Used to personalize email templates and outreach drafts (e.g. signature, sender details).
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label className="text-sm">First name</Label>
+            <Input
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="mt-1.5"
+              placeholder="Jane"
+              disabled={loading}
+            />
+          </div>
+          <div>
+            <Label className="text-sm">Last name</Label>
+            <Input
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className="mt-1.5"
+              placeholder="Doe"
+              disabled={loading}
+            />
+          </div>
+          <div>
+            <Label className="text-sm flex items-center gap-1.5">
+              <Building2 className="h-3.5 w-3.5 text-muted-foreground" />
+              Company name
+            </Label>
+            <Input
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              className="mt-1.5"
+              placeholder="Acme Inc."
+              disabled={loading}
+            />
+          </div>
+          <div>
+            <Label className="text-sm flex items-center gap-1.5">
+              <Briefcase className="h-3.5 w-3.5 text-muted-foreground" />
+              Position
+            </Label>
+            <Input
+              value={position}
+              onChange={(e) => setPosition(e.target.value)}
+              className="mt-1.5"
+              placeholder="Account Executive"
+              disabled={loading}
+            />
+          </div>
+        </div>
+
+        <div>
+          <Button onClick={saveProfile} disabled={savingProfile || loading}>
+            <Save className="mr-2 h-4 w-4" />
+            {savingProfile ? 'Saving…' : 'Save profile'}
+          </Button>
+        </div>
       </div>
-      <div>
-        <Label className="text-sm">New password</Label>
-        <Input type="password" value={pw} onChange={(e) => setPw(e.target.value)} className="mt-1.5" placeholder="At least 6 characters" />
+
+      <div className="surface-2 rounded-xl p-5 space-y-4">
+        <div>
+          <Label className="text-sm">Email</Label>
+          <Input value={email} readOnly className="mt-1.5 bg-muted/40" />
+        </div>
+        <div>
+          <Label className="text-sm">New password</Label>
+          <Input type="password" value={pw} onChange={(e) => setPw(e.target.value)} className="mt-1.5" placeholder="At least 6 characters" />
+        </div>
+        <div>
+          <Button onClick={updatePw} disabled={busy || !pw}>
+            <CheckCircle2 className="mr-2 h-4 w-4" />
+            Update password
+          </Button>
+        </div>
       </div>
-      <div>
-        <Button onClick={updatePw} disabled={busy || !pw}>
-          <CheckCircle2 className="mr-2 h-4 w-4" />
-          Update password
-        </Button>
-      </div>
-    </div>
+    </>
   );
 }
 
