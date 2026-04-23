@@ -99,7 +99,7 @@ function ScheduleDemoPage() {
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto max-w-7xl px-6 py-14 lg:py-20">
+      <main className="relative z-10 mx-auto max-w-7xl px-4 md:px-6 py-14 lg:py-12 md:py-20">
         <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
           {/* LEFT — Context */}
           <div className="animate-fade-up">

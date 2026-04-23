@@ -51,7 +51,7 @@ function SettingsPage() {
           { label: 'Members', value: 1, accent: 'amber', icon: Users },
         ]}
       />
-      <div className="mx-auto max-w-5xl px-6 py-8 space-y-6">
+      <div className="mx-auto max-w-5xl px-4 md:px-6 py-8 space-y-6">
 
         {/* Agent status banner */}
         <div className="surface-3 rounded-xl p-5">

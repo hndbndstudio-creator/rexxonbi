@@ -137,7 +137,7 @@ function TerritoryPage() {
         }
       />
 
-      <div className="mx-auto max-w-4xl px-6 py-8 space-y-6">
+      <div className="mx-auto max-w-4xl px-4 md:px-6 py-8 space-y-6">
         <header className="animate-rise">
           <h2 className="text-base font-semibold">Configure your territory</h2>
           <p className="text-xs text-muted-foreground mt-1">
