@@ -69,7 +69,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen w-full bg-background">
       {/* Sidebar */}
       <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-sidebar md:flex">
-        <Link to="/dashboard" className="flex h-16 items-center border-b border-border px-4">
+        <Link to="/dashboard" className="flex items-center justify-center border-b border-border px-2 py-3">
           <RexxonLogo size="sm" />
         </Link>
 
