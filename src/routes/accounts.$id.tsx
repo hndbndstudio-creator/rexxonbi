@@ -36,6 +36,11 @@ import {
   Calendar,
   Copy,
   CheckCircle2,
+  Lightbulb,
+  ShoppingBag,
+  Hammer,
+  Wallet,
+  Flame,
 } from 'lucide-react';
 import { getInitials, maskEmail, maskPhone } from '@/lib/types';
 import { toast } from 'sonner';
@@ -47,9 +52,17 @@ export const Route = createFileRoute('/accounts/$id')({
   component: AccountDetailPage,
 });
 
+type SellableProduct = { category: string; rationale: string };
+
 type Brief = {
   summary: string;
   why_now: string;
+  signal_interpretation?: string;
+  what_they_are_building?: string[];
+  sellable_products?: SellableProduct[];
+  budget_signals?: string[];
+  urgency?: 'HIGH' | 'MEDIUM' | 'LOW';
+  urgency_reason?: string;
   pain_points: string[];
   buying_committee: string[];
   conversation_starters: string[];
