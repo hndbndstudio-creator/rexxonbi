@@ -19,6 +19,18 @@ import {
   TrendingUp,
   Users,
   Zap,
+  Brain,
+  Target,
+  Mail,
+  PhoneCall,
+  Workflow,
+  RefreshCw,
+  Lock,
+  Clock,
+  BarChart3,
+  Gauge,
+  FileDown,
+  MapPinned,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/')({
@@ -337,6 +349,198 @@ function LandingPage() {
                 <span className="font-medium">{s.n}</span>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Everything you get — features, benefits, differentiators */}
+      <section id="features" className="border-y border-border/60 bg-card/30">
+        <div className="mx-auto max-w-7xl px-6 py-24">
+          <SectionHeader
+            eyebrow="Everything included"
+            title="One platform. The entire signal-to-meeting workflow."
+            subtitle="From intent detection to outreach reply — Rexxon handles every step so your reps spend their day in conversations, not in research tabs."
+          />
+
+          {/* Capability pillars */}
+          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                icon: <Radio className="h-5 w-5" />,
+                title: 'Real-time signal feed',
+                desc: 'Funding, hiring, leadership, tech, compliance and earnings signals stream into one ranked inbox.',
+                bullets: ['12+ live data sources', 'Confidence scoring', 'Sub-5-minute latency'],
+              },
+              {
+                icon: <Brain className="h-5 w-5" />,
+                title: 'AI account briefs',
+                desc: 'A senior-AE-level brief on any account in seconds — pain points, buying committee, why-now, risks.',
+                bullets: ['Auto-generated on demand', 'Cached per company', 'Copy-ready format'],
+              },
+              {
+                icon: <Building2 className="h-5 w-5" />,
+                title: 'Account monitoring',
+                desc: 'Pin target companies and Rexxon watches them 24/7 — you only hear about them when something changes.',
+                bullets: ['Unlimited watchlists', 'Daily / weekly digests', 'Per-account alerting'],
+              },
+              {
+                icon: <Users className="h-5 w-5" />,
+                title: 'Decision-maker contacts',
+                desc: 'Verified emails and direct dials for the people tied to each signal — no manual prospecting.',
+                bullets: ['Email + phone reveal', 'LinkedIn + title context', 'Tied to the triggering signal'],
+              },
+              {
+                icon: <Mail className="h-5 w-5" />,
+                title: 'AI outreach drafts',
+                desc: 'One-click personalised emails grounded in the signal that triggered them. Edit, approve, send.',
+                bullets: ['Persona + tone presets', 'Multi-step sequences', 'Reply-rate optimised'],
+              },
+              {
+                icon: <MapPinned className="h-5 w-5" />,
+                title: 'Territory & ICP rules',
+                desc: 'Tell the agent your industries, sizes, geos and signal types. The feed only shows what you can close.',
+                bullets: ['Industry + geo filters', 'Confidence thresholds', 'Per-rep territories'],
+              },
+              {
+                icon: <Workflow className="h-5 w-5" />,
+                title: 'CRM + sequencer sync',
+                desc: 'Push enriched accounts and contacts straight into Salesforce, HubSpot, Outreach or Salesloft.',
+                bullets: ['One-click CRM push', 'Bi-directional sync', 'CSV export anywhere'],
+              },
+              {
+                icon: <Bell className="h-5 w-5" />,
+                title: 'Slack & email alerts',
+                desc: 'High-confidence signals show up where you already work — no extra tab to babysit.',
+                bullets: ['Per-channel routing', 'Daily digest email', 'Custom signal weighting'],
+              },
+              {
+                icon: <BarChart3 className="h-5 w-5" />,
+                title: 'Analytics & attribution',
+                desc: 'See which signals drove meetings, which sequences convert, and where pipeline actually came from.',
+                bullets: ['Signal-to-meeting attribution', 'Rep performance dashboards', 'Win/loss feedback loop'],
+              },
+            ].map((f) => (
+              <div
+                key={f.title}
+                className="card-interactive surface-2 group rounded-xl border border-border p-5"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand/12 text-brand ring-1 ring-brand/20">
+                    {f.icon}
+                  </span>
+                  <h3 className="text-base font-semibold">{f.title}</h3>
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
+                <ul className="mt-4 space-y-1.5 border-t border-border/60 pt-3">
+                  {f.bullets.map((b) => (
+                    <li key={b} className="flex items-start gap-2 text-xs text-foreground/85">
+                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          {/* Outcome / benefit row */}
+          <div className="mt-14">
+            <div className="mb-6 text-center">
+              <p className="text-[11px] font-mono uppercase tracking-wider text-brand">Why teams switch</p>
+              <h3 className="mt-2 text-2xl font-bold tracking-tight md:text-3xl">
+                The outcomes you actually care about
+              </h3>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { icon: <Clock className="h-4 w-4" />, stat: '8+ hrs', label: 'Saved per rep, per week', sub: 'No more manual list-building' },
+                { icon: <Target className="h-4 w-4" />, stat: '3.4×', label: 'Higher reply rates', sub: 'Outreach grounded in real signals' },
+                { icon: <Gauge className="h-4 w-4" />, stat: '< 5 min', label: 'Signal-to-inbox latency', sub: 'Be first when intent appears' },
+                { icon: <TrendingUp className="h-4 w-4" />, stat: '2.1×', label: 'Pipeline lift in Q1', sub: 'Average across paying teams' },
+              ].map((b) => (
+                <div key={b.label} className="surface-2 rounded-xl border border-border p-5 text-center">
+                  <span className="mx-auto inline-flex h-9 w-9 items-center justify-center rounded-full bg-brand/12 text-brand">
+                    {b.icon}
+                  </span>
+                  <div className="mt-3 text-3xl font-bold tracking-tight">{b.stat}</div>
+                  <div className="mt-1 text-sm font-medium">{b.label}</div>
+                  <div className="mt-1 text-xs text-muted-foreground">{b.sub}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Differentiators */}
+          <div className="mt-14 rounded-2xl border border-border bg-background/40 p-8">
+            <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <p className="text-[11px] font-mono uppercase tracking-wider text-brand">What sets Rexxon apart</p>
+                <h3 className="mt-2 text-2xl font-bold tracking-tight">Why we win against the legacy stack</h3>
+              </div>
+              <p className="max-w-md text-sm text-muted-foreground">
+                Most "intent" tools sell you noise. Rexxon ranks, contextualises and routes — so every signal
+                you see is one a rep can actually act on today.
+              </p>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2">
+              {[
+                { icon: <Sparkles className="h-4 w-4" />, title: 'AI-ranked, not keyword-matched', desc: 'Signals are scored by an LLM that understands context, not regex on job titles.' },
+                { icon: <Zap className="h-4 w-4" />, title: 'Action-first, not data-dump', desc: 'Every signal ships with a why-now, the right contact, and a draft email — not a spreadsheet.' },
+                { icon: <Database className="h-4 w-4" />, title: 'No data per-record fees', desc: 'Unlimited contact reveals on every plan. No surprise overages, no per-credit pricing.' },
+                { icon: <RefreshCw className="h-4 w-4" />, title: 'Replaces 4+ tools', desc: 'ZoomInfo + Apollo + Clay + Common Room — at a fraction of the seat cost.' },
+                { icon: <Lock className="h-4 w-4" />, title: 'SOC 2 Type II + EU residency', desc: 'Enterprise-ready security with regional data hosting and SAML SSO on Team plans.' },
+                { icon: <FileDown className="h-4 w-4" />, title: 'Your data stays portable', desc: 'CSV export, CRM push, and full account history — never locked behind a paywall.' },
+              ].map((d) => (
+                <div key={d.title} className="flex items-start gap-3 rounded-xl border border-border/60 bg-card/50 p-4">
+                  <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand/12 text-brand">
+                    {d.icon}
+                  </span>
+                  <div>
+                    <div className="text-sm font-semibold">{d.title}</div>
+                    <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{d.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Built-in scroll list */}
+          <div className="mt-14 grid gap-6 lg:grid-cols-3">
+            <div className="lg:col-span-1">
+              <p className="text-[11px] font-mono uppercase tracking-wider text-brand">Also included</p>
+              <h3 className="mt-2 text-2xl font-bold tracking-tight">Every plan ships with the essentials</h3>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Not a single feature on the right is gated to enterprise. The only thing that scales with
+                your plan is monitored accounts and seats.
+              </p>
+            </div>
+            <div className="grid gap-2 sm:grid-cols-2 lg:col-span-2">
+              {[
+                'Real-time signal stream',
+                'Verified email + phone reveal',
+                'AI research briefs per account',
+                'AI outreach drafting',
+                'Multi-step sequence builder',
+                'Slack alerts & email digests',
+                'Custom signal weighting',
+                'Industry & geography filters',
+                'Confidence threshold rules',
+                'CSV export everywhere',
+                'CRM push (Salesforce / HubSpot)',
+                'Outreach.io & Salesloft sync',
+                'Per-rep territories',
+                'Activity & audit timeline',
+                'Win/loss feedback loop',
+                'SAML SSO (Team plan)',
+                'SOC 2 Type II',
+                'EU data residency',
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-2 rounded-lg border border-border/60 bg-card/40 px-3 py-2 text-sm">
+                  <Check className="h-3.5 w-3.5 shrink-0 text-brand" />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
