@@ -20,6 +20,7 @@ import { Route as ContactsRouteImport } from './routes/contacts'
 import { Route as CaseStudiesRouteImport } from './routes/case-studies'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
+import { Route as AffiliatesRouteImport } from './routes/affiliates'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AccountsRouteImport } from './routes/accounts'
 import { Route as IndexRouteImport } from './routes/index'
@@ -82,6 +83,11 @@ const AnalyticsRoute = AnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AffiliatesRoute = AffiliatesRouteImport.update({
+  id: '/affiliates',
+  path: '/affiliates',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -117,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
   '/admin': typeof AdminRoute
+  '/affiliates': typeof AffiliatesRoute
   '/analytics': typeof AnalyticsRoute
   '/blog': typeof BlogRouteWithChildren
   '/case-studies': typeof CaseStudiesRouteWithChildren
@@ -136,6 +143,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
   '/admin': typeof AdminRoute
+  '/affiliates': typeof AffiliatesRoute
   '/analytics': typeof AnalyticsRoute
   '/blog': typeof BlogRouteWithChildren
   '/case-studies': typeof CaseStudiesRouteWithChildren
@@ -156,6 +164,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
   '/admin': typeof AdminRoute
+  '/affiliates': typeof AffiliatesRoute
   '/analytics': typeof AnalyticsRoute
   '/blog': typeof BlogRouteWithChildren
   '/case-studies': typeof CaseStudiesRouteWithChildren
@@ -177,6 +186,7 @@ export interface FileRouteTypes {
     | '/'
     | '/accounts'
     | '/admin'
+    | '/affiliates'
     | '/analytics'
     | '/blog'
     | '/case-studies'
@@ -196,6 +206,7 @@ export interface FileRouteTypes {
     | '/'
     | '/accounts'
     | '/admin'
+    | '/affiliates'
     | '/analytics'
     | '/blog'
     | '/case-studies'
@@ -215,6 +226,7 @@ export interface FileRouteTypes {
     | '/'
     | '/accounts'
     | '/admin'
+    | '/affiliates'
     | '/analytics'
     | '/blog'
     | '/case-studies'
@@ -235,6 +247,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountsRoute: typeof AccountsRouteWithChildren
   AdminRoute: typeof AdminRoute
+  AffiliatesRoute: typeof AffiliatesRoute
   AnalyticsRoute: typeof AnalyticsRoute
   BlogRoute: typeof BlogRouteWithChildren
   CaseStudiesRoute: typeof CaseStudiesRouteWithChildren
@@ -327,6 +340,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnalyticsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/affiliates': {
+      id: '/affiliates'
+      path: '/affiliates'
+      fullPath: '/affiliates'
+      preLoaderRoute: typeof AffiliatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -410,6 +430,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountsRoute: AccountsRouteWithChildren,
   AdminRoute: AdminRoute,
+  AffiliatesRoute: AffiliatesRoute,
   AnalyticsRoute: AnalyticsRoute,
   BlogRoute: BlogRouteWithChildren,
   CaseStudiesRoute: CaseStudiesRouteWithChildren,
