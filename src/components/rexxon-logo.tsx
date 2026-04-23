@@ -3,12 +3,12 @@ import logoFull from "@/assets/rexxon-logo-full.png";
 
 type Size = "sm" | "md" | "lg";
 
-// White wordmark on a transparent background — sized 4x larger than before
-// with a soft glow shadow behind it for depth on dark surfaces.
+// White wordmark — halved from previous size and made responsive: smaller
+// on mobile, scaling up on larger screens to stay legible without dominating.
 const SIZES: Record<Size, string> = {
-  sm: "h-32",
-  md: "h-40",
-  lg: "h-56",
+  sm: "h-10 sm:h-12 md:h-16",
+  md: "h-12 sm:h-16 md:h-20",
+  lg: "h-16 sm:h-20 md:h-28",
 };
 
 // Layered drop-shadow creates a soft halo/glow behind the wordmark.
