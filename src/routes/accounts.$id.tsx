@@ -188,9 +188,9 @@ function AccountDetail() {
     <div className="mx-auto max-w-5xl px-4 py-6 md:px-8">
       <Link
         to="/accounts"
-        className="mb-4 inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+        className="group mb-4 inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
       >
-        <ArrowLeft className="h-3.5 w-3.5" /> Back to accounts
+        <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" /> Back to accounts
       </Link>
 
       {/* Header */}
