@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, Calendar, Clock } from "lucide-react";
 import { BLOG_POSTS } from "@/lib/blog-content";
+import { RexxonLogo } from "@/components/rexxon-logo";
 
 export const Route = createFileRoute("/blog")({
   component: BlogIndex,
@@ -123,8 +124,8 @@ export function BlogNav() {
   return (
     <nav className="border-b border-border">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link to="/" className="flex items-center gap-2 text-sm font-semibold">
-          <span className="grid h-7 w-7 place-items-center rounded-md bg-brand text-brand-foreground">R</span>
+        <Link to="/" className="flex items-center gap-2.5 text-sm font-semibold">
+          <RexxonLogo size="sm" />
           Rexxon AI
         </Link>
         <div className="flex items-center gap-5 text-sm text-muted-foreground">

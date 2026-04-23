@@ -2,7 +2,6 @@ import { ReactNode, useEffect } from 'react';
 import { Link, useRouter, useLocation } from '@tanstack/react-router';
 import { useAuth } from '@/lib/use-auth';
 import {
-  Activity,
   Building2,
   LogOut,
   Radio,
@@ -18,6 +17,7 @@ import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { OnboardingTour } from '@/components/onboarding-tour';
 import { useIsAdmin } from '@/lib/use-admin';
+import { RexxonLogo } from '@/components/rexxon-logo';
 
 type NavItem = {
   to: '/dashboard' | '/accounts' | '/contacts' | '/outreach' | '/territory' | '/analytics' | '/settings' | '/admin';
@@ -70,9 +70,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
       {/* Sidebar */}
       <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-sidebar md:flex">
         <Link to="/dashboard" className="flex h-16 items-center gap-2.5 border-b border-border px-4">
-          <div className="logo-badge relative flex h-8 w-8 items-center justify-center rounded-md text-brand-foreground">
-            <Activity className="relative z-10 h-4 w-4 drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]" strokeWidth={2.5} />
-          </div>
+          <RexxonLogo size="md" />
           <span className="text-base font-semibold tracking-tight">Rexxon AI</span>
         </Link>
 

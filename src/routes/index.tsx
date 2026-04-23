@@ -32,6 +32,7 @@ import {
   FileDown,
   MapPinned,
 } from 'lucide-react';
+import { RexxonLogo } from '@/components/rexxon-logo';
 
 export const Route = createFileRoute('/')({
   head: () => ({
@@ -721,13 +722,7 @@ function LandingPage() {
 }
 
 function Logo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
-  const dims = size === 'lg' ? 'h-9 w-9 rounded-lg' : size === 'sm' ? 'h-6 w-6 rounded-md' : 'h-8 w-8 rounded-md';
-  const icon = size === 'lg' ? 'h-5 w-5' : size === 'sm' ? 'h-3.5 w-3.5' : 'h-4 w-4';
-  return (
-    <div className={`logo-badge relative flex items-center justify-center text-brand-foreground ${dims}`}>
-      <Activity className={`relative z-10 ${icon} drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]`} strokeWidth={2.5} />
-    </div>
-  );
+  return <RexxonLogo size={size} />;
 }
 
 function Stat({ value, label }: { value: string; label: string }) {
