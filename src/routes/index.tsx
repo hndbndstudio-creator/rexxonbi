@@ -374,29 +374,29 @@ function LandingPage() {
             return (
               <div
                 key={plan.name}
-                className={`relative rounded-2xl border p-6 ${plan.highlight ? 'border-brand bg-card glow-brand' : 'border-border bg-card/60'}`}
+                className={`hover-lift relative rounded-2xl border p-7 backdrop-blur-sm ${plan.highlight ? 'border-brand bg-card shadow-elevated glow-brand' : 'border-border bg-card/60 shadow-soft'}`}
               >
                 {plan.highlight && (
-                  <div className="absolute -top-3 left-6 rounded-full bg-brand px-3 py-0.5 text-xs font-medium text-brand-foreground">
+                  <div className="absolute -top-3 left-7 rounded-full bg-gradient-to-r from-brand to-brand-glow px-3 py-0.5 text-[11px] font-semibold text-brand-foreground shadow-inset-glow">
                     Most popular
                   </div>
                 )}
                 <h3 className="text-lg font-semibold">{plan.name}</h3>
                 <div className="mt-3 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold">${price}</span>
+                  <span className="text-5xl font-bold tracking-tight">${price}</span>
                   <span className="text-sm text-muted-foreground">/mo</span>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">{plan.accounts} · {plan.users}</p>
                 <Link to="/signup">
-                  <Button className={`mt-5 w-full ${plan.highlight ? 'bg-brand text-brand-foreground hover:opacity-90' : ''}`} variant={plan.highlight ? 'default' : 'outline'}>
+                  <Button className={`mt-6 w-full ${plan.highlight ? 'bg-brand text-brand-foreground shadow-inset-glow hover:opacity-95' : ''}`} variant={plan.highlight ? 'default' : 'outline'}>
                     Start free trial
                   </Button>
                 </Link>
-                <ul className="mt-6 space-y-2 border-t border-border pt-5">
+                <ul className="mt-6 space-y-2.5 border-t border-border pt-5">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
-                      <span className="text-muted-foreground">{f}</span>
+                      <span className="text-foreground/85">{f}</span>
                     </li>
                   ))}
                 </ul>
@@ -407,24 +407,29 @@ function LandingPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="border-y border-border bg-card/30 py-24">
+      <section className="border-y border-border bg-card/30 py-28">
         <div className="mx-auto max-w-7xl px-6">
-          <SectionHeader eyebrow="Loved by sales teams" title="Reps don't prospect cold anymore" />
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <SectionHeader
+            eyebrow="Loved by revenue teams"
+            title="Reps don't prospect cold anymore"
+            subtitle="From scrappy startups to scaling RevOps teams — Rexxon is the unfair advantage in their stack."
+          />
+          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {[
               { q: 'We replaced a $40k/year intent vendor with Rexxon and now book 3× the meetings.', n: 'Maya Patel', r: 'VP Sales', c: 'Helio Cloud', res: '+212% meetings' },
               { q: 'The AI insight on every signal is the unlock. My SDRs stopped guessing what to say.', n: 'Jordan Lee', r: 'Head of SDRs', c: 'Forge Security', res: '38% reply rate' },
               { q: 'A new VP of Eng hire in our ICP used to take a week to surface. Now it lands in Slack in 4 minutes.', n: 'Sam Chen', r: 'AE Manager', c: 'Quant Labs', res: '4-min latency' },
               { q: 'Outreach drafts are the best I\'ve seen. We send them with one edit, not five.', n: 'Alex Rivers', r: 'Founder', c: 'Vector Agency', res: '6× pipeline' },
             ].map((t) => (
-              <div key={t.n} className="rounded-xl border border-border bg-background/40 p-5">
-                <p className="text-sm leading-relaxed text-foreground/90">"{t.q}"</p>
-                <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
+              <div key={t.n} className="hover-lift rounded-2xl border border-border bg-background/50 p-6 shadow-soft backdrop-blur-sm">
+                <div className="font-serif text-3xl leading-none text-brand/40">"</div>
+                <p className="mt-2 text-sm leading-relaxed text-foreground/90">{t.q}</p>
+                <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
                   <div>
-                    <div className="text-sm font-medium">{t.n}</div>
+                    <div className="text-sm font-semibold">{t.n}</div>
                     <div className="text-xs text-muted-foreground">{t.r} · {t.c}</div>
                   </div>
-                  <div className="rounded-md bg-brand/15 px-2 py-1 font-mono text-xs text-brand">{t.res}</div>
+                  <div className="rounded-md bg-brand/15 px-2 py-1 font-mono text-xs font-semibold text-brand shadow-inset-glow">{t.res}</div>
                 </div>
               </div>
             ))}
@@ -434,12 +439,12 @@ function LandingPage() {
 
       {/* Integrations */}
       <section className="mx-auto max-w-7xl px-6 py-20">
-        <p className="text-center text-sm font-medium uppercase tracking-widest text-muted-foreground">
+        <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
           Plays nicely with your stack
         </p>
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-6 opacity-80">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
           {['Slack', 'Salesforce', 'HubSpot', 'Outreach', 'Salesloft', 'Zapier'].map((logo) => (
-            <div key={logo} className="font-semibold text-lg text-muted-foreground">
+            <div key={logo} className="text-lg font-semibold tracking-tight text-muted-foreground/70 transition-colors hover:text-foreground">
               {logo}
             </div>
           ))}
@@ -447,21 +452,29 @@ function LandingPage() {
       </section>
 
       {/* Footer CTA */}
-      <section className="mx-auto max-w-7xl px-6 pb-24">
-        <div className="rounded-3xl border border-border bg-card bg-radial-brand p-12 text-center">
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-            Stop guessing. Start signaling.
-          </h2>
-          <p className="mt-3 text-muted-foreground">
-            14 days free. No credit card. Setup in 10 minutes.
-          </p>
-          <div className="mt-6 flex justify-center gap-3">
-            <Link to="/signup">
-              <Button size="lg" className="bg-brand text-brand-foreground hover:opacity-90">
-                Start free trial <ArrowRight className="ml-1.5 h-4 w-4" />
+      <section className="mx-auto max-w-7xl px-6 pb-28">
+        <div className="relative overflow-hidden rounded-[2rem] border border-border bg-card p-14 text-center shadow-elevated bg-aurora">
+          <div className="absolute inset-0 bg-grid opacity-[0.15]" />
+          <div className="relative">
+            <h2 className="text-4xl font-bold tracking-tight md:text-5xl">
+              Stop guessing.{' '}
+              <span className="bg-gradient-to-r from-brand via-brand-glow to-brand bg-clip-text text-transparent">
+                Start signaling.
+              </span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-base text-muted-foreground md:text-lg">
+              14 days free. No credit card. Live in under 10 minutes.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Link to="/signup">
+                <Button size="lg" className="bg-brand text-brand-foreground shadow-inset-glow transition-transform hover:-translate-y-0.5 hover:opacity-95">
+                  Start free trial <ArrowRight className="ml-1.5 h-4 w-4" />
+                </Button>
+              </Link>
+              <Button size="lg" variant="outline" className="hover-lift backdrop-blur-sm">
+                Talk to sales
               </Button>
-            </Link>
-            <Button size="lg" variant="outline">Talk to sales</Button>
+            </div>
           </div>
         </div>
       </section>
