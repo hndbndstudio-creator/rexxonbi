@@ -113,7 +113,7 @@ function LandingPage() {
       </div>
 
       {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-2xl">
+      <nav className="sticky top-0 z-50 border-b border-border/40 bg-transparent backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
           <Link to="/" className="flex items-center">
             <Logo />
