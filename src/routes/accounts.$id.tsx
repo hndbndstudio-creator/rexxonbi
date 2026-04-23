@@ -509,6 +509,41 @@ function BriefPanel({
         </BriefHero>
       </div>
 
+      {/* What this means — signal interpretation + sellable products */}
+      {brief.signal_interpretation && (
+        <SignalInterpretationPanel
+          interpretation={brief.signal_interpretation}
+          urgency={brief.urgency}
+          urgencyReason={brief.urgency_reason}
+        />
+      )}
+
+      {(brief.what_they_are_building?.length || brief.sellable_products?.length || brief.budget_signals?.length) ? (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {brief.what_they_are_building && brief.what_they_are_building.length > 0 && (
+            <BriefWidget
+              icon={<Hammer className="h-4 w-4" />}
+              title="What they're building"
+              subtitle="Initiatives the signals point to"
+              items={brief.what_they_are_building}
+              variant="list"
+            />
+          )}
+          {brief.sellable_products && brief.sellable_products.length > 0 && (
+            <SellableProductsWidget products={brief.sellable_products} />
+          )}
+          {brief.budget_signals && brief.budget_signals.length > 0 && (
+            <BriefWidget
+              icon={<Wallet className="h-4 w-4" />}
+              title="Budget signals"
+              subtitle="Evidence they have spending headroom"
+              items={brief.budget_signals}
+              variant="list"
+            />
+          )}
+        </div>
+      ) : null}
+
       {/* Widget grid */}
       <div className="grid gap-4 md:grid-cols-2">
         <BriefWidget
