@@ -41,6 +41,7 @@ import {
   X as CloseIcon,
 } from 'lucide-react';
 import { RexxonLogo } from '@/components/rexxon-logo';
+import { BLOG_POSTS, CASE_STUDIES } from '@/lib/blog-content';
 import avatar1 from '@/assets/avatar-1.jpg';
 import avatar2 from '@/assets/avatar-2.jpg';
 import avatar3 from '@/assets/avatar-3.jpg';
@@ -782,6 +783,93 @@ function LandingPage() {
               ))}
             </Accordion>
           </div>
+        </div>
+      </section>
+
+      {/* ============================ CASE STUDIES ============================ */}
+      <section className="mx-auto max-w-7xl px-6 py-24">
+        <div className="reveal flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">Customer wins</p>
+            <h2 className="mt-3 max-w-2xl text-3xl font-bold tracking-tight md:text-4xl">
+              Real teams. Real pipeline. Real numbers.
+            </h2>
+          </div>
+          <Link
+            to="/case-studies"
+            className="text-sm font-medium text-brand hover:underline"
+          >
+            All case studies →
+          </Link>
+        </div>
+
+        <div className="mt-10 grid gap-5 md:grid-cols-3">
+          {CASE_STUDIES.slice(0, 3).map((c) => (
+            <Link
+              key={c.slug}
+              to="/case-studies/$slug"
+              params={{ slug: c.slug }}
+              className="reveal group flex flex-col rounded-2xl border border-border bg-card p-6 transition-all hover-lift"
+            >
+              <span className="text-xs font-mono uppercase tracking-widest text-brand">{c.industry}</span>
+              <h3 className="mt-2 text-lg font-semibold leading-snug group-hover:text-brand">
+                {c.title}
+              </h3>
+              <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{c.description}</p>
+
+              <div className="mt-5 grid grid-cols-2 gap-3 border-t border-border pt-4">
+                {c.metrics.slice(0, 2).map((m) => (
+                  <div key={m.label}>
+                    <p className="text-base font-semibold text-foreground">{m.value}</p>
+                    <p className="text-[10px] uppercase tracking-wide text-muted-foreground">{m.label}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-5 inline-flex items-center gap-1.5 text-sm text-brand">
+                Read the story
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ============================ FROM THE BLOG ============================ */}
+      <section className="mx-auto max-w-7xl px-6 pb-24">
+        <div className="reveal flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">From the playbook</p>
+            <h2 className="mt-3 max-w-2xl text-3xl font-bold tracking-tight md:text-4xl">
+              Field notes on signal-led outbound.
+            </h2>
+          </div>
+          <Link to="/blog" className="text-sm font-medium text-brand hover:underline">
+            All articles →
+          </Link>
+        </div>
+
+        <div className="mt-10 grid gap-5 md:grid-cols-3">
+          {BLOG_POSTS.slice(0, 3).map((p) => (
+            <Link
+              key={p.slug}
+              to="/blog/$slug"
+              params={{ slug: p.slug }}
+              className="reveal group flex flex-col rounded-2xl border border-border bg-card p-6 transition-all hover-lift"
+            >
+              <span className="text-xs font-mono uppercase tracking-widest text-brand">{p.category}</span>
+              <h3 className="mt-2 text-lg font-semibold leading-snug group-hover:text-brand">
+                {p.title}
+              </h3>
+              <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{p.description}</p>
+              <div className="mt-auto flex items-center justify-between pt-5 text-xs text-muted-foreground">
+                <span>{p.readMinutes} min read</span>
+                <span className="inline-flex items-center gap-1 text-brand">
+                  Read <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 
