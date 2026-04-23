@@ -15,13 +15,26 @@ import { SignalCard } from '@/components/signal-card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, Building2, Eye, Linkedin, Mail, Phone } from 'lucide-react';
+import { ArrowLeft, Eye, Linkedin, Mail, Phone, Sparkles, RefreshCw, Upload, FileDown, Brain } from 'lucide-react';
 import { getInitials, maskEmail, maskPhone } from '@/lib/types';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
+import { logActivity } from '@/lib/activity';
+import { downloadCSV, toCSV } from '@/lib/csv';
 
 export const Route = createFileRoute('/accounts/$id')({
   component: AccountDetailPage,
 });
+
+type Brief = {
+  summary: string;
+  why_now: string;
+  pain_points: string[];
+  buying_committee: string[];
+  conversation_starters: string[];
+  competitive_risks: string[];
+  generated_at?: string;
+};
 
 function AccountDetailPage() {
   return (
@@ -65,18 +78,73 @@ function AccountDetail() {
 
   const monitorMut = useMutation({
     mutationFn: ({ on }: { on: boolean }) => toggleMonitor(user!.id, id, on),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['monitored'] }),
+    onSuccess: (_d, vars) => {
+      qc.invalidateQueries({ queryKey: ['monitored'] });
+      if (user) logActivity(user.id, 'ACCOUNT_MONITORED', { entity_type: 'company', entity_id: id, metadata: { on: vars.on } });
+    },
   });
 
   const revealMut = useMutation({
     mutationFn: ({ contactId, field }: { contactId: string; field: 'email' | 'phone' }) =>
       revealField(user!.id, contactId, field),
-    onSuccess: () => {
+    onSuccess: (_d, vars) => {
       qc.invalidateQueries({ queryKey: ['revealed'] });
+      if (user) logActivity(user.id, 'CONTACT_REVEALED', { entity_type: 'contact', entity_id: vars.contactId, metadata: { field: vars.field } });
       toast.success('Contact info revealed');
     },
     onError: (e) => toast.error(e instanceof Error ? e.message : 'Failed'),
   });
+
+  const briefMut = useMutation({
+    mutationFn: async (force: boolean) => {
+      const { data, error } = await supabase.functions.invoke('generate-brief', {
+        body: { companyId: id, force },
+      });
+      if (error) throw error;
+      if (user) await logActivity(user.id, 'BRIEF_GENERATED', { entity_type: 'company', entity_id: id });
+      return data;
+    },
+    onSuccess: (data) => {
+      toast.success(data?.cached ? 'Brief loaded' : 'AI brief generated');
+      qc.invalidateQueries({ queryKey: ['company', id] });
+    },
+    onError: (e: any) => {
+      const msg = e?.message || 'Brief failed';
+      if (/429/.test(msg)) toast.error('Rate limit reached. Try shortly.');
+      else if (/402/.test(msg)) toast.error('AI credits exhausted.');
+      else toast.error(msg);
+    },
+  });
+
+  const pushCRM = () => {
+    if (!user || !company) return;
+    logActivity(user.id, 'CRM_PUSHED', { entity_type: 'company', entity_id: id, metadata: { name: company.name } });
+    toast.success(`${company.name} queued for CRM push`);
+  };
+
+  const exportContacts = () => {
+    if (contacts.length === 0) return toast.info('No contacts to export');
+    const csv = toCSV(
+      contacts.map((c: any) => ({
+        first_name: c.first_name,
+        last_name: c.last_name,
+        title: c.title ?? '',
+        email: c.email ?? '',
+        phone: c.phone ?? '',
+        linkedin: c.linkedin_url ?? '',
+      })),
+      [
+        { key: 'first_name', header: 'First name' },
+        { key: 'last_name', header: 'Last name' },
+        { key: 'title', header: 'Title' },
+        { key: 'email', header: 'Email' },
+        { key: 'phone', header: 'Phone' },
+        { key: 'linkedin', header: 'LinkedIn' },
+      ]
+    );
+    downloadCSV(`${company?.name ?? 'account'}-contacts.csv`, csv);
+    if (user) logActivity(user.id, 'CSV_EXPORTED', { metadata: { kind: 'contacts', count: contacts.length } });
+  };
 
   if (isLoading) {
     return (
@@ -100,6 +168,7 @@ function AccountDetail() {
   }
 
   const isMon = monitored.has(company.id);
+  const brief = (company as any).brief as Brief | null;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 md:px-8">
@@ -136,13 +205,20 @@ function AccountDetail() {
               <p className="mt-3 text-sm text-foreground/80">{company.description}</p>
             )}
           </div>
-          <label className="flex shrink-0 items-center gap-2 text-xs">
-            <Switch
-              checked={isMon}
-              onCheckedChange={(on) => monitorMut.mutate({ on })}
-            />
-            Monitor account
-          </label>
+          <div className="flex shrink-0 flex-col items-end gap-2">
+            <label className="flex items-center gap-2 text-xs">
+              <Switch checked={isMon} onCheckedChange={(on) => monitorMut.mutate({ on })} />
+              Monitor account
+            </label>
+            <div className="flex gap-2">
+              <Button size="sm" variant="outline" onClick={pushCRM}>
+                <Upload className="mr-1.5 h-3.5 w-3.5" /> Push to CRM
+              </Button>
+              <Button size="sm" variant="outline" onClick={exportContacts}>
+                <FileDown className="mr-1.5 h-3.5 w-3.5" /> Export contacts
+              </Button>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -150,6 +226,9 @@ function AccountDetail() {
       <Tabs defaultValue="overview" className="mt-6">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="brief">
+            <Brain className="mr-1.5 h-3.5 w-3.5" /> AI Brief
+          </TabsTrigger>
           <TabsTrigger value="signals">Signals ({signals.length})</TabsTrigger>
           <TabsTrigger value="people">People ({contacts.length})</TabsTrigger>
           <TabsTrigger value="tech">Tech Stack</TabsTrigger>
@@ -197,6 +276,15 @@ function AccountDetail() {
               </div>
             )}
           </div>
+        </TabsContent>
+
+        <TabsContent value="brief" className="mt-4">
+          <BriefPanel
+            brief={brief}
+            loading={briefMut.isPending}
+            onGenerate={() => briefMut.mutate(false)}
+            onRegenerate={() => briefMut.mutate(true)}
+          />
         </TabsContent>
 
         <TabsContent value="signals" className="mt-4 space-y-3">
@@ -282,6 +370,81 @@ function AccountDetail() {
           </div>
         </TabsContent>
       </Tabs>
+    </div>
+  );
+}
+
+function BriefPanel({
+  brief,
+  loading,
+  onGenerate,
+  onRegenerate,
+}: {
+  brief: Brief | null;
+  loading: boolean;
+  onGenerate: () => void;
+  onRegenerate: () => void;
+}) {
+  if (!brief) {
+    return (
+      <div className="rounded-xl border border-border bg-card/40 p-10 text-center">
+        <Brain className="mx-auto h-10 w-10 text-muted-foreground/30" />
+        <h3 className="mt-3 font-semibold">No brief yet</h3>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Get a sales-actionable AI brief: pain points, buying committee, conversation starters, risks.
+        </p>
+        <Button className="mt-4" onClick={onGenerate} disabled={loading}>
+          {loading ? <RefreshCw className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+          Generate AI brief
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-muted-foreground">
+          Generated {brief.generated_at ? new Date(brief.generated_at).toLocaleString() : 'just now'}
+        </p>
+        <Button size="sm" variant="outline" onClick={onRegenerate} disabled={loading}>
+          {loading ? <RefreshCw className="mr-2 h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="mr-2 h-3.5 w-3.5" />}
+          Regenerate
+        </Button>
+      </div>
+
+      <div className="rounded-xl border border-border bg-card/60 p-5">
+        <h3 className="text-xs font-mono uppercase text-muted-foreground">Summary</h3>
+        <p className="mt-2 text-sm">{brief.summary}</p>
+      </div>
+
+      <div className="rounded-xl border border-brand/30 bg-brand/5 p-5">
+        <h3 className="text-xs font-mono uppercase text-brand">Why now</h3>
+        <p className="mt-2 text-sm">{brief.why_now}</p>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <BriefList title="Pain points" items={brief.pain_points} />
+        <BriefList title="Buying committee" items={brief.buying_committee} />
+        <BriefList title="Conversation starters" items={brief.conversation_starters} />
+        <BriefList title="Competitive risks" items={brief.competitive_risks} accent="text-amber-300" />
+      </div>
+    </div>
+  );
+}
+
+function BriefList({ title, items, accent }: { title: string; items: string[]; accent?: string }) {
+  return (
+    <div className="rounded-xl border border-border bg-card/60 p-4">
+      <h3 className={`text-xs font-mono uppercase ${accent ?? 'text-muted-foreground'}`}>{title}</h3>
+      <ul className="mt-2 space-y-1.5 text-sm">
+        {items.map((it, i) => (
+          <li key={i} className="flex gap-2">
+            <span className="text-brand">•</span>
+            <span>{it}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
