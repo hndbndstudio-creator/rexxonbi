@@ -125,9 +125,8 @@ export function BlogNav() {
   return (
     <nav className="border-b border-border">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link to="/" className="flex items-center gap-2.5 text-sm font-semibold">
+        <Link to="/" className="flex items-center">
           <RexxonLogo size="sm" />
-          Rexxon AI
         </Link>
         <div className="flex items-center gap-5 text-sm text-muted-foreground">
           <Link to="/blog" activeProps={{ className: "text-foreground" }} className="hover:text-foreground">Blog</Link>

@@ -1,17 +1,19 @@
 import { cn } from "@/lib/utils";
-import logoMark from "@/assets/rexxon-mark.png";
+import logoFull from "@/assets/rexxon-logo-full.png";
 
 type Size = "sm" | "md" | "lg";
 
+// Full horizontal logo (wordmark + brain icon). Width-driven sizing keeps
+// the natural aspect ratio of the source image (~1500x640).
 const SIZES: Record<Size, string> = {
-  sm: "h-7 w-7",
-  md: "h-8 w-8",
-  lg: "h-10 w-10",
+  sm: "h-9 w-[150px]",
+  md: "h-12 w-[200px]",
+  lg: "h-16 w-[260px]",
 };
 
 /**
- * Rexxon brand mark — same R glyph as the favicon, on the brand gradient badge.
- * Use across sidebar, marketing nav, footer, and email headers.
+ * Rexxon AI logo — full horizontal lockup used across nav bars, footer,
+ * marketing pages, and email headers.
  */
 export function RexxonLogo({
   size = "md",
@@ -21,26 +23,19 @@ export function RexxonLogo({
   className?: string;
 }) {
   return (
-    <div
-      className={cn(
-        "logo-badge relative flex shrink-0 items-center justify-center overflow-hidden rounded-md",
-        SIZES[size],
-        className,
-      )}
-      aria-label="Rexxon AI"
-    >
-      <img
-        src={logoMark}
-        alt=""
-        width={64}
-        height={64}
-        className="relative z-10 h-[60%] w-[60%] object-contain drop-shadow-[0_1px_1px_rgba(0,0,0,0.45)]"
-        draggable={false}
-      />
-    </div>
+    <img
+      src={logoFull}
+      alt="Rexxon AI"
+      className={cn("shrink-0 object-contain", SIZES[size], className)}
+      draggable={false}
+    />
   );
 }
 
+/**
+ * Wordmark variant — alias of RexxonLogo since the full logo already
+ * contains the brand name. Kept for backward compatibility.
+ */
 export function RexxonWordmark({
   size = "md",
   className,
@@ -48,18 +43,5 @@ export function RexxonWordmark({
   size?: Size;
   className?: string;
 }) {
-  const text =
-    size === "sm" ? "text-sm" : size === "lg" ? "text-lg" : "text-base";
-  return (
-    <span
-      className={cn(
-        "flex items-center gap-2.5 font-semibold tracking-tight",
-        text,
-        className,
-      )}
-    >
-      <RexxonLogo size={size} />
-      <span>Rexxon AI</span>
-    </span>
-  );
+  return <RexxonLogo size={size} className={className} />;
 }
