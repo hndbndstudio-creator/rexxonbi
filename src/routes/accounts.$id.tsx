@@ -23,9 +23,11 @@ import { supabase } from '@/integrations/supabase/client';
 import { logActivity } from '@/lib/activity';
 import { downloadCSV, toCSV } from '@/lib/csv';
 
+type AccountSearch = { tab?: string };
+
 export const Route = createFileRoute('/accounts/$id')({
-  validateSearch: (search: Record<string, unknown>) => ({
-    tab: (search.tab as string) || undefined,
+  validateSearch: (search: Record<string, unknown>): AccountSearch => ({
+    tab: typeof search.tab === 'string' ? search.tab : undefined,
   }),
   component: AccountDetailPage,
 });
