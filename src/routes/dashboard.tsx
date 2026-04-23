@@ -152,7 +152,7 @@ function SignalFeed() {
     <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:px-8 lg:grid-cols-[1fr_320px]">
       <div className="min-w-0">
       {/* Header */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 animate-rise">
         <div>
           <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
             <Radio className="h-5 w-5 text-brand" />
@@ -168,11 +168,12 @@ function SignalFeed() {
             size="sm"
             onClick={() => generateMut.mutate()}
             disabled={generateMut.isPending}
+            className="btn-press"
           >
             {generateMut.isPending ? (
               <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
             ) : (
-              <Sparkles className="mr-1.5 h-3.5 w-3.5" />
+              <Sparkles className="icon-pulse mr-1.5 h-3.5 w-3.5" />
             )}
             Generate signal
           </Button>
@@ -181,6 +182,7 @@ function SignalFeed() {
             size="sm"
             onClick={() => markAllReadMut.mutate()}
             disabled={markAllReadMut.isPending || unreadCount === 0}
+            className="btn-press"
           >
             <CheckCheck className="mr-1.5 h-3.5 w-3.5" />
             Mark all read
