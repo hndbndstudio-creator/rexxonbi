@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { DashboardShell } from '@/components/dashboard-shell';
+import { DashboardWidgets } from '@/components/dashboard-widgets';
 import { SignalCard } from '@/components/signal-card';
 import { fetchSignals, type SignalWithRelations } from '@/lib/queries';
 import { SIGNAL_TYPE_LABELS, type SignalType } from '@/lib/types';
@@ -157,6 +158,9 @@ function SignalFeed() {
   return (
     <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:px-8 lg:grid-cols-[1fr_320px]">
       <div className="min-w-0">
+      {/* Command-center widgets */}
+      <DashboardWidgets />
+
       {/* Header */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3 animate-rise">
         <div>
