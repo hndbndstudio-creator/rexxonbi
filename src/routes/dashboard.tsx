@@ -152,7 +152,7 @@ function SignalFeed() {
     <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:px-8 lg:grid-cols-[1fr_320px]">
       <div className="min-w-0">
       {/* Header */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 animate-rise">
         <div>
           <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
             <Radio className="h-5 w-5 text-brand" />
@@ -168,11 +168,12 @@ function SignalFeed() {
             size="sm"
             onClick={() => generateMut.mutate()}
             disabled={generateMut.isPending}
+            className="btn-press"
           >
             {generateMut.isPending ? (
               <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
             ) : (
-              <Sparkles className="mr-1.5 h-3.5 w-3.5" />
+              <Sparkles className="icon-pulse mr-1.5 h-3.5 w-3.5" />
             )}
             Generate signal
           </Button>
@@ -181,6 +182,7 @@ function SignalFeed() {
             size="sm"
             onClick={() => markAllReadMut.mutate()}
             disabled={markAllReadMut.isPending || unreadCount === 0}
+            className="btn-press"
           >
             <CheckCheck className="mr-1.5 h-3.5 w-3.5" />
             Mark all read
@@ -189,7 +191,7 @@ function SignalFeed() {
       </div>
 
       {/* Filters */}
-      <div className="mb-5 flex flex-wrap items-end gap-3 rounded-xl border border-border bg-card/40 p-3">
+      <div className="mb-5 flex flex-wrap items-end gap-3 rounded-xl border border-border bg-card/40 p-3 animate-rise" style={{ animationDelay: '80ms' }}>
         <div className="min-w-[180px] flex-1">
           <label className="mb-1 block text-[10px] font-mono uppercase text-muted-foreground">
             Signal type
@@ -228,22 +230,22 @@ function SignalFeed() {
       {isLoading && (
         <div className="space-y-3">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-44 animate-pulse rounded-xl border border-border bg-card/40" />
+            <div key={i} className="skeleton-shimmer h-44 rounded-xl border border-border" />
           ))}
         </div>
       )}
 
       {isError && (
-        <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-6 text-center">
+        <div className="animate-rise rounded-xl border border-destructive/30 bg-destructive/10 p-6 text-center">
           <p className="text-sm text-destructive">Failed to load signals.</p>
-          <Button size="sm" variant="outline" className="mt-3" onClick={() => refetch()}>
+          <Button size="sm" variant="outline" className="btn-press mt-3" onClick={() => refetch()}>
             Retry
           </Button>
         </div>
       )}
 
       {!isLoading && !isError && signals.length === 0 && (
-        <div className="rounded-xl border border-border bg-card/40 p-10 text-center">
+        <div className="animate-rise rounded-xl border border-border bg-card/40 p-10 text-center">
           <Radio className="mx-auto h-8 w-8 text-muted-foreground" />
           <h3 className="mt-3 font-semibold">No signals match your filters</h3>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -252,7 +254,7 @@ function SignalFeed() {
         </div>
       )}
 
-      <div className="space-y-3">
+      <div className="stagger space-y-3">
         {signals.map((s) => (
           <SignalCard
             key={s.id}
@@ -269,7 +271,7 @@ function SignalFeed() {
 
       {/* Activity sidebar */}
       <aside className="hidden lg:block">
-        <div className="sticky top-6 rounded-xl border border-border bg-card/40 p-4">
+        <div className="card-interactive sticky top-6 rounded-xl border border-border bg-card/40 p-4 animate-rise" style={{ animationDelay: '120ms' }}>
           <h2 className="flex items-center gap-2 text-sm font-semibold">
             <Activity className="h-4 w-4 text-brand" />
             Recent activity
@@ -280,9 +282,9 @@ function SignalFeed() {
               No activity yet. Claim a signal or draft outreach to get started.
             </div>
           ) : (
-            <ol className="mt-3 space-y-2.5">
+            <ol className="stagger mt-3 space-y-2.5">
               {activity.map((a) => (
-                <li key={a.id} className="flex items-start gap-2 border-l-2 border-brand/40 pl-2.5 text-xs">
+                <li key={a.id} className="flex items-start gap-2 border-l-2 border-brand/40 pl-2.5 text-xs transition-colors hover:border-brand">
                   <div className="flex-1 min-w-0">
                     <div className="font-medium">{ACTIVITY_LABELS[a.type] ?? a.type}</div>
                     <div className="text-muted-foreground">
