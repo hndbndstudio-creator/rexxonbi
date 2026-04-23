@@ -51,6 +51,32 @@ function LoginPage() {
     }
   };
 
+  const handleDemo = async () => {
+    setSubmitting(true);
+    const demoEmail = 'demo@rexxon.ai';
+    const demoPassword = 'rexxon-demo-2026';
+    try {
+      let { error } = await supabase.auth.signInWithPassword({ email: demoEmail, password: demoPassword });
+      if (error) {
+        // Try to create the demo account on first run
+        const { error: signUpError } = await supabase.auth.signUp({
+          email: demoEmail,
+          password: demoPassword,
+          options: { emailRedirectTo: typeof window !== 'undefined' ? window.location.origin : undefined },
+        });
+        if (signUpError && !/already/i.test(signUpError.message)) throw signUpError;
+        const retry = await supabase.auth.signInWithPassword({ email: demoEmail, password: demoPassword });
+        if (retry.error) throw retry.error;
+      }
+      toast.success('Demo session started');
+      router.navigate({ to: '/dashboard' });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Demo sign in failed');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const handleForgot = async () => {
     if (!email) {
       toast.error('Enter your email first');
@@ -117,6 +143,25 @@ function LoginPage() {
               {submitting ? 'Signing in…' : 'Sign in'}
             </Button>
           </form>
+
+          <div className="my-5 flex items-center gap-3">
+            <div className="h-px flex-1 bg-border" />
+            <span className="text-xs uppercase tracking-wider text-muted-foreground">demo</span>
+            <div className="h-px flex-1 bg-border" />
+          </div>
+
+          <Button
+            type="button"
+            variant="secondary"
+            className="w-full"
+            disabled={submitting}
+            onClick={handleDemo}
+          >
+            Explore demo dashboard
+          </Button>
+          <p className="mt-2 text-center text-xs text-muted-foreground">
+            Instant access — no signup required
+          </p>
         </div>
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
