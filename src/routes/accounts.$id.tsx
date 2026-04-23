@@ -24,6 +24,9 @@ import { logActivity } from '@/lib/activity';
 import { downloadCSV, toCSV } from '@/lib/csv';
 
 export const Route = createFileRoute('/accounts/$id')({
+  validateSearch: (search: Record<string, unknown>) => ({
+    tab: (search.tab as string) || undefined,
+  }),
   component: AccountDetailPage,
 });
 
