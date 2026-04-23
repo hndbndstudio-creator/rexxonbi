@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -6,6 +6,7 @@ import { DashboardShell } from '@/components/dashboard-shell';
 import { SignalCard } from '@/components/signal-card';
 import { fetchSignals, type SignalWithRelations } from '@/lib/queries';
 import { SIGNAL_TYPE_LABELS, type SignalType } from '@/lib/types';
+import { useAuth } from '@/lib/use-auth';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -34,6 +35,8 @@ function SignalFeed() {
   const [type, setType] = useState<'ALL' | SignalType>('ALL');
   const [minConf, setMinConf] = useState(60);
   const qc = useQueryClient();
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const { data: signals = [], isLoading, isError, refetch } = useQuery({
     queryKey: ['signals', type, minConf],
@@ -94,6 +97,31 @@ function SignalFeed() {
       const msg = e?.message || 'Generation failed';
       if (/429/.test(msg)) toast.error('Rate limit reached. Try again in a moment.');
       else if (/402/.test(msg)) toast.error('AI credits exhausted. Add credits in Workspace settings.');
+      else toast.error(msg);
+    },
+  });
+
+  const draftMut = useMutation({
+    mutationFn: async (signal: SignalWithRelations) => {
+      const { data, error } = await supabase.functions.invoke('generate-outreach', {
+        body: {
+          signalId: signal.id,
+          contactId: signal.hiring_manager_contact_id,
+          tone: 'PROFESSIONAL',
+          persona: 'AE',
+        },
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      toast.success('Outreach draft created');
+      navigate({ to: '/outreach' });
+    },
+    onError: (e: any) => {
+      const msg = e?.message || 'Draft failed';
+      if (/429/.test(msg)) toast.error('Rate limit reached. Try again shortly.');
+      else if (/402/.test(msg)) toast.error('AI credits exhausted.');
       else toast.error(msg);
     },
   });
@@ -209,8 +237,10 @@ function SignalFeed() {
             key={s.id}
             signal={s}
             isPending={actionMut.isPending && actionMut.variables?.id === s.id}
+            isDrafting={draftMut.isPending && draftMut.variables?.id === s.id}
             onClaim={(id) => actionMut.mutate({ id, status: 'CLAIMED' })}
             onDismiss={(id) => actionMut.mutate({ id, status: 'DISMISSED' })}
+            onDraft={(sig) => user && draftMut.mutate(sig)}
           />
         ))}
       </div>
