@@ -30,7 +30,7 @@ type NavItem = {
 
 const NAV: NavItem[] = [
   { to: '/birdseye', label: "Bird's-Eye", icon: Eye, tourId: 'nav-birdseye' },
-  { to: '/dashboard', label: 'Signal Feed', icon: Radio, tourId: 'nav-dashboard' },
+  { to: '/dashboard', label: 'Signals', icon: Radio, tourId: 'nav-dashboard' },
   { to: '/accounts', label: 'Accounts', icon: Building2, tourId: 'nav-accounts' },
   { to: '/contacts', label: 'Contacts', icon: Users, tourId: 'nav-contacts' },
   { to: '/outreach', label: 'Outreach', icon: Mail, tourId: 'nav-outreach' },

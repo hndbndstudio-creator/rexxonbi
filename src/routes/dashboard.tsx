@@ -34,7 +34,7 @@ import { formatDistanceToNow } from 'date-fns';
 export const Route = createFileRoute('/dashboard')({
   head: () => ({
     meta: [
-      { title: 'Signal Feed — Rexxon AI' },
+      { title: 'Signals — Rexxon AI' },
       { name: 'robots', content: 'noindex, nofollow, noarchive, noimageindex' },
     ],
   }),
@@ -171,12 +171,12 @@ function SignalFeed() {
       <PageHeader
         icon={Radio}
         eyebrow="Live feed"
-        title="Signal Feed"
+        title="Signals"
         subtitle="Every buying moment, the instant it happens. Claim what fits — let the rest go."
         badge="Streaming"
         badgeTone="green"
         stats={[
-          { label: 'Total signals', value: signals.length, icon: Inbox },
+          { label: 'Total', value: signals.length, icon: Inbox },
           { label: 'Unread', value: unreadCount, accent: 'amber', icon: Sparkles },
           { label: 'Hot leads', value: hotCount, accent: 'rose', icon: Flame },
           { label: 'Claimed', value: claimedCount, accent: 'green', icon: CheckCheck },
@@ -195,7 +195,8 @@ function SignalFeed() {
               ) : (
                 <Sparkles className="icon-pulse mr-1.5 h-3.5 w-3.5" />
               )}
-              Generate signal
+              <span className="hidden sm:inline">Generate signal</span>
+              <span className="sm:hidden">Generate</span>
             </Button>
             <Button
               variant="ghost"
@@ -205,53 +206,56 @@ function SignalFeed() {
               className="btn-press"
             >
               <CheckCheck className="mr-1.5 h-3.5 w-3.5" />
-              Mark all read
+              <span className="hidden sm:inline">Mark all read</span>
+              <span className="sm:hidden">Mark read</span>
             </Button>
           </>
         }
       />
 
-      <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:px-8 lg:grid-cols-[1fr_320px]">
+      <div className="mx-auto grid max-w-7xl gap-4 px-4 py-5 md:gap-6 md:px-8 md:py-6 lg:grid-cols-[1fr_320px]">
         <div className="min-w-0">
           {/* Filters */}
           <div
-            className="surface-1 mb-5 flex flex-wrap items-end gap-3 rounded-xl border border-border p-3 animate-rise"
+            className="surface-1 mb-4 rounded-xl border border-border p-3 animate-rise md:mb-5"
             style={{ animationDelay: '160ms' }}
           >
-            <div className="flex items-center gap-1.5 px-1 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+            <div className="mb-2 flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
               <Filter className="h-3 w-3" /> Filters
             </div>
-            <div className="min-w-[180px] flex-1">
-              <label className="mb-1 block text-[10px] font-mono uppercase text-muted-foreground">
-                Signal type
-              </label>
-              <Select value={type} onValueChange={(v) => setType(v as any)}>
-                <SelectTrigger className="h-9">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ALL">All types</SelectItem>
-                  {(Object.keys(SIGNAL_TYPE_LABELS) as SignalType[]).map((k) => (
-                    <SelectItem key={k} value={k}>
-                      {SIGNAL_TYPE_LABELS[k]}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="min-w-[220px] flex-1">
-              <label className="mb-1 flex items-center justify-between text-[10px] font-mono uppercase text-muted-foreground">
-                <span>Min confidence</span>
-                <span className="text-foreground">{minConf}</span>
-              </label>
-              <Slider
-                value={[minConf]}
-                min={0}
-                max={100}
-                step={5}
-                onValueChange={(v) => setMinConf(v[0])}
-                className="py-2"
-              />
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="min-w-0">
+                <label className="mb-1 block text-[10px] font-mono uppercase text-muted-foreground">
+                  Signal type
+                </label>
+                <Select value={type} onValueChange={(v) => setType(v as any)}>
+                  <SelectTrigger className="h-9 w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ALL">All types</SelectItem>
+                    {(Object.keys(SIGNAL_TYPE_LABELS) as SignalType[]).map((k) => (
+                      <SelectItem key={k} value={k}>
+                        {SIGNAL_TYPE_LABELS[k]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="min-w-0">
+                <label className="mb-1 flex items-center justify-between text-[10px] font-mono uppercase text-muted-foreground">
+                  <span>Min confidence</span>
+                  <span className="text-foreground">{minConf}</span>
+                </label>
+                <Slider
+                  value={[minConf]}
+                  min={0}
+                  max={100}
+                  step={5}
+                  onValueChange={(v) => setMinConf(v[0])}
+                  className="py-2"
+                />
+              </div>
             </div>
           </div>
 
