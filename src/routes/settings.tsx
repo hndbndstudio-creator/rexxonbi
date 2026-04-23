@@ -208,3 +208,22 @@ function Stat({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
+function AgentCard({ icon: Icon, name, desc, status }: { icon: typeof Radio; name: string; desc: string; status: string }) {
+  return (
+    <div className="rounded-lg border border-border bg-background/40 p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-brand/15 text-brand">
+            <Icon className="h-4 w-4" />
+          </div>
+          <div className="font-medium text-sm">{name}</div>
+        </div>
+        <span className="rounded-full bg-green-500/15 px-2 py-0.5 text-[10px] font-medium text-green-300">
+          {status}
+        </span>
+      </div>
+      <p className="mt-2 text-xs text-muted-foreground">{desc}</p>
+    </div>
+  );
+}
