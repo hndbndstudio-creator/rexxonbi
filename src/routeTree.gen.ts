@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TerritoryRouteImport } from './routes/territory'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
@@ -31,6 +32,11 @@ import { Route as AccountsIdRouteImport } from './routes/accounts.$id'
 const TerritoryRoute = TerritoryRouteImport.update({
   id: '/territory',
   path: '/territory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignupRoute = SignupRouteImport.update({
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/territory': typeof TerritoryRoute
   '/accounts/$id': typeof AccountsIdRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -154,6 +161,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/territory': typeof TerritoryRoute
   '/accounts/$id': typeof AccountsIdRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -175,6 +183,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/territory': typeof TerritoryRoute
   '/accounts/$id': typeof AccountsIdRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -197,6 +206,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/settings'
     | '/signup'
+    | '/sitemap.xml'
     | '/territory'
     | '/accounts/$id'
     | '/blog/$slug'
@@ -217,6 +227,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/settings'
     | '/signup'
+    | '/sitemap.xml'
     | '/territory'
     | '/accounts/$id'
     | '/blog/$slug'
@@ -237,6 +248,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/settings'
     | '/signup'
+    | '/sitemap.xml'
     | '/territory'
     | '/accounts/$id'
     | '/blog/$slug'
@@ -258,6 +270,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TerritoryRoute: typeof TerritoryRoute
 }
 
@@ -268,6 +281,13 @@ declare module '@tanstack/react-router' {
       path: '/territory'
       fullPath: '/territory'
       preLoaderRoute: typeof TerritoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/signup': {
@@ -441,6 +461,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TerritoryRoute: TerritoryRoute,
 }
 export const routeTree = rootRouteImport

@@ -1,0 +1,40 @@
+# Rexxon AI
+
+> Rexxon AI is a real-time B2B buying signals platform that monitors 10M+ companies for hiring, funding, leadership, compliance, earnings, and tech-expansion events, then drafts AI personalized outreach to verified decision-maker contacts.
+
+## What Rexxon AI does
+
+- Detects real-time buying signals from job posts (LinkedIn, Greenhouse, Lever, Indeed), funding announcements (Crunchbase, SEC EDGAR), leadership changes, earnings calls, compliance events (SOC 2, ISO 27001, HIPAA), and tech stack expansions.
+- Generates AI-drafted personalized cold emails and multi-touch outreach sequences using Gemini and GPT-5 models.
+- Provides verified contact data (email, phone, LinkedIn) for hiring managers and decision-makers tied to each signal.
+- Delivers signals via dashboard, email digest (daily/weekly), and Slack notifications scoped to user-defined territories.
+
+## Who it's for
+
+- B2B SDRs, Account Executives, VP of Sales, RevOps leaders, and outbound sales agencies selling to mid-market and enterprise.
+- Best fit for cybersecurity, devtools, GRC/compliance, fintech, MLOps, HR tech, and SaaS vendors.
+
+## Key resources
+
+- [Homepage](https://rexxon.ai/): Product overview, live signal feed demo, pricing summary.
+- [Blog](https://rexxon.ai/blog): 10+ in-depth guides on B2B buying signals, AI cold email frameworks, intent data, hiring triggers, ABM trigger events.
+- [Case studies](https://rexxon.ai/case-studies): 10 metrics-driven customer outcomes across cybersecurity, devtools, GRC, fintech, MLOps, HR tech, payments.
+- [Affiliate program](https://rexxon.ai/affiliates): 20–40% recurring commissions on referred customers.
+
+## Featured articles
+
+- [Real-Time B2B Buying Signals in 2026: Complete Guide](https://rexxon.ai/blog/real-time-b2b-buying-signals-guide-2026)
+- [AI Personalized Cold Email Outreach Framework](https://rexxon.ai/blog/ai-personalized-cold-email-outreach)
+- [Hiring Signals for Sales Prospecting](https://rexxon.ai/blog/hiring-signals-sales-prospecting)
+- [Intent Data vs Buying Signals: What's the Difference](https://rexxon.ai/blog/intent-data-vs-buying-signals)
+- [Best Time to Prospect After Funding Announcements](https://rexxon.ai/blog/best-time-to-prospect-after-funding)
+- [Selling to CISOs: Leadership Change Signals](https://rexxon.ai/blog/selling-to-cisos-leadership-change-signals)
+- [Compliance-Driven Sales: SOC 2, ISO, HIPAA](https://rexxon.ai/blog/compliance-driven-sales-soc2-iso-hipaa)
+- [Sales Tech Stack 2026 Benchmark](https://rexxon.ai/blog/sales-tech-stack-2026)
+- [Trigger Events for ABM](https://rexxon.ai/blog/trigger-events-account-based-marketing)
+- [Sales Prospecting Tools for Startups](https://rexxon.ai/blog/sales-prospecting-tools-for-startups)
+
+## Contact
+
+- Website: https://rexxon.ai
+- Affiliate program: https://rexxon.ai/affiliates

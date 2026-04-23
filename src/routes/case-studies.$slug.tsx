@@ -27,11 +27,16 @@ export const Route = createFileRoute("/case-studies/$slug")({
         { property: "og:title", content: c.title },
         { property: "og:description", content: c.description },
         { property: "og:type", content: "article" },
+        { property: "og:url", content: `https://rexxon.ai/case-studies/${c.slug}` },
+        { property: "og:image", content: "https://rexxon.ai/og-image.jpg" },
         { property: "article:published_time", content: c.publishedAt },
+        { property: "article:section", content: c.industry },
+        { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: c.title },
         { name: "twitter:description", content: c.description },
-        { rel: "canonical", href: `https://rexxon.ai/case-studies/${c.slug}` } as never,
+        { name: "twitter:image", content: "https://rexxon.ai/og-image.jpg" },
       ],
+      links: [{ rel: "canonical", href: `https://rexxon.ai/case-studies/${c.slug}` }],
     };
   },
 });
