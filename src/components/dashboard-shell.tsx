@@ -113,7 +113,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
       </aside>
 
       {/* Main */}
-      <main className="min-w-0 flex-1">{children}</main>
+      <main key={location.pathname} className="page-transition min-w-0 flex-1">{children}</main>
 
       {/* Onboarding tour overlay */}
       <OnboardingTour />
