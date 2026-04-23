@@ -95,7 +95,7 @@ export function PageHeader({
 
         {stats && stats.length > 0 && (
           <div
-            className="mt-6 grid grid-cols-2 gap-3 animate-rise sm:grid-cols-4"
+            className="mt-4 grid grid-cols-2 gap-2 animate-rise sm:grid-cols-4 md:mt-6 md:gap-3"
             style={{ animationDelay: '120ms' }}
           >
             {stats.map((s) => {
@@ -103,7 +103,7 @@ export function PageHeader({
               return (
                 <div
                   key={s.label}
-                  className="rounded-xl border border-border bg-card/50 px-4 py-3 backdrop-blur-sm transition-colors hover:border-brand/40"
+                  className="rounded-xl border border-border bg-card/50 px-3 py-2.5 backdrop-blur-sm transition-colors hover:border-brand/40 md:px-4 md:py-3"
                 >
                   <div className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                     {StatIcon && <StatIcon className="h-3 w-3" />}
