@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { DashboardShell } from '@/components/dashboard-shell';
+import { PageHeader } from '@/components/page-header';
 import { SignalCard } from '@/components/signal-card';
 import { fetchSignals, type SignalWithRelations } from '@/lib/queries';
 import { SIGNAL_TYPE_LABELS, type SignalType } from '@/lib/types';
@@ -16,7 +17,16 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { CheckCheck, Sparkles, Radio, Loader2, Activity } from 'lucide-react';
+import {
+  CheckCheck,
+  Sparkles,
+  Radio,
+  Loader2,
+  Activity,
+  Inbox,
+  Flame,
+  Filter,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { ACTIVITY_LABELS, fetchActivity, logActivity } from '@/lib/activity';
 import { formatDistanceToNow } from 'date-fns';
@@ -24,8 +34,8 @@ import { formatDistanceToNow } from 'date-fns';
 export const Route = createFileRoute('/dashboard')({
   head: () => ({
     meta: [
-      { title: "Signal Feed — Rexxon AI" },
-      { name: "robots", content: "noindex, nofollow, noarchive, noimageindex" },
+      { title: 'Signal Feed — Rexxon AI' },
+      { name: 'robots', content: 'noindex, nofollow, noarchive, noimageindex' },
     ],
   }),
   component: DashboardPage,
@@ -72,7 +82,7 @@ function SignalFeed() {
       toast.error(e instanceof Error ? e.message : 'Action failed');
     },
     onSuccess: (_d, v) => {
-      toast.success(v.status === 'CLAIMED' ? 'Lead claimed' : 'Signal dismissed');
+      toast.success(v.status === 'CLAIMED' ? '🎯 Lead claimed' : 'Signal dismissed');
       if (user) {
         logActivity(user.id, v.status === 'CLAIMED' ? 'SIGNAL_CLAIMED' : 'SIGNAL_DISMISSED', {
           entity_type: 'signal',
@@ -105,7 +115,7 @@ function SignalFeed() {
       return data;
     },
     onSuccess: () => {
-      toast.success('AI generated a new signal');
+      toast.success('✨ AI generated a fresh signal');
       refetch();
     },
     onError: (e: any) => {
@@ -146,6 +156,8 @@ function SignalFeed() {
   });
 
   const unreadCount = signals.filter((s) => !s.is_read).length;
+  const hotCount = signals.filter((s) => s.confidence_score >= 85).length;
+  const claimedCount = signals.filter((s) => s.status === 'CLAIMED').length;
 
   const { data: activity = [] } = useQuery({
     queryKey: ['activity', user?.id],
@@ -155,155 +167,183 @@ function SignalFeed() {
   });
 
   return (
-    <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:px-8 lg:grid-cols-[1fr_320px]">
-      <div className="min-w-0">
-      {/* Header */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 animate-rise">
-        <div>
-          <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-            <Radio className="h-5 w-5 text-brand" />
-            Signal Feed
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {signals.length} signals · {unreadCount} unread
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => generateMut.mutate()}
-            disabled={generateMut.isPending}
-            className="btn-press"
+    <>
+      <PageHeader
+        icon={Radio}
+        eyebrow="Live feed"
+        title="Signal Feed"
+        subtitle="Every buying moment, the instant it happens. Claim what fits — let the rest go."
+        badge="Streaming"
+        badgeTone="green"
+        stats={[
+          { label: 'Total signals', value: signals.length, icon: Inbox },
+          { label: 'Unread', value: unreadCount, accent: 'amber', icon: Sparkles },
+          { label: 'Hot leads', value: hotCount, accent: 'rose', icon: Flame },
+          { label: 'Claimed', value: claimedCount, accent: 'green', icon: CheckCheck },
+        ]}
+        actions={
+          <>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => generateMut.mutate()}
+              disabled={generateMut.isPending}
+              className="btn-press"
+            >
+              {generateMut.isPending ? (
+                <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Sparkles className="icon-pulse mr-1.5 h-3.5 w-3.5" />
+              )}
+              Generate signal
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => markAllReadMut.mutate()}
+              disabled={markAllReadMut.isPending || unreadCount === 0}
+              className="btn-press"
+            >
+              <CheckCheck className="mr-1.5 h-3.5 w-3.5" />
+              Mark all read
+            </Button>
+          </>
+        }
+      />
+
+      <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:px-8 lg:grid-cols-[1fr_320px]">
+        <div className="min-w-0">
+          {/* Filters */}
+          <div
+            className="surface-1 mb-5 flex flex-wrap items-end gap-3 rounded-xl border border-border p-3 animate-rise"
+            style={{ animationDelay: '160ms' }}
           >
-            {generateMut.isPending ? (
-              <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
-            ) : (
-              <Sparkles className="icon-pulse mr-1.5 h-3.5 w-3.5" />
-            )}
-            Generate signal
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => markAllReadMut.mutate()}
-            disabled={markAllReadMut.isPending || unreadCount === 0}
-            className="btn-press"
-          >
-            <CheckCheck className="mr-1.5 h-3.5 w-3.5" />
-            Mark all read
-          </Button>
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div className="surface-1 mb-5 flex flex-wrap items-end gap-3 rounded-xl p-3 animate-rise" style={{ animationDelay: '80ms' }}>
-        <div className="min-w-[180px] flex-1">
-          <label className="mb-1 block text-[10px] font-mono uppercase text-muted-foreground">
-            Signal type
-          </label>
-          <Select value={type} onValueChange={(v) => setType(v as any)}>
-            <SelectTrigger className="h-9">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="ALL">All types</SelectItem>
-              {(Object.keys(SIGNAL_TYPE_LABELS) as SignalType[]).map((k) => (
-                <SelectItem key={k} value={k}>
-                  {SIGNAL_TYPE_LABELS[k]}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="min-w-[220px] flex-1">
-          <label className="mb-1 flex items-center justify-between text-[10px] font-mono uppercase text-muted-foreground">
-            <span>Min confidence</span>
-            <span className="text-foreground">{minConf}</span>
-          </label>
-          <Slider
-            value={[minConf]}
-            min={0}
-            max={100}
-            step={5}
-            onValueChange={(v) => setMinConf(v[0])}
-            className="py-2"
-          />
-        </div>
-      </div>
-
-      {/* Feed */}
-      {isLoading && (
-        <div className="space-y-3">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="skeleton-shimmer h-44 rounded-xl border border-border" />
-          ))}
-        </div>
-      )}
-
-      {isError && (
-        <div className="animate-rise rounded-xl border border-destructive/30 bg-destructive/10 p-6 text-center">
-          <p className="text-sm text-destructive">Failed to load signals.</p>
-          <Button size="sm" variant="outline" className="btn-press mt-3" onClick={() => refetch()}>
-            Retry
-          </Button>
-        </div>
-      )}
-
-      {!isLoading && !isError && signals.length === 0 && (
-        <div className="surface-1 animate-rise rounded-xl p-10 text-center">
-          <Radio className="mx-auto h-8 w-8 text-muted-foreground" />
-          <h3 className="mt-3 font-semibold">No signals match your filters</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Try lowering the confidence threshold or selecting all types.
-          </p>
-        </div>
-      )}
-
-      <div className="stagger space-y-3">
-        {signals.map((s) => (
-          <SignalCard
-            key={s.id}
-            signal={s}
-            isPending={actionMut.isPending && actionMut.variables?.id === s.id}
-            isDrafting={draftMut.isPending && draftMut.variables?.id === s.id}
-            onClaim={(id) => actionMut.mutate({ id, status: 'CLAIMED' })}
-            onDismiss={(id) => actionMut.mutate({ id, status: 'DISMISSED' })}
-            onDraft={(sig) => user && draftMut.mutate(sig)}
-          />
-        ))}
-      </div>
-      </div>
-
-      {/* Activity sidebar */}
-      <aside className="hidden lg:block">
-        <div className="surface-2 card-interactive sticky top-6 rounded-xl p-4 animate-rise" style={{ animationDelay: '120ms' }}>
-          <h2 className="flex items-center gap-2 text-sm font-semibold">
-            <Activity className="h-4 w-4 text-brand" />
-            Recent activity
-          </h2>
-          <p className="mt-0.5 text-xs text-muted-foreground">Live feed of your team's actions</p>
-          {activity.length === 0 ? (
-            <div className="mt-4 rounded-md border border-dashed border-border p-6 text-center text-xs text-muted-foreground">
-              No activity yet. Claim a signal or draft outreach to get started.
+            <div className="flex items-center gap-1.5 px-1 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+              <Filter className="h-3 w-3" /> Filters
             </div>
-          ) : (
-            <ol className="stagger mt-3 space-y-2.5">
-              {activity.map((a) => (
-                <li key={a.id} className="flex items-start gap-2 border-l-2 border-brand/40 pl-2.5 text-xs transition-colors hover:border-brand">
-                  <div className="flex-1 min-w-0">
-                    <div className="font-medium">{ACTIVITY_LABELS[a.type] ?? a.type}</div>
-                    <div className="text-muted-foreground">
-                      {formatDistanceToNow(new Date(a.created_at), { addSuffix: true })}
-                    </div>
-                  </div>
-                </li>
+            <div className="min-w-[180px] flex-1">
+              <label className="mb-1 block text-[10px] font-mono uppercase text-muted-foreground">
+                Signal type
+              </label>
+              <Select value={type} onValueChange={(v) => setType(v as any)}>
+                <SelectTrigger className="h-9">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">All types</SelectItem>
+                  {(Object.keys(SIGNAL_TYPE_LABELS) as SignalType[]).map((k) => (
+                    <SelectItem key={k} value={k}>
+                      {SIGNAL_TYPE_LABELS[k]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="min-w-[220px] flex-1">
+              <label className="mb-1 flex items-center justify-between text-[10px] font-mono uppercase text-muted-foreground">
+                <span>Min confidence</span>
+                <span className="text-foreground">{minConf}</span>
+              </label>
+              <Slider
+                value={[minConf]}
+                min={0}
+                max={100}
+                step={5}
+                onValueChange={(v) => setMinConf(v[0])}
+                className="py-2"
+              />
+            </div>
+          </div>
+
+          {/* Feed */}
+          {isLoading && (
+            <div className="space-y-3">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="skeleton-shimmer h-44 rounded-xl border border-border" />
               ))}
-            </ol>
+            </div>
           )}
+
+          {isError && (
+            <div className="animate-rise rounded-xl border border-destructive/30 bg-destructive/10 p-6 text-center">
+              <p className="text-sm text-destructive">Failed to load signals.</p>
+              <Button size="sm" variant="outline" className="btn-press mt-3" onClick={() => refetch()}>
+                Retry
+              </Button>
+            </div>
+          )}
+
+          {!isLoading && !isError && signals.length === 0 && (
+            <div className="surface-1 animate-rise rounded-xl border border-border p-10 text-center">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand/10">
+                <Radio className="h-6 w-6 text-brand" />
+              </div>
+              <h3 className="mt-4 font-semibold">All caught up</h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                No signals match your filters. Try lowering confidence or generate a fresh one.
+              </p>
+              <Button
+                size="sm"
+                className="btn-press mt-4"
+                onClick={() => generateMut.mutate()}
+                disabled={generateMut.isPending}
+              >
+                <Sparkles className="mr-1.5 h-3.5 w-3.5" />
+                Generate signal
+              </Button>
+            </div>
+          )}
+
+          <div className="stagger space-y-3">
+            {signals.map((s) => (
+              <SignalCard
+                key={s.id}
+                signal={s}
+                isPending={actionMut.isPending && actionMut.variables?.id === s.id}
+                isDrafting={draftMut.isPending && draftMut.variables?.id === s.id}
+                onClaim={(id) => actionMut.mutate({ id, status: 'CLAIMED' })}
+                onDismiss={(id) => actionMut.mutate({ id, status: 'DISMISSED' })}
+                onDraft={(sig) => user && draftMut.mutate(sig)}
+              />
+            ))}
+          </div>
         </div>
-      </aside>
-    </div>
+
+        {/* Activity sidebar */}
+        <aside className="hidden lg:block">
+          <div
+            className="surface-2 sticky top-6 rounded-xl border border-border p-4 shadow-soft animate-rise"
+            style={{ animationDelay: '200ms' }}
+          >
+            <h2 className="flex items-center gap-2 text-sm font-semibold">
+              <Activity className="h-4 w-4 text-brand" />
+              Recent activity
+            </h2>
+            <p className="mt-0.5 text-xs text-muted-foreground">Live feed of your wins</p>
+            {activity.length === 0 ? (
+              <div className="mt-4 rounded-md border border-dashed border-border p-6 text-center text-xs text-muted-foreground">
+                No activity yet. Claim a signal to start your streak.
+              </div>
+            ) : (
+              <ol className="stagger mt-3 space-y-2.5">
+                {activity.map((a) => (
+                  <li
+                    key={a.id}
+                    className="flex items-start gap-2 border-l-2 border-brand/40 pl-2.5 text-xs transition-colors hover:border-brand"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="font-medium">{ACTIVITY_LABELS[a.type] ?? a.type}</div>
+                      <div className="text-muted-foreground">
+                        {formatDistanceToNow(new Date(a.created_at), { addSuffix: true })}
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </div>
+        </aside>
+      </div>
+    </>
   );
 }
-
