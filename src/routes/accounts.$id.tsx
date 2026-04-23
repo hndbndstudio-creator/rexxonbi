@@ -16,7 +16,27 @@ import { SignalCard } from '@/components/signal-card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, Eye, Linkedin, Mail, Phone, Sparkles, RefreshCw, Upload, FileDown, Brain } from 'lucide-react';
+import {
+  ArrowLeft,
+  Eye,
+  Linkedin,
+  Mail,
+  Phone,
+  Sparkles,
+  RefreshCw,
+  Upload,
+  FileDown,
+  Brain,
+  Zap,
+  Target,
+  Users2,
+  MessageSquareQuote,
+  ShieldAlert,
+  Building2,
+  Calendar,
+  Copy,
+  CheckCircle2,
+} from 'lucide-react';
 import { getInitials, maskEmail, maskPhone } from '@/lib/types';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
