@@ -8,7 +8,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/lib/use-auth';
@@ -103,23 +102,53 @@ function TerritoryPage() {
 
   const conf = confidenceLabel(minConfidence);
 
+  const activeFilters =
+    industries.length + fundingStages.length + geographies.length + roleCategories.length +
+    (employeeMin ? 1 : 0) + (employeeMax ? 1 : 0) +
+    namedDomains.split('\n').map((s) => s.trim()).filter(Boolean).length;
+
   return (
     <DashboardShell>
-      <div className="mx-auto max-w-4xl px-6 py-8 space-y-8">
-        <header className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-              <Target className="h-6 w-6 text-brand" />
-              Territory
-            </h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              Configure which signals reach your feed and how you're notified.
-            </p>
+      {/* Agent header */}
+      <div className="border-b border-border bg-card/30">
+        <div className="mx-auto max-w-4xl px-6 py-5">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-md bg-brand/15 text-brand">
+                <Target className="h-4 w-4" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-lg font-bold tracking-tight">Signal Agent</h1>
+                  <span className="rounded-full bg-green-500/15 px-2 py-0.5 text-[10px] font-medium text-green-300">
+                    Monitoring
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Tells the agent which accounts to watch, which signals to surface, and how loud to be.
+                </p>
+              </div>
+            </div>
+            <Button onClick={() => save.mutate()} disabled={save.isPending || isLoading}>
+              <Save className="mr-2 h-4 w-4" />
+              Save changes
+            </Button>
           </div>
-          <Button onClick={() => save.mutate()} disabled={save.isPending || isLoading}>
-            <Save className="mr-2 h-4 w-4" />
-            Save changes
-          </Button>
+          <div className="mt-4 flex flex-wrap items-center gap-6 text-xs">
+            <Stat label="Active filters" value={activeFilters} />
+            <Stat label="Signal types on" value={signalTypes.length} />
+            <Stat label="Min confidence" value={minConfidence} suffix="%" />
+            <Stat label="Notify mode" value={notifySlack ? 'Slack + Email' : 'Email'} />
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-4xl px-6 py-8 space-y-8">
+        <header>
+          <h2 className="text-base font-semibold">Configure your territory</h2>
+          <p className="text-xs text-muted-foreground mt-1">
+            Each change updates what the Signal Agent surfaces in real time.
+          </p>
         </header>
 
         {/* Account filters */}
