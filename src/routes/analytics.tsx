@@ -4,8 +4,9 @@ import { DashboardShell } from '@/components/dashboard-shell';
 import { supabase } from '@/integrations/supabase/client';
 import {
   BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, PieChart, Pie, Cell, Legend,
+  AreaChart, Area, CartesianGrid,
 } from 'recharts';
-import { TrendingUp, Radio, Send, Trophy } from 'lucide-react';
+import { TrendingUp, Radio, Send, Trophy, Clock, Zap } from 'lucide-react';
 import { SIGNAL_TYPE_LABELS, type SignalType } from '@/lib/types';
 
 export const Route = createFileRoute('/analytics')({
@@ -67,17 +68,46 @@ function AnalyticsPage() {
         else buckets[3]++;
       });
 
+      // signals over time (last 30 days, daily buckets)
+      const dayMap = new Map<string, number>();
+      for (let i = 29; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const key = d.toISOString().slice(0, 10);
+        dayMap.set(key, 0);
+      }
+      signals.forEach((s) => {
+        const key = s.published_at.slice(0, 10);
+        if (dayMap.has(key)) dayMap.set(key, (dayMap.get(key) ?? 0) + 1);
+      });
+      const trend = Array.from(dayMap.entries()).map(([date, count]) => ({
+        date: date.slice(5),
+        count,
+      }));
+
+      const totalSignals = signals.length;
+      const actedOn = signals.filter((s) => s.status !== 'NEW' && s.status !== 'DISMISSED').length;
+      const outreachSent = drafts.filter((d) => d.status === 'SENT').length;
+      const converted = signals.filter((s) => s.status === 'CONVERTED').length;
+      const actionRate = totalSignals ? Math.round((actedOn / totalSignals) * 100) : 0;
+      const conversionRate = outreachSent ? Math.round((converted / outreachSent) * 100) : 0;
+      const hoursSaved = Math.round(totalSignals * 0.4); // ~24 min of research per signal
+
       return {
-        totalSignals: signals.length,
-        actedOn: signals.filter((s) => s.status !== 'NEW' && s.status !== 'DISMISSED').length,
-        outreachSent: drafts.filter((d) => d.status === 'SENT').length,
-        converted: signals.filter((s) => s.status === 'CONVERTED').length,
+        totalSignals,
+        actedOn,
+        outreachSent,
+        converted,
+        actionRate,
+        conversionRate,
+        hoursSaved,
         byType: Object.entries(byType).map(([k, v]) => ({
           name: SIGNAL_TYPE_LABELS[k as SignalType] ?? k,
           count: v,
         })),
         bySource: Object.entries(bySource).map(([k, v]) => ({ name: k, value: v })),
         topAccounts,
+        trend,
         confidence: [
           { range: '60-69', count: buckets[0] },
           { range: '70-79', count: buckets[1] },
