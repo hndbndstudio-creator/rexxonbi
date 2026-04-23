@@ -13,6 +13,12 @@ import { toast } from 'sonner';
 import { Settings as SettingsIcon, Users, CheckCircle2, Radio, Mail, Sparkles, Brain, UserSearch, User as UserIcon, Building2, Briefcase, Save } from 'lucide-react';
 
 export const Route = createFileRoute('/settings')({
+  head: () => ({
+    meta: [
+      { title: "Settings — Rexxon AI" },
+      { name: "robots", content: "noindex, nofollow, noarchive, noimageindex" },
+    ],
+  }),
   component: SettingsPage,
 });
 

@@ -16,6 +16,12 @@ import { Save, Target } from 'lucide-react';
 import { SIGNAL_TYPE_LABELS, type SignalType, confidenceLabel } from '@/lib/types';
 
 export const Route = createFileRoute('/territory')({
+  head: () => ({
+    meta: [
+      { title: "Territory — Rexxon AI" },
+      { name: "robots", content: "noindex, nofollow, noarchive, noimageindex" },
+    ],
+  }),
   component: TerritoryPage,
 });
 

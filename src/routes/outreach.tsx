@@ -19,6 +19,12 @@ import { fetchSequences, setSequenceStatus, deleteSequence, type SequenceRow, ty
 import { logActivity } from '@/lib/activity';
 
 export const Route = createFileRoute('/outreach')({
+  head: () => ({
+    meta: [
+      { title: "Outreach — Rexxon AI" },
+      { name: "robots", content: "noindex, nofollow, noarchive, noimageindex" },
+    ],
+  }),
   component: OutreachPage,
 });
 
