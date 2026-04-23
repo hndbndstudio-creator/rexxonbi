@@ -1,10 +1,11 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Link, useRouter, useLocation } from '@tanstack/react-router';
 import { useAuth } from '@/lib/use-auth';
 import {
   Building2,
   Eye,
   LogOut,
+  Menu,
   Radio,
   Settings,
   Target,
@@ -14,6 +15,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { OnboardingTour } from '@/components/onboarding-tour';
@@ -45,10 +47,16 @@ export function DashboardShell({ children }: { children: ReactNode }) {
   const { isAdmin } = useIsAdmin();
   const router = useRouter();
   const location = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) router.navigate({ to: '/login' });
   }, [user, loading, router]);
+
+  // Close mobile drawer on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
   const handleSignOut = async () => {
     try {
@@ -67,69 +75,100 @@ export function DashboardShell({ children }: { children: ReactNode }) {
     );
   }
 
+  const renderNav = (onItemClick?: () => void) => (
+    <nav className="flex-1 space-y-0.5 p-2">
+      {NAV.filter((i) => !i.adminOnly || isAdmin).map((item) => {
+        const active = location.pathname === item.to ||
+          (item.to !== '/dashboard' && location.pathname.startsWith(item.to));
+        const Icon = item.icon;
+        return (
+          <Link key={item.to} to={item.to as any} onClick={onItemClick}>
+            <div
+              data-tour={item.tourId}
+              data-active={active ? 'true' : 'false'}
+              className={cn(
+                'nav-link group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm',
+                active
+                  ? 'bg-sidebar-accent text-sidebar-accent-foreground'
+                  : 'text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground',
+                item.adminOnly && 'border border-brand/30 bg-brand/5'
+              )}
+            >
+              <Icon className={cn('nav-icon h-4 w-4', active && 'text-brand', item.adminOnly && 'text-brand')} />
+              <span className="flex-1">{item.label}</span>
+              {item.adminOnly && (
+                <span className="rounded-sm bg-brand/20 px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-wider text-brand">
+                  Sudo
+                </span>
+              )}
+            </div>
+          </Link>
+        );
+      })}
+    </nav>
+  );
+
+  const renderUserPanel = () => (
+    <div className="space-y-2 border-t border-border p-3">
+      <div className="flex items-center gap-2.5 rounded-md p-1.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand/20 text-xs font-semibold text-brand">
+          {(user.email || 'U').slice(0, 2).toUpperCase()}
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="truncate text-xs font-medium">{user.email}</div>
+          <div className="text-[11px] text-muted-foreground">Team plan · Trial</div>
+        </div>
+      </div>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={handleSignOut}
+        className="w-full justify-center gap-2"
+      >
+        <LogOut className="h-3.5 w-3.5" />
+        Sign out
+      </Button>
+    </div>
+  );
+
   return (
     <div className="flex min-h-screen w-full bg-background">
-      {/* Sidebar */}
+      {/* Desktop Sidebar */}
       <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-sidebar md:flex">
         <Link to="/dashboard" className="flex items-center justify-center border-b border-border px-2 py-3">
           <RexxonLogo size="sm" />
         </Link>
-
-        <nav className="flex-1 space-y-0.5 p-2">
-          {NAV.filter((i) => !i.adminOnly || isAdmin).map((item) => {
-            const active = location.pathname === item.to ||
-              (item.to !== '/dashboard' && location.pathname.startsWith(item.to));
-            const Icon = item.icon;
-            return (
-              <Link key={item.to} to={item.to as any}>
-                <div
-                  data-tour={item.tourId}
-                  data-active={active ? 'true' : 'false'}
-                  className={cn(
-                    'nav-link group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm',
-                    active
-                      ? 'bg-sidebar-accent text-sidebar-accent-foreground'
-                      : 'text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground',
-                    item.adminOnly && 'border border-brand/30 bg-brand/5'
-                  )}
-                >
-                  <Icon className={cn('nav-icon h-4 w-4', active && 'text-brand', item.adminOnly && 'text-brand')} />
-                  <span className="flex-1">{item.label}</span>
-                  {item.adminOnly && (
-                    <span className="rounded-sm bg-brand/20 px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-wider text-brand">
-                      Sudo
-                    </span>
-                  )}
-                </div>
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="space-y-2 border-t border-border p-3">
-          <div className="flex items-center gap-2.5 rounded-md p-1.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand/20 text-xs font-semibold text-brand">
-              {(user.email || 'U').slice(0, 2).toUpperCase()}
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="truncate text-xs font-medium">{user.email}</div>
-              <div className="text-[11px] text-muted-foreground">Team plan · Trial</div>
-            </div>
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleSignOut}
-            className="w-full justify-center gap-2"
-          >
-            <LogOut className="h-3.5 w-3.5" />
-            Sign out
-          </Button>
-        </div>
+        {renderNav()}
+        {renderUserPanel()}
       </aside>
 
+      {/* Mobile top bar */}
+      <div className="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-border bg-sidebar/95 px-3 backdrop-blur md:hidden">
+        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-9 w-9" aria-label="Open menu">
+              <Menu className="h-5 w-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="flex w-64 flex-col bg-sidebar p-0">
+            <SheetTitle className="sr-only">Navigation menu</SheetTitle>
+            <div className="flex items-center justify-center border-b border-border px-2 py-3">
+              <RexxonLogo size="sm" />
+            </div>
+            {renderNav(() => setMobileOpen(false))}
+            {renderUserPanel()}
+          </SheetContent>
+        </Sheet>
+        <Link to="/dashboard" className="flex items-center">
+          <RexxonLogo size="sm" />
+        </Link>
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand/20 text-[11px] font-semibold text-brand">
+          {(user.email || 'U').slice(0, 2).toUpperCase()}
+        </div>
+      </div>
+
       {/* Main */}
-      <main key={location.pathname} className="page-transition min-w-0 flex-1">{children}</main>
+      <main key={location.pathname} className="page-transition min-w-0 flex-1 pt-14 md:pt-0">{children}</main>
 
       {/* Onboarding tour overlay */}
       <OnboardingTour />
