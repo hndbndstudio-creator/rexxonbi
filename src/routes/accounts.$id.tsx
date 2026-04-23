@@ -435,57 +435,292 @@ function BriefPanel({
     );
   }
 
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <p className="text-xs text-muted-foreground">
-          Generated {brief.generated_at ? new Date(brief.generated_at).toLocaleString() : 'just now'}
+function BriefPanel({
+  brief,
+  loading,
+  onGenerate,
+  onRegenerate,
+}: {
+  brief: Brief | null;
+  loading: boolean;
+  onGenerate: () => void;
+  onRegenerate: () => void;
+}) {
+  if (loading && !brief) {
+    return (
+      <div className="space-y-4">
+        <div className="skeleton-shimmer h-32 rounded-xl" />
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="skeleton-shimmer h-40 rounded-xl" />
+          <div className="skeleton-shimmer h-40 rounded-xl" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!brief) {
+    return (
+      <div className="surface-2 animate-rise rounded-xl p-10 text-center">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-brand/10 text-brand">
+          <Brain className="h-7 w-7" />
+        </div>
+        <h3 className="mt-4 text-lg font-semibold">Generate the account brief</h3>
+        <p className="mx-auto mt-1.5 max-w-md text-sm text-muted-foreground">
+          A tight, sales-actionable summary: positioning, why now, pain points, buying committee, conversation
+          starters, and risks — built from this account's signals.
         </p>
-        <Button size="sm" variant="outline" onClick={onRegenerate} disabled={loading}>
-          {loading ? <RefreshCw className="mr-2 h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="mr-2 h-3.5 w-3.5" />}
-          Regenerate
+        <Button className="mt-5" onClick={onGenerate} disabled={loading}>
+          {loading ? <RefreshCw className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+          Generate AI brief
         </Button>
       </div>
+    );
+  }
 
-      <div className="rounded-xl border border-border bg-card/60 p-5">
-        <h3 className="text-xs font-mono uppercase text-muted-foreground">Summary</h3>
-        <p className="mt-2 text-sm">{brief.summary}</p>
+  const generatedLabel = brief.generated_at ? new Date(brief.generated_at).toLocaleString() : 'just now';
+
+  return (
+    <div className="space-y-5">
+      {/* Meta bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl surface-1 px-4 py-2.5">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <Calendar className="h-3.5 w-3.5" />
+          <span>Generated {generatedLabel}</span>
+          <span className="mx-1.5 h-1 w-1 rounded-full bg-border" />
+          <span className="inline-flex items-center gap-1 text-brand">
+            <Sparkles className="h-3 w-3" /> AI synthesised
+          </span>
+        </div>
+        <div className="flex gap-2">
+          <CopyBriefButton brief={brief} />
+          <Button size="sm" variant="outline" onClick={onRegenerate} disabled={loading}>
+            <RefreshCw className={`mr-1.5 h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
+            Regenerate
+          </Button>
+        </div>
       </div>
 
-      <div className="rounded-xl border border-brand/30 bg-brand/5 p-5">
-        <h3 className="text-xs font-mono uppercase text-brand">Why now</h3>
-        <p className="mt-2 text-sm">{brief.why_now}</p>
+      {/* Hero: Summary + Why now */}
+      <div className="grid gap-4 lg:grid-cols-5">
+        <BriefHero
+          icon={<Building2 className="h-4 w-4" />}
+          label="Account summary"
+          tone="neutral"
+          className="lg:col-span-3"
+        >
+          <p className="text-[15px] leading-relaxed text-foreground">{brief.summary}</p>
+        </BriefHero>
+
+        <BriefHero
+          icon={<Zap className="h-4 w-4" />}
+          label="Why now"
+          tone="brand"
+          className="lg:col-span-2"
+        >
+          <p className="text-[15px] leading-relaxed text-foreground">{brief.why_now}</p>
+        </BriefHero>
       </div>
 
+      {/* Widget grid */}
       <div className="grid gap-4 md:grid-cols-2">
-        <BriefList title="Pain points" items={brief.pain_points} />
-        <BriefList title="Buying committee" items={brief.buying_committee} />
-        <BriefList title="Conversation starters" items={brief.conversation_starters} />
-        <BriefList title="Competitive risks" items={brief.competitive_risks} accent="text-amber-300" />
+        <BriefWidget
+          icon={<Target className="h-4 w-4" />}
+          title="Pain points"
+          subtitle="What likely keeps them up at night"
+          items={brief.pain_points}
+          variant="list"
+        />
+        <BriefWidget
+          icon={<Users2 className="h-4 w-4" />}
+          title="Buying committee"
+          subtitle="Roles to map and engage"
+          items={brief.buying_committee}
+          variant="chip"
+        />
+        <BriefWidget
+          icon={<MessageSquareQuote className="h-4 w-4" />}
+          title="Conversation starters"
+          subtitle="Lead with these in your first touch"
+          items={brief.conversation_starters}
+          variant="quote"
+        />
+        <BriefWidget
+          icon={<ShieldAlert className="h-4 w-4" />}
+          title="Competitive risks"
+          subtitle="Watch-outs and incumbent threats"
+          items={brief.competitive_risks}
+          variant="warn"
+        />
       </div>
     </div>
   );
 }
 
-function BriefList({ title, items, accent }: { title: string; items: string[]; accent?: string }) {
+function BriefHero({
+  icon,
+  label,
+  tone,
+  className,
+  children,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  tone: 'neutral' | 'brand';
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const toneCls =
+    tone === 'brand'
+      ? 'border-brand/30 bg-gradient-to-br from-brand/10 via-brand/5 to-transparent'
+      : 'surface-2';
+  const chipCls =
+    tone === 'brand'
+      ? 'bg-brand/15 text-brand'
+      : 'bg-muted text-muted-foreground';
   return (
-    <div className="rounded-xl border border-border bg-card/60 p-4">
-      <h3 className={`text-xs font-mono uppercase ${accent ?? 'text-muted-foreground'}`}>{title}</h3>
-      <ul className="mt-2 space-y-1.5 text-sm">
-        {items.map((it, i) => (
-          <li key={i} className="flex gap-2">
-            <span className="text-brand">•</span>
-            <span>{it}</span>
-          </li>
-        ))}
-      </ul>
+    <div className={`relative overflow-hidden rounded-xl border ${toneCls} p-5 ${className ?? ''}`}>
+      <div className="mb-3 flex items-center gap-2">
+        <span className={`inline-flex h-7 w-7 items-center justify-center rounded-lg ${chipCls}`}>
+          {icon}
+        </span>
+        <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          {label}
+        </span>
+      </div>
+      {children}
     </div>
+  );
+}
+
+function BriefWidget({
+  icon,
+  title,
+  subtitle,
+  items,
+  variant,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  subtitle: string;
+  items: string[];
+  variant: 'list' | 'chip' | 'quote' | 'warn';
+}) {
+  return (
+    <div className="surface-2 hover-lift group rounded-xl p-5">
+      <div className="mb-3 flex items-start justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span
+            className={`inline-flex h-7 w-7 items-center justify-center rounded-lg ${
+              variant === 'warn' ? 'bg-amber-500/15 text-amber-500' : 'bg-brand/10 text-brand'
+            }`}
+          >
+            {icon}
+          </span>
+          <div>
+            <h3 className="text-sm font-semibold">{title}</h3>
+            <p className="text-[11px] text-muted-foreground">{subtitle}</p>
+          </div>
+        </div>
+        <span className="rounded-full border border-border bg-background/60 px-2 py-0.5 text-[10px] font-mono text-muted-foreground">
+          {items.length}
+        </span>
+      </div>
+
+      {variant === 'list' && (
+        <ul className="space-y-2 text-sm">
+          {items.map((it, i) => (
+            <li
+              key={i}
+              className="flex gap-2.5 rounded-lg border border-border/60 bg-background/40 p-2.5"
+            >
+              <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-[10px] font-mono font-semibold text-brand">
+                {i + 1}
+              </span>
+              <span className="leading-relaxed">{it}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {variant === 'chip' && (
+        <div className="flex flex-wrap gap-1.5">
+          {items.map((it, i) => (
+            <span
+              key={i}
+              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/60 px-2.5 py-1 text-xs"
+            >
+              <Users2 className="h-3 w-3 text-brand" />
+              {it}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {variant === 'quote' && (
+        <ul className="space-y-2.5">
+          {items.map((it, i) => (
+            <li
+              key={i}
+              className="border-l-2 border-brand/40 bg-background/40 px-3 py-2 text-sm italic leading-relaxed text-foreground/90"
+            >
+              "{it}"
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {variant === 'warn' && (
+        <ul className="space-y-2 text-sm">
+          {items.map((it, i) => (
+            <li
+              key={i}
+              className="flex gap-2 rounded-lg border border-amber-500/20 bg-amber-500/5 p-2.5"
+            >
+              <ShieldAlert className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500" />
+              <span className="leading-relaxed">{it}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function CopyBriefButton({ brief }: { brief: Brief }) {
+  const [copied, setCopied] = useState(false);
+  const onCopy = async () => {
+    const text = [
+      `SUMMARY\n${brief.summary}`,
+      `\nWHY NOW\n${brief.why_now}`,
+      `\nPAIN POINTS\n- ${brief.pain_points.join('\n- ')}`,
+      `\nBUYING COMMITTEE\n- ${brief.buying_committee.join('\n- ')}`,
+      `\nCONVERSATION STARTERS\n- ${brief.conversation_starters.join('\n- ')}`,
+      `\nCOMPETITIVE RISKS\n- ${brief.competitive_risks.join('\n- ')}`,
+    ].join('\n');
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      toast.success('Brief copied to clipboard');
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      toast.error('Copy failed');
+    }
+  };
+  return (
+    <Button size="sm" variant="outline" onClick={onCopy}>
+      {copied ? (
+        <CheckCircle2 className="mr-1.5 h-3.5 w-3.5 text-brand" />
+      ) : (
+        <Copy className="mr-1.5 h-3.5 w-3.5" />
+      )}
+      {copied ? 'Copied' : 'Copy brief'}
+    </Button>
   );
 }
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-border bg-card/60 p-4">
+    <div className="surface-2 rounded-xl p-4">
       <div className="text-[10px] font-mono uppercase text-muted-foreground">{label}</div>
       <div className="mt-1 text-xl font-semibold">{value}</div>
     </div>
