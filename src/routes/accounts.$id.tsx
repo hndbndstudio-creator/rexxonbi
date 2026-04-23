@@ -171,6 +171,19 @@ function AccountDetail() {
   const isMon = monitored.has(company.id);
   const brief = (company as any).brief as Brief | null;
 
+  // Default to "brief" tab when arriving via "View Account" (hash=#brief), else overview.
+  const initialHash = typeof window !== 'undefined' ? window.location.hash.replace('#', '') : '';
+  const [tab, setTab] = useState<string>(initialHash === 'brief' ? 'brief' : 'overview');
+
+  // Auto-generate the brief on first arrival to the brief tab if we don't have one yet.
+  const autoGenRef = useRef(false);
+  useEffect(() => {
+    if (tab === 'brief' && !brief && !briefMut.isPending && !autoGenRef.current) {
+      autoGenRef.current = true;
+      briefMut.mutate(false);
+    }
+  }, [tab, brief, briefMut]);
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 md:px-8">
       <Link
