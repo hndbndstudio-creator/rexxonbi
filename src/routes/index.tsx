@@ -319,12 +319,6 @@ function LandingPage() {
                   </span>
                   Watch 30-second demo
                 </Button>
-                <Link to="/schedule-demo">
-                  <Button size="lg" variant="ghost" className="hover-lift">
-                    <CalendarCheck className="mr-1 h-4 w-4" />
-                    Book a 15-min demo
-                  </Button>
-                </Link>
               </div>
 
               <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
