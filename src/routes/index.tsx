@@ -190,6 +190,18 @@ function LandingPage() {
   const indexRef = useRef(4);
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [stickyDismissed, setStickyDismissed] = useState(false);
+  const [demoOpen, setDemoOpen] = useState(false);
+  const demoVideoRef = useRef<HTMLVideoElement>(null);
+
+  // Reset video to start when modal closes; autoplay handled by `autoPlay` when open
+  useEffect(() => {
+    const v = demoVideoRef.current;
+    if (!v) return;
+    if (!demoOpen) {
+      v.pause();
+      v.currentTime = 0;
+    }
+  }, [demoOpen]);
 
   useReveal();
 
