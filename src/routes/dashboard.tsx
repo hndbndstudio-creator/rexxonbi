@@ -271,7 +271,7 @@ function SignalFeed() {
 
       {/* Activity sidebar */}
       <aside className="hidden lg:block">
-        <div className="sticky top-6 rounded-xl border border-border bg-card/40 p-4">
+        <div className="card-interactive sticky top-6 rounded-xl border border-border bg-card/40 p-4 animate-rise" style={{ animationDelay: '120ms' }}>
           <h2 className="flex items-center gap-2 text-sm font-semibold">
             <Activity className="h-4 w-4 text-brand" />
             Recent activity
@@ -282,9 +282,9 @@ function SignalFeed() {
               No activity yet. Claim a signal or draft outreach to get started.
             </div>
           ) : (
-            <ol className="mt-3 space-y-2.5">
+            <ol className="stagger mt-3 space-y-2.5">
               {activity.map((a) => (
-                <li key={a.id} className="flex items-start gap-2 border-l-2 border-brand/40 pl-2.5 text-xs">
+                <li key={a.id} className="flex items-start gap-2 border-l-2 border-brand/40 pl-2.5 text-xs transition-colors hover:border-brand">
                   <div className="flex-1 min-w-0">
                     <div className="font-medium">{ACTIVITY_LABELS[a.type] ?? a.type}</div>
                     <div className="text-muted-foreground">
