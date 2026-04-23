@@ -46,7 +46,7 @@ export const Route = createFileRoute('/checkout')({
   head: () => ({
     meta: [
       { title: 'Checkout — Rexxon AI' },
-      { name: 'description', content: 'Activate your Rexxon plan. 14-day free trial. No charges until day 15. Cancel anytime.' },
+      { name: 'description', content: 'Activate your Rexxon plan. 7-day free trial. No charges until day 8. Cancel anytime.' },
       { name: 'robots', content: 'noindex, follow' },
     ],
   }),
@@ -84,7 +84,7 @@ function CheckoutPage() {
     await new Promise((r) => setTimeout(r, 800));
     toast.success('Trial activated! Redirecting to your dashboard…');
     setSubmitting(false);
-    router.navigate({ to: '/signup' });
+    router.navigate({ to: '/dashboard' });
   };
 
   return (
@@ -115,14 +115,14 @@ function CheckoutPage() {
           <div className="animate-fade-up">
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium text-muted-foreground shadow-soft backdrop-blur-sm">
               <Sparkles className="h-3.5 w-3.5 text-brand" />
-              14-day free trial · Cancel anytime
+              7-day free trial · Cancel anytime
             </div>
 
             <h1 className="mt-5 text-3xl font-bold tracking-tight md:text-4xl">
               Activate your <span className="text-gradient-brand">{selected.name}</span> plan
             </h1>
             <p className="mt-3 text-muted-foreground">
-              No charges until day 15. Most teams replace 2–4 tools and book 2× more meetings in their first 30 days.
+              No charges until day 8. Most teams replace 2–4 tools and book 2× more meetings in their first 30 days.
             </p>
 
             {/* Plan switcher */}
@@ -201,7 +201,7 @@ function CheckoutPage() {
                 <span className="text-2xl font-bold tracking-tight">${dueToday.toFixed(2)}</span>
               </div>
               <p className="mt-2 text-xs text-muted-foreground">
-                You'll be charged ${monthlyEffective}{billing === 'annual' ? '/mo billed annually' : '/mo'} starting day 15. Cancel anytime before then for $0.
+                You'll be charged ${monthlyEffective}{billing === 'annual' ? '/mo billed annually' : '/mo'} starting day 8. Cancel anytime before then for $0.
               </p>
             </div>
 
