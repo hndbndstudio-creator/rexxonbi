@@ -69,77 +69,98 @@ function LandingPage() {
 
   return (
     <div className="min-h-screen overflow-x-hidden">
+      {/* Announcement bar */}
+      <div className="border-b border-border/60 bg-gradient-to-r from-brand/20 via-brand/10 to-brand-glow/20 backdrop-blur-sm">
+        <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-6 py-2 text-xs">
+          <span className="rounded-full bg-brand/20 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-brand">
+            New
+          </span>
+          <span className="text-foreground/90">
+            Rexxon Agents now run 24/7 — every account researched, every signal drafted.
+          </span>
+          <a href="#product" className="hidden font-medium text-brand hover:underline sm:inline">
+            See it live →
+          </a>
+        </div>
+      </div>
+
       {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
+      <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-2xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2.5">
             <Logo />
-            <span className="text-lg font-semibold tracking-tight">Rexxon AI</span>
+            <span className="text-base font-semibold tracking-tight">Rexxon AI</span>
           </Link>
           <div className="hidden items-center gap-8 md:flex">
-            <a href="#product" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Product</a>
-            <a href="#signals" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Signals</a>
-            <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
-            <a href="https://docs.rexxon.ai" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Docs</a>
+            <a href="#product" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Product</a>
+            <a href="#signals" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Signals</a>
+            <a href="#pricing" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Pricing</a>
+            <a href="https://docs.rexxon.ai" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Docs</a>
           </div>
           <div className="flex items-center gap-2">
             <Link to="/login">
               <Button variant="ghost" size="sm">Sign in</Button>
             </Link>
             <Link to="/signup">
-              <Button size="sm" className="bg-brand text-brand-foreground hover:opacity-90">Start free</Button>
+              <Button size="sm" className="bg-brand text-brand-foreground shadow-inset-glow transition-transform hover:-translate-y-0.5 hover:opacity-95">
+                Start free
+              </Button>
             </Link>
           </div>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="relative bg-radial-brand">
+      <section className="relative bg-aurora">
         <div className="mx-auto max-w-7xl px-6 pt-20 pb-24">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium text-muted-foreground">
+            <div className="animate-fade-up">
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium text-muted-foreground shadow-soft backdrop-blur-sm">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
                 </span>
-                Live signal engine · 12 sources monitored
+                Live signal engine · 12 sources · &lt;5 min latency
               </div>
-              <h1 className="mt-6 text-5xl font-bold tracking-tight md:text-6xl">
-                Catch buying signals
+              <h1 className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
+                Pipeline on
                 <br />
                 <span className="bg-gradient-to-r from-brand via-brand-glow to-brand bg-clip-text text-transparent">
-                  before your competitors do.
+                  autopilot.
                 </span>
+                <br />
+                <span className="text-foreground/90">No excuses.</span>
               </h1>
-              <p className="mt-6 text-lg text-muted-foreground">
-                Rexxon AI monitors 12 data sources for hiring spikes, leadership changes, funding events, and compliance moves — then delivers real-time alerts with AI-drafted outreach and verified contact data.
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl">
+                Every rep wakes up to fresh buying signals, verified contacts, and drafted emails — no research required. Rexxon's AI agents run deep account intel 24/7 and surface the moment a budget activates. The only thing left is to hit send.
               </p>
-              <ul className="mt-6 space-y-2">
+              <ul className="mt-7 space-y-2.5">
                 {[
-                  'Real-time alerts within minutes of a signal firing',
-                  'AI-drafted outreach with persona and tone tuning',
-                  'Verified email + phone for the hiring manager',
+                  'Real-time alerts within 5 min of a signal firing',
+                  'AI outreach drafts tuned to persona, tone, and trigger',
+                  'Verified email + phone for the buying committee',
                 ].map((bullet) => (
-                  <li key={bullet} className="flex items-start gap-2 text-sm">
+                  <li key={bullet} className="flex items-start gap-2.5 text-sm">
                     <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
                     <span className="text-foreground/90">{bullet}</span>
                   </li>
                 ))}
               </ul>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="mt-9 flex flex-wrap items-center gap-3">
                 <Link to="/signup">
-                  <Button size="lg" className="bg-brand text-brand-foreground hover:opacity-90">
+                  <Button size="lg" className="bg-brand text-brand-foreground shadow-inset-glow transition-transform hover:-translate-y-0.5 hover:opacity-95">
                     Start 14-day free trial
                     <ArrowRight className="ml-1.5 h-4 w-4" />
                   </Button>
                 </Link>
-                <Button size="lg" variant="outline">Watch 2-min demo</Button>
+                <Button size="lg" variant="outline" className="hover-lift backdrop-blur-sm">
+                  Watch 2-min demo
+                </Button>
               </div>
               <div className="mt-12 grid grid-cols-3 gap-6 border-t border-border pt-6">
-                <Stat value="12" label="Signal sources" />
-                <Stat value="<5min" label="Alert latency" />
-                <Stat value="89%" label="Email accuracy" />
+                <Stat value="2×" label="More meetings" />
+                <Stat value="40%" label="More pipeline" />
+                <Stat value="6h" label="Saved per rep / week" />
               </div>
             </div>
 
