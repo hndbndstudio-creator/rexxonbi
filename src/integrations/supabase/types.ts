@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_events: {
+        Row: {
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          metadata: Json
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          metadata?: Json
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          metadata?: Json
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       companies: {
         Row: {
           brief: Json | null
@@ -209,6 +239,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      outreach_sequences: {
+        Row: {
+          contact_id: string | null
+          created_at: string
+          id: string
+          name: string
+          signal_id: string | null
+          status: Database["public"]["Enums"]["sequence_status"]
+          steps: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          contact_id?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          signal_id?: string | null
+          status?: Database["public"]["Enums"]["sequence_status"]
+          steps?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          contact_id?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          signal_id?: string | null
+          status?: Database["public"]["Enums"]["sequence_status"]
+          steps?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       revealed_contacts: {
         Row: {
@@ -409,6 +475,7 @@ export type Database = {
       outreach_status: "PENDING" | "EDITED" | "SENT"
       outreach_tone: "PROFESSIONAL" | "DIRECT" | "CASUAL" | "FOLLOWUP"
       seniority_level: "C_LEVEL" | "VP" | "DIRECTOR" | "MANAGER" | "IC"
+      sequence_status: "DRAFT" | "ACTIVE" | "PAUSED" | "COMPLETED"
       signal_source:
         | "LINKEDIN"
         | "INDEED"
@@ -562,6 +629,7 @@ export const Constants = {
       outreach_status: ["PENDING", "EDITED", "SENT"],
       outreach_tone: ["PROFESSIONAL", "DIRECT", "CASUAL", "FOLLOWUP"],
       seniority_level: ["C_LEVEL", "VP", "DIRECTOR", "MANAGER", "IC"],
+      sequence_status: ["DRAFT", "ACTIVE", "PAUSED", "COMPLETED"],
       signal_source: [
         "LINKEDIN",
         "INDEED",

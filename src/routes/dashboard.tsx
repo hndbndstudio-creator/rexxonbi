@@ -16,8 +16,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { CheckCheck, Sparkles, Radio, Loader2 } from 'lucide-react';
+import { CheckCheck, Sparkles, Radio, Loader2, Activity } from 'lucide-react';
 import { toast } from 'sonner';
+import { ACTIVITY_LABELS, fetchActivity, logActivity } from '@/lib/activity';
+import { formatDistanceToNow } from 'date-fns';
 
 export const Route = createFileRoute('/dashboard')({
   component: DashboardPage,
@@ -65,6 +67,13 @@ function SignalFeed() {
     },
     onSuccess: (_d, v) => {
       toast.success(v.status === 'CLAIMED' ? 'Lead claimed' : 'Signal dismissed');
+      if (user) {
+        logActivity(user.id, v.status === 'CLAIMED' ? 'SIGNAL_CLAIMED' : 'SIGNAL_DISMISSED', {
+          entity_type: 'signal',
+          entity_id: v.id,
+        });
+        qc.invalidateQueries({ queryKey: ['activity'] });
+      }
     },
   });
 
@@ -116,6 +125,10 @@ function SignalFeed() {
     },
     onSuccess: () => {
       toast.success('Outreach draft created');
+      if (user) {
+        logActivity(user.id, 'DRAFT_CREATED', { entity_type: 'outreach_draft' });
+        qc.invalidateQueries({ queryKey: ['activity'] });
+      }
       navigate({ to: '/outreach' });
     },
     onError: (e: any) => {
@@ -128,8 +141,16 @@ function SignalFeed() {
 
   const unreadCount = signals.filter((s) => !s.is_read).length;
 
+  const { data: activity = [] } = useQuery({
+    queryKey: ['activity', user?.id],
+    enabled: !!user,
+    queryFn: () => fetchActivity(user!.id, 15),
+    refetchInterval: 30_000,
+  });
+
   return (
-    <div className="mx-auto max-w-5xl px-4 py-6 md:px-8">
+    <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:px-8 lg:grid-cols-[1fr_320px]">
+      <div className="min-w-0">
       {/* Header */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
@@ -244,6 +265,37 @@ function SignalFeed() {
           />
         ))}
       </div>
+      </div>
+
+      {/* Activity sidebar */}
+      <aside className="hidden lg:block">
+        <div className="sticky top-6 rounded-xl border border-border bg-card/40 p-4">
+          <h2 className="flex items-center gap-2 text-sm font-semibold">
+            <Activity className="h-4 w-4 text-brand" />
+            Recent activity
+          </h2>
+          <p className="mt-0.5 text-xs text-muted-foreground">Live feed of your team's actions</p>
+          {activity.length === 0 ? (
+            <div className="mt-4 rounded-md border border-dashed border-border p-6 text-center text-xs text-muted-foreground">
+              No activity yet. Claim a signal or draft outreach to get started.
+            </div>
+          ) : (
+            <ol className="mt-3 space-y-2.5">
+              {activity.map((a) => (
+                <li key={a.id} className="flex items-start gap-2 border-l-2 border-brand/40 pl-2.5 text-xs">
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium">{ACTIVITY_LABELS[a.type] ?? a.type}</div>
+                    <div className="text-muted-foreground">
+                      {formatDistanceToNow(new Date(a.created_at), { addSuffix: true })}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+      </aside>
     </div>
   );
 }
+

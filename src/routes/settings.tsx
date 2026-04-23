@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DashboardShell } from '@/components/dashboard-shell';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/lib/use-auth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Settings as SettingsIcon, Users, CreditCard, CheckCircle2, Radio, Mail, Sparkles } from 'lucide-react';
+import { Settings as SettingsIcon, Users, CheckCircle2, Radio, Mail, Sparkles } from 'lucide-react';
 
 export const Route = createFileRoute('/settings')({
   component: SettingsPage,
@@ -75,23 +75,7 @@ function SettingsPage() {
 
           <TabsContent value="integrations" className="mt-6 space-y-3">
             {INTEGRATIONS.map((i) => (
-              <div key={i.id} className="flex items-center justify-between rounded-lg border border-border bg-card/40 p-4">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-accent/40 font-semibold text-sm">
-                    {i.name[0]}
-                  </div>
-                  <div>
-                    <div className="font-medium text-sm">{i.name}</div>
-                    <div className="text-xs text-muted-foreground">{i.desc}</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Badge variant="outline">Not connected</Badge>
-                  <Button variant="outline" size="sm" onClick={() => toast.info(`${i.name} OAuth not yet wired`)}>
-                    Connect
-                  </Button>
-                </div>
-              </div>
+              <IntegrationRow key={i.id} id={i.id} name={i.name} desc={i.desc} />
             ))}
           </TabsContent>
 
@@ -224,6 +208,41 @@ function AgentCard({ icon: Icon, name, desc, status }: { icon: typeof Radio; nam
         </span>
       </div>
       <p className="mt-2 text-xs text-muted-foreground">{desc}</p>
+    </div>
+  );
+}
+
+function IntegrationRow({ id, name, desc }: { id: string; name: string; desc: string }) {
+  const storageKey = `rexxon.integration.${id}`;
+  const [connected, setConnected] = useState(false);
+  useEffect(() => {
+    if (typeof window !== 'undefined') setConnected(localStorage.getItem(storageKey) === '1');
+  }, [storageKey]);
+  const toggle = () => {
+    const next = !connected;
+    setConnected(next);
+    localStorage.setItem(storageKey, next ? '1' : '0');
+    toast.success(`${name} ${next ? 'connected' : 'disconnected'}`);
+  };
+  return (
+    <div className="flex items-center justify-between rounded-lg border border-border bg-card/40 p-4">
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-accent/40 font-semibold text-sm">
+          {name[0]}
+        </div>
+        <div>
+          <div className="font-medium text-sm">{name}</div>
+          <div className="text-xs text-muted-foreground">{desc}</div>
+        </div>
+      </div>
+      <div className="flex items-center gap-3">
+        <Badge variant={connected ? 'default' : 'outline'} className={connected ? 'bg-green-500/15 text-green-300 border-green-500/30' : ''}>
+          {connected ? 'Connected' : 'Not connected'}
+        </Badge>
+        <Button variant="outline" size="sm" onClick={toggle}>
+          {connected ? 'Disconnect' : 'Connect'}
+        </Button>
+      </div>
     </div>
   );
 }

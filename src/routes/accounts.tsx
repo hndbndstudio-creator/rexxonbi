@@ -19,10 +19,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Building2, Search, Eye, ArrowRight } from 'lucide-react';
+import { Building2, Search, Eye, ArrowRight, FileDown } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { getInitials } from '@/lib/types';
 import { toast } from 'sonner';
+import { downloadCSV, toCSV } from '@/lib/csv';
+import { logActivity } from '@/lib/activity';
 
 export const Route = createFileRoute('/accounts')({
   component: AccountsPage,
@@ -72,14 +74,49 @@ function Accounts() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 md:px-8">
-      <div className="mb-6">
-        <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-          <Building2 className="h-5 w-5 text-brand" />
-          Accounts
-        </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {companies.length} companies · {monitored.size} monitored
-        </p>
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
+            <Building2 className="h-5 w-5 text-brand" />
+            Accounts
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {companies.length} companies · {monitored.size} monitored
+          </p>
+        </div>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => {
+            if (companies.length === 0) return toast.info('Nothing to export');
+            const csv = toCSV(
+              companies.map((c) => ({
+                name: c.name,
+                domain: c.domain,
+                industry: c.industry ?? '',
+                employees: c.employee_range ?? '',
+                stage: c.funding_stage ?? '',
+                hq: [c.hq_city, c.hq_state, c.hq_country].filter(Boolean).join(', '),
+                signals: counts?.get(c.id)?.count ?? 0,
+                monitored: monitored.has(c.id) ? 'yes' : 'no',
+              })),
+              [
+                { key: 'name', header: 'Name' },
+                { key: 'domain', header: 'Domain' },
+                { key: 'industry', header: 'Industry' },
+                { key: 'employees', header: 'Employees' },
+                { key: 'stage', header: 'Stage' },
+                { key: 'hq', header: 'HQ' },
+                { key: 'signals', header: 'Signals' },
+                { key: 'monitored', header: 'Monitored' },
+              ]
+            );
+            downloadCSV('rexxon-accounts.csv', csv);
+            if (user) logActivity(user.id, 'CSV_EXPORTED', { metadata: { kind: 'accounts', count: companies.length } });
+          }}
+        >
+          <FileDown className="mr-1.5 h-3.5 w-3.5" /> Export CSV
+        </Button>
       </div>
 
       {/* Filters */}

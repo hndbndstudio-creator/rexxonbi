@@ -6,9 +6,11 @@ import { DashboardShell } from '@/components/dashboard-shell';
 import { fetchContacts, fetchRevealedFields, revealField } from '@/lib/queries';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Eye, Linkedin, Search, Users } from 'lucide-react';
+import { Eye, Linkedin, Search, Users, FileDown } from 'lucide-react';
 import { maskEmail, maskPhone, getInitials } from '@/lib/types';
 import { toast } from 'sonner';
+import { downloadCSV, toCSV } from '@/lib/csv';
+import { logActivity } from '@/lib/activity';
 
 export const Route = createFileRoute('/contacts')({
   component: ContactsPage,
@@ -58,14 +60,47 @@ function Contacts() {
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">{contacts.length} contacts</p>
         </div>
-        <div className="relative w-full max-w-xs">
-          <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by name…"
-            className="pl-8"
-          />
+        <div className="flex items-center gap-2">
+          <div className="relative w-full max-w-xs">
+            <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by name…"
+              className="pl-8"
+            />
+          </div>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => {
+              if (contacts.length === 0) return toast.info('Nothing to export');
+              const csv = toCSV(
+                contacts.map((c: any) => ({
+                  first_name: c.first_name,
+                  last_name: c.last_name,
+                  title: c.title ?? '',
+                  company: c.company?.name ?? '',
+                  email: c.email ?? '',
+                  phone: c.phone ?? '',
+                  linkedin: c.linkedin_url ?? '',
+                })),
+                [
+                  { key: 'first_name', header: 'First name' },
+                  { key: 'last_name', header: 'Last name' },
+                  { key: 'title', header: 'Title' },
+                  { key: 'company', header: 'Company' },
+                  { key: 'email', header: 'Email' },
+                  { key: 'phone', header: 'Phone' },
+                  { key: 'linkedin', header: 'LinkedIn' },
+                ]
+              );
+              downloadCSV('rexxon-contacts.csv', csv);
+              if (user) logActivity(user.id, 'CSV_EXPORTED', { metadata: { kind: 'contacts', count: contacts.length } });
+            }}
+          >
+            <FileDown className="mr-1.5 h-3.5 w-3.5" /> Export CSV
+          </Button>
         </div>
       </div>
 
