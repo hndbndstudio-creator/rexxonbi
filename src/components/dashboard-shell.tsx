@@ -113,6 +113,9 @@ export function DashboardShell({ children }: { children: ReactNode }) {
 
       {/* Main */}
       <main className="min-w-0 flex-1">{children}</main>
+
+      {/* Onboarding tour overlay */}
+      <OnboardingTour />
     </div>
   );
 }
