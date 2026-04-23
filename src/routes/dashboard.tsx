@@ -191,7 +191,7 @@ function SignalFeed() {
       </div>
 
       {/* Filters */}
-      <div className="mb-5 flex flex-wrap items-end gap-3 rounded-xl border border-border bg-card/40 p-3">
+      <div className="mb-5 flex flex-wrap items-end gap-3 rounded-xl border border-border bg-card/40 p-3 animate-rise" style={{ animationDelay: '80ms' }}>
         <div className="min-w-[180px] flex-1">
           <label className="mb-1 block text-[10px] font-mono uppercase text-muted-foreground">
             Signal type
@@ -230,22 +230,22 @@ function SignalFeed() {
       {isLoading && (
         <div className="space-y-3">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-44 animate-pulse rounded-xl border border-border bg-card/40" />
+            <div key={i} className="skeleton-shimmer h-44 rounded-xl border border-border" />
           ))}
         </div>
       )}
 
       {isError && (
-        <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-6 text-center">
+        <div className="animate-rise rounded-xl border border-destructive/30 bg-destructive/10 p-6 text-center">
           <p className="text-sm text-destructive">Failed to load signals.</p>
-          <Button size="sm" variant="outline" className="mt-3" onClick={() => refetch()}>
+          <Button size="sm" variant="outline" className="btn-press mt-3" onClick={() => refetch()}>
             Retry
           </Button>
         </div>
       )}
 
       {!isLoading && !isError && signals.length === 0 && (
-        <div className="rounded-xl border border-border bg-card/40 p-10 text-center">
+        <div className="animate-rise rounded-xl border border-border bg-card/40 p-10 text-center">
           <Radio className="mx-auto h-8 w-8 text-muted-foreground" />
           <h3 className="mt-3 font-semibold">No signals match your filters</h3>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -254,7 +254,7 @@ function SignalFeed() {
         </div>
       )}
 
-      <div className="space-y-3">
+      <div className="stagger space-y-3">
         {signals.map((s) => (
           <SignalCard
             key={s.id}
