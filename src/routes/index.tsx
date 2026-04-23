@@ -19,6 +19,18 @@ import {
   TrendingUp,
   Users,
   Zap,
+  Brain,
+  Target,
+  Mail,
+  PhoneCall,
+  Workflow,
+  RefreshCw,
+  Lock,
+  Clock,
+  BarChart3,
+  Gauge,
+  FileDown,
+  MapPinned,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/')({
