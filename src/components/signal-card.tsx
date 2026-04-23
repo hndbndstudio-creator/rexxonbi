@@ -24,10 +24,12 @@ interface Props {
   signal: SignalWithRelations;
   onClaim?: (id: string) => void;
   onDismiss?: (id: string) => void;
+  onDraft?: (signal: SignalWithRelations) => void;
   isPending?: boolean;
+  isDrafting?: boolean;
 }
 
-export function SignalCard({ signal, onClaim, onDismiss, isPending }: Props) {
+export function SignalCard({ signal, onClaim, onDismiss, onDraft, isPending, isDrafting }: Props) {
   const conf = confidenceLabel(signal.confidence_score);
   const typeColor = SIGNAL_TYPE_COLOR_VAR[signal.signal_type as keyof typeof SIGNAL_TYPE_COLOR_VAR];
   const company = signal.company;
@@ -160,6 +162,18 @@ export function SignalCard({ signal, onClaim, onDismiss, isPending }: Props) {
             View Account <ArrowRight className="ml-1 h-3 w-3" />
           </Link>
         </Button>
+        {onDraft && (
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-8 text-xs"
+            onClick={() => onDraft(signal)}
+            disabled={isDrafting}
+          >
+            <Mail className="mr-1 h-3.5 w-3.5" />
+            {isDrafting ? 'Drafting…' : 'Draft Outreach'}
+          </Button>
+        )}
         <div className="flex-1" />
         <Button
           size="sm"
