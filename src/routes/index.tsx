@@ -690,11 +690,12 @@ function LandingPage() {
             <Logo />
             <span className="text-sm font-medium">Rexxon AI</span>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
             <a href="#product" className="hover:text-foreground">Product</a>
             <a href="#pricing" className="hover:text-foreground">Pricing</a>
             <Link to="/blog" className="hover:text-foreground">Blog</Link>
             <Link to="/case-studies" className="hover:text-foreground">Case studies</Link>
+            <Link to="/affiliates" className="hover:text-foreground">Affiliate program</Link>
             <a href="https://docs.rexxon.ai" className="hover:text-foreground">Docs</a>
             <a href="mailto:hello@rexxon.ai" className="hover:text-foreground">Contact</a>
           </div>
