@@ -79,8 +79,9 @@ export function DashboardShell({ children }: { children: ReactNode }) {
             return (
               <Link key={item.to} to={item.to}>
                 <div
+                  data-tour={item.tourId}
                   className={cn(
-                    'group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors',
+                    'group relative flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors',
                     active
                       ? 'bg-sidebar-accent text-sidebar-accent-foreground'
                       : 'text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground'
