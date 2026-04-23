@@ -64,11 +64,11 @@ export function DashboardShell({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen w-full bg-background">
       {/* Sidebar */}
       <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-sidebar md:flex">
-        <Link to="/dashboard" className="flex h-14 items-center gap-2 border-b border-border px-4">
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-brand text-brand-foreground">
-            <Activity className="h-4 w-4" />
+        <Link to="/dashboard" className="flex h-16 items-center gap-2.5 border-b border-border px-4">
+          <div className="logo-badge relative flex h-8 w-8 items-center justify-center rounded-md text-brand-foreground">
+            <Activity className="relative z-10 h-4 w-4 drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]" strokeWidth={2.5} />
           </div>
-          <span className="font-semibold tracking-tight">Rexxon AI</span>
+          <span className="text-base font-semibold tracking-tight">Rexxon AI</span>
         </Link>
 
         <nav className="flex-1 space-y-0.5 p-2">

@@ -253,20 +253,27 @@ function LandingPage() {
       </section>
 
       {/* How it works */}
-      <section className="border-y border-border bg-card/30 py-24">
+      <section className="border-y border-border bg-card/30 py-28">
         <div className="mx-auto max-w-7xl px-6">
-          <SectionHeader eyebrow="How it works" title="Trigger → Insight → Action" />
-          <div className="mt-12 grid gap-6 md:grid-cols-4">
+          <SectionHeader
+            eyebrow="How it works"
+            title="Trigger → Insight → Action"
+            subtitle="Four steps from signal detection to a meeting on your calendar. Set it up once. Let it run."
+          />
+          <div className="mt-14 grid gap-6 md:grid-cols-4">
             {[
-              { n: '01', t: 'Define territory', d: 'Pick industries, employee bands, funding stages, and named accounts you want to monitor.' },
+              { n: '01', t: 'Define your territory', d: 'Pick industries, employee bands, funding stages, and named accounts you want to monitor.' },
               { n: '02', t: 'Signals fire', d: 'Job posts, news, filings, and leadership moves are scored against your buying-trigger taxonomy.' },
               { n: '03', t: 'AI interprets', d: 'Each signal is enriched with insight, vendor categories, and the right hiring manager.' },
-              { n: '04', t: 'You act', d: 'Drafted outreach lands in your inbox or Slack. One click pushes it to your sequence.' },
-            ].map((step) => (
-              <div key={step.n} className="rounded-xl border border-border bg-background/40 p-5">
-                <div className="font-mono text-xs text-brand">{step.n}</div>
-                <h3 className="mt-2 font-semibold">{step.t}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{step.d}</p>
+              { n: '04', t: 'You hit send', d: 'Drafted outreach lands in your inbox or Slack. One click pushes it to your sequence.' },
+            ].map((step, idx) => (
+              <div key={step.n} className="hover-lift relative rounded-2xl border border-border bg-background/50 p-6 shadow-soft backdrop-blur-sm">
+                <div className="flex items-center justify-between">
+                  <div className="font-mono text-xs font-semibold tracking-wider text-brand">{step.n}</div>
+                  {idx < 3 && <ArrowRight className="hidden h-4 w-4 text-muted-foreground/40 md:block" />}
+                </div>
+                <h3 className="mt-3 text-base font-semibold">{step.t}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{step.d}</p>
               </div>
             ))}
           </div>
@@ -295,12 +302,12 @@ function LandingPage() {
             { cat: 'Compliance', spend: 'SOC 2, ISO, GDPR, HIPAA tools' },
             { cat: 'Executive', spend: 'Strategy, board reporting' },
           ].map((c) => (
-            <div key={c.cat} className="flex items-center justify-between rounded-lg border border-border bg-card/40 px-4 py-3">
+            <div key={c.cat} className="hover-lift flex items-center justify-between rounded-xl border border-border bg-card/50 px-4 py-3.5 shadow-soft backdrop-blur-sm">
               <div>
                 <div className="text-sm font-medium">{c.cat}</div>
-                <div className="text-xs text-muted-foreground">{c.spend}</div>
+                <div className="mt-0.5 text-xs text-muted-foreground">{c.spend}</div>
               </div>
-              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+              <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
             </div>
           ))}
         </div>
@@ -325,9 +332,9 @@ function LandingPage() {
               { i: <Shield className="h-4 w-4" />, n: 'ISACA' },
               { i: <Shield className="h-4 w-4" />, n: 'CyberSeek' },
             ].map((s) => (
-              <div key={s.n} className="flex items-center gap-2 rounded-lg border border-border bg-background/40 px-3 py-2.5 text-sm">
-                <span className="text-brand">{s.i}</span>
-                {s.n}
+              <div key={s.n} className="hover-lift flex items-center gap-2.5 rounded-xl border border-border bg-background/50 px-3.5 py-3 text-sm shadow-soft backdrop-blur-sm">
+                <span className="flex h-7 w-7 items-center justify-center rounded-md bg-brand/15 text-brand shadow-inset-glow">{s.i}</span>
+                <span className="font-medium">{s.n}</span>
               </div>
             ))}
           </div>
