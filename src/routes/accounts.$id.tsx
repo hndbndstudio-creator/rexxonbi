@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useParams } from '@tanstack/react-router';
+import { useEffect, useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/use-auth';
 import { DashboardShell } from '@/components/dashboard-shell';
@@ -146,6 +147,20 @@ function AccountDetail() {
     if (user) logActivity(user.id, 'CSV_EXPORTED', { metadata: { kind: 'contacts', count: contacts.length } });
   };
 
+  // Default to "brief" tab when arriving via "View Account" (hash=#brief), else overview.
+  const initialHash = typeof window !== 'undefined' ? window.location.hash.replace('#', '') : '';
+  const [tab, setTab] = useState<string>(initialHash === 'brief' ? 'brief' : 'overview');
+
+  // Auto-generate the brief on first arrival to the brief tab if we don't have one yet.
+  const brief = (company as any)?.brief as Brief | null;
+  const autoGenRef = useRef(false);
+  useEffect(() => {
+    if (tab === 'brief' && company && !brief && !briefMut.isPending && !autoGenRef.current) {
+      autoGenRef.current = true;
+      briefMut.mutate(false);
+    }
+  }, [tab, brief, company, briefMut]);
+
   if (isLoading) {
     return (
       <div className="mx-auto max-w-5xl px-4 py-6 md:px-8">
@@ -168,7 +183,6 @@ function AccountDetail() {
   }
 
   const isMon = monitored.has(company.id);
-  const brief = (company as any).brief as Brief | null;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 md:px-8">
@@ -223,7 +237,7 @@ function AccountDetail() {
       </header>
 
       {/* Tabs */}
-      <Tabs defaultValue="overview" className="mt-6">
+      <Tabs value={tab} onValueChange={setTab} className="mt-6">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="brief">
