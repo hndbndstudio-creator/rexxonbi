@@ -104,7 +104,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
           })}
         </nav>
 
-        <div className="border-t border-border p-3">
+        <div className="space-y-2 border-t border-border p-3">
           <div className="flex items-center gap-2.5 rounded-md p-1.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand/20 text-xs font-semibold text-brand">
               {(user.email || 'U').slice(0, 2).toUpperCase()}
@@ -113,10 +113,16 @@ export function DashboardShell({ children }: { children: ReactNode }) {
               <div className="truncate text-xs font-medium">{user.email}</div>
               <div className="text-[11px] text-muted-foreground">Team plan · Trial</div>
             </div>
-            <Button size="icon" variant="ghost" onClick={handleSignOut} className="h-7 w-7" title="Sign out">
-              <LogOut className="h-3.5 w-3.5" />
-            </Button>
           </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleSignOut}
+            className="w-full justify-center gap-2"
+          >
+            <LogOut className="h-3.5 w-3.5" />
+            Sign out
+          </Button>
         </div>
       </aside>
 
