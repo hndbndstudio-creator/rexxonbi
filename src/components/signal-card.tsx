@@ -161,7 +161,7 @@ export function SignalCard({ signal, onClaim, onDismiss, onDraft, isPending, isD
           <Link
             to="/accounts/$id"
             params={{ id: signal.company_id }}
-            search={{ tab: 'brief' }}
+            hash="brief"
           >
             View Account <ArrowRight className="ml-1 h-3 w-3" />
           </Link>
