@@ -38,8 +38,10 @@ import {
   Star,
   ShieldCheck,
   CalendarCheck,
+  Play,
   X as CloseIcon,
 } from 'lucide-react';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { RexxonLogo } from '@/components/rexxon-logo';
 import { BLOG_POSTS, CASE_STUDIES } from '@/lib/blog-content';
 import birdseyeDashboard from '@/assets/birdseye-dashboard.png';
@@ -188,6 +190,18 @@ function LandingPage() {
   const indexRef = useRef(4);
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [stickyDismissed, setStickyDismissed] = useState(false);
+  const [demoOpen, setDemoOpen] = useState(false);
+  const demoVideoRef = useRef<HTMLVideoElement>(null);
+
+  // Reset video to start when modal closes; autoplay handled by `autoPlay` when open
+  useEffect(() => {
+    const v = demoVideoRef.current;
+    if (!v) return;
+    if (!demoOpen) {
+      v.pause();
+      v.currentTime = 0;
+    }
+  }, [demoOpen]);
 
   useReveal();
 
@@ -294,8 +308,19 @@ function LandingPage() {
                     <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </Button>
                 </Link>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={() => setDemoOpen(true)}
+                  className="hover-lift group backdrop-blur-sm"
+                >
+                  <span className="relative mr-2 flex h-6 w-6 items-center justify-center rounded-full bg-brand/15 text-brand transition-colors group-hover:bg-brand group-hover:text-brand-foreground">
+                    <Play className="h-3 w-3 fill-current" />
+                  </span>
+                  Watch 30-second demo
+                </Button>
                 <Link to="/schedule-demo">
-                  <Button size="lg" variant="outline" className="hover-lift backdrop-blur-sm">
+                  <Button size="lg" variant="ghost" className="hover-lift">
                     <CalendarCheck className="mr-1 h-4 w-4" />
                     Book a 15-min demo
                   </Button>
@@ -1012,6 +1037,74 @@ function LandingPage() {
           </div>
         </div>
       )}
+
+      {/* ============================ DEMO VIDEO MODAL ============================ */}
+      <Dialog open={demoOpen} onOpenChange={setDemoOpen}>
+        <DialogContent
+          className="overflow-hidden border-border bg-background p-0 sm:max-w-4xl"
+          style={{ width: 'calc(100% - 2rem)' }}
+        >
+          <DialogTitle className="sr-only">30-second product demo</DialogTitle>
+          <DialogDescription className="sr-only">
+            A 30-second tour of Rexxon's Bird's-eye dashboard, live signal feed, and AI-drafted outreach.
+          </DialogDescription>
+
+          {/* Header strip */}
+          <div className="flex items-center justify-between border-b border-border bg-card/60 px-5 py-3 backdrop-blur">
+            <div className="flex items-center gap-3">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-60" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-brand" />
+              </span>
+              <div>
+                <div className="text-sm font-semibold leading-tight">30-second product tour</div>
+                <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                  Bird's-eye → Signal feed → Outreach
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Video */}
+          <div className="relative aspect-video bg-black">
+            <video
+              ref={demoVideoRef}
+              src="/rexxon-demo.mp4"
+              className="h-full w-full"
+              controls
+              playsInline
+              autoPlay={demoOpen}
+              preload="metadata"
+            />
+          </div>
+
+          {/* Footer chapters + CTA */}
+          <div className="grid gap-3 border-t border-border bg-card/40 px-5 py-4 sm:grid-cols-[1fr_auto] sm:items-center">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1.5">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand/15 font-mono text-[10px] font-semibold text-brand">1</span>
+                Bird's-eye
+              </span>
+              <ChevronRight className="h-3 w-3 text-muted-foreground/50" />
+              <span className="flex items-center gap-1.5">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand/15 font-mono text-[10px] font-semibold text-brand">2</span>
+                Signal feed
+              </span>
+              <ChevronRight className="h-3 w-3 text-muted-foreground/50" />
+              <span className="flex items-center gap-1.5">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand/15 font-mono text-[10px] font-semibold text-brand">3</span>
+                Outreach
+              </span>
+            </div>
+            <Link to="/signup" onClick={() => setDemoOpen(false)}>
+              <Button size="sm" className="btn-press w-full bg-brand text-brand-foreground shadow-inset-glow sm:w-auto">
+                Start free trial
+                <ArrowRight className="ml-1 h-3.5 w-3.5" />
+              </Button>
+            </Link>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
