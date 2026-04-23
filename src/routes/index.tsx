@@ -276,8 +276,8 @@ function LandingPage() {
           <div className="absolute inset-0 bg-grid opacity-[0.08]" />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 pt-12 pb-16 md:px-6 md:pt-20 md:pb-12 md:pb-24">
-          <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+        <div className="relative mx-auto max-w-7xl px-4 pt-12 pb-16 md:px-6 md:pt-20 md:pb-24">
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-12">
             {/* Copy */}
             <div className="animate-fade-up">
               <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium text-muted-foreground shadow-soft backdrop-blur-sm">
