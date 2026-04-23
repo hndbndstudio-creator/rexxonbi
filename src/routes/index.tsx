@@ -308,8 +308,19 @@ function LandingPage() {
                     <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </Button>
                 </Link>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={() => setDemoOpen(true)}
+                  className="hover-lift group backdrop-blur-sm"
+                >
+                  <span className="relative mr-2 flex h-6 w-6 items-center justify-center rounded-full bg-brand/15 text-brand transition-colors group-hover:bg-brand group-hover:text-brand-foreground">
+                    <Play className="h-3 w-3 fill-current" />
+                  </span>
+                  Watch 30-second demo
+                </Button>
                 <Link to="/schedule-demo">
-                  <Button size="lg" variant="outline" className="hover-lift backdrop-blur-sm">
+                  <Button size="lg" variant="ghost" className="hover-lift">
                     <CalendarCheck className="mr-1 h-4 w-4" />
                     Book a 15-min demo
                   </Button>
