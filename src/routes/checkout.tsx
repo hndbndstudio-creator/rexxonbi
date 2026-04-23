@@ -109,7 +109,7 @@ function CheckoutPage() {
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto max-w-6xl px-6 py-14 lg:py-20">
+      <main className="relative z-10 mx-auto max-w-6xl px-4 md:px-6 py-14 lg:py-12 md:py-20">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
           {/* LEFT — Order summary */}
           <div className="animate-fade-up">

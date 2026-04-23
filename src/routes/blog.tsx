@@ -61,7 +61,7 @@ function BlogIndex() {
       />
       <BlogNav />
 
-      <header className="mx-auto max-w-6xl px-6 pt-16 pb-10">
+      <header className="mx-auto max-w-6xl px-4 md:px-6 pt-16 pb-10">
         <p className="text-xs font-mono uppercase tracking-widest text-brand">Field notes</p>
         <h1 className="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">
           The Rexxon AI blog
@@ -73,7 +73,7 @@ function BlogIndex() {
       </header>
 
       {featured && (
-        <section className="mx-auto max-w-6xl px-6 pb-12">
+        <section className="mx-auto max-w-6xl px-4 md:px-6 pb-12">
           <Link
             to="/blog/$slug"
             params={{ slug: featured.slug }}
@@ -95,7 +95,7 @@ function BlogIndex() {
         </section>
       )}
 
-      <section className="mx-auto max-w-6xl px-6 pb-24">
+      <section className="mx-auto max-w-6xl px-4 md:px-6 pb-24">
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {rest.map((p) => (
             <Link

@@ -11,7 +11,7 @@ export const Route = createFileRoute("/case-studies/$slug")({
   },
   component: CaseStudyPage,
   notFoundComponent: () => (
-    <div className="mx-auto max-w-2xl px-6 py-24 text-center">
+    <div className="mx-auto max-w-2xl px-4 md:px-6 py-12 md:py-24 text-center">
       <h1 className="text-2xl font-semibold">Case study not found</h1>
       <Link to="/case-studies" className="mt-4 inline-block text-brand">Back to case studies</Link>
     </div>
@@ -63,7 +63,7 @@ function CaseStudyPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <BlogNav />
 
-      <article className="mx-auto max-w-3xl px-6 pt-12 pb-16">
+      <article className="mx-auto max-w-3xl px-4 md:px-6 pt-12 pb-16">
         <Link to="/case-studies" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-3.5 w-3.5" /> All case studies
         </Link>
@@ -153,7 +153,7 @@ function CaseStudyPage() {
         <p className="mt-10 text-xs text-muted-foreground">Published {formatDate(c.publishedAt)}</p>
       </article>
 
-      <section className="mx-auto max-w-6xl px-6 pb-20">
+      <section className="mx-auto max-w-6xl px-4 md:px-6 pb-20">
         <h2 className="text-sm font-mono uppercase tracking-widest text-muted-foreground">More customer stories</h2>
         <div className="mt-4 grid gap-5 md:grid-cols-3">
           {others.map((o) => (

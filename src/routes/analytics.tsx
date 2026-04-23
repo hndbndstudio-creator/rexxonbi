@@ -147,7 +147,7 @@ function AnalyticsPage() {
           { label: 'Outreach sent', value: data.outreachSent, accent: 'cyan', icon: Send },
         ]}
       />
-      <div className="mx-auto max-w-7xl px-6 py-8 space-y-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-6 py-8 space-y-8">
         {/* Hero stat triplet — Salesmotion-style headline impact */}
         <div className="reveal rounded-2xl border border-border bg-gradient-to-br from-card/80 to-card/30 p-8 shadow-elevated animate-rise">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">

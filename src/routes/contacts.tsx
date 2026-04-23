@@ -156,7 +156,7 @@ function Contacts() {
               <tbody>
                 {isLoading && (
                   <tr>
-                    <td colSpan={6} className="px-4 py-12 text-center">
+                    <td colSpan={6} className="px-4 py-8 md:py-12 text-center">
                       <div className="mx-auto h-5 w-5 animate-spin rounded-full border-2 border-brand border-t-transparent" />
                       <p className="mt-2 text-xs text-muted-foreground">Loading contacts…</p>
                     </td>
@@ -164,7 +164,7 @@ function Contacts() {
                 )}
                 {!isLoading && contacts.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="px-4 py-16 text-center">
+                    <td colSpan={6} className="px-4 py-10 md:py-16 text-center">
                       <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand/10">
                         <Users className="h-6 w-6 text-brand" />
                       </div>

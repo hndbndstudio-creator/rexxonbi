@@ -110,7 +110,7 @@ function AffiliatesPage() {
 
       {/* Hero */}
       <section className="bg-grid">
-        <div className="mx-auto max-w-5xl px-6 pt-20 pb-16 text-center">
+        <div className="mx-auto max-w-5xl px-4 md:px-6 pt-20 pb-16 text-center">
           <p className="inline-flex items-center gap-1.5 rounded-full border border-brand/40 bg-brand/10 px-3 py-1 text-xs font-mono uppercase tracking-widest text-brand">
             <Sparkles className="h-3 w-3" /> Affiliate program
           </p>
@@ -140,7 +140,7 @@ function AffiliatesPage() {
       </section>
 
       {/* Stats strip */}
-      <section className="mx-auto max-w-5xl px-6 pb-16">
+      <section className="mx-auto max-w-5xl px-4 md:px-6 pb-16">
         <div className="grid gap-4 rounded-2xl border border-border bg-card p-6 sm:grid-cols-4">
           {[
             { v: "30%", l: "Recurring commission" },
@@ -157,7 +157,7 @@ function AffiliatesPage() {
       </section>
 
       {/* Why partner */}
-      <section className="mx-auto max-w-6xl px-6 pb-20">
+      <section className="mx-auto max-w-6xl px-4 md:px-6 pb-20">
         <div className="text-center">
           <p className="text-xs font-mono uppercase tracking-widest text-brand">Why Rexxon</p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">A program built for partners who actually sell</h2>
@@ -207,7 +207,7 @@ function AffiliatesPage() {
       </section>
 
       {/* Tiers */}
-      <section className="mx-auto max-w-6xl px-6 pb-20">
+      <section className="mx-auto max-w-6xl px-4 md:px-6 pb-20">
         <div className="text-center">
           <p className="text-xs font-mono uppercase tracking-widest text-brand">Commission tiers</p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">Earn more as you grow</h2>
@@ -249,7 +249,7 @@ function AffiliatesPage() {
       </section>
 
       {/* How it works */}
-      <section className="mx-auto max-w-5xl px-6 pb-20">
+      <section className="mx-auto max-w-5xl px-4 md:px-6 pb-20">
         <div className="text-center">
           <p className="text-xs font-mono uppercase tracking-widest text-brand">How it works</p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">Three steps to first commission</h2>
@@ -270,7 +270,7 @@ function AffiliatesPage() {
       </section>
 
       {/* Earnings calculator */}
-      <section className="mx-auto max-w-5xl px-6 pb-20">
+      <section className="mx-auto max-w-5xl px-4 md:px-6 pb-20">
         <div className="rounded-2xl border border-border bg-card p-8">
           <div className="flex items-center gap-2">
             <Percent className="h-5 w-5 text-brand" />
@@ -296,7 +296,7 @@ function AffiliatesPage() {
       </section>
 
       {/* FAQ */}
-      <section className="mx-auto max-w-3xl px-6 pb-20">
+      <section className="mx-auto max-w-3xl px-4 md:px-6 pb-20">
         <div className="text-center">
           <p className="text-xs font-mono uppercase tracking-widest text-brand">FAQ</p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">Common questions</h2>
@@ -312,7 +312,7 @@ function AffiliatesPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="mx-auto max-w-4xl px-6 pb-24">
+      <section className="mx-auto max-w-4xl px-4 md:px-6 pb-24">
         <div className="rounded-2xl border border-brand/40 bg-brand/5 p-10 text-center">
           <Gift className="mx-auto h-8 w-8 text-brand" />
           <h2 className="mt-3 text-3xl font-semibold tracking-tight">Ready to start earning?</h2>
