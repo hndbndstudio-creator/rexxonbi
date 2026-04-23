@@ -9,23 +9,42 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TerritoryRouteImport } from './routes/territory'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as OutreachRouteImport } from './routes/outreach'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactsRouteImport } from './routes/contacts'
+import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as AccountsRouteImport } from './routes/accounts'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountsIdRouteImport } from './routes/accounts.$id'
 
+const TerritoryRoute = TerritoryRouteImport.update({
+  id: '/territory',
+  path: '/territory',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OutreachRoute = OutreachRouteImport.update({
+  id: '/outreach',
+  path: '/outreach',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -41,6 +60,11 @@ const DashboardRoute = DashboardRouteImport.update({
 const ContactsRoute = ContactsRouteImport.update({
   id: '/contacts',
   path: '/contacts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnalyticsRoute = AnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountsRoute = AccountsRouteImport.update({
@@ -62,32 +86,44 @@ const AccountsIdRoute = AccountsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
+  '/analytics': typeof AnalyticsRoute
   '/contacts': typeof ContactsRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/outreach': typeof OutreachRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
+  '/territory': typeof TerritoryRoute
   '/accounts/$id': typeof AccountsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
+  '/analytics': typeof AnalyticsRoute
   '/contacts': typeof ContactsRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/outreach': typeof OutreachRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
+  '/territory': typeof TerritoryRoute
   '/accounts/$id': typeof AccountsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
+  '/analytics': typeof AnalyticsRoute
   '/contacts': typeof ContactsRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/outreach': typeof OutreachRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
+  '/territory': typeof TerritoryRoute
   '/accounts/$id': typeof AccountsIdRoute
 }
 export interface FileRouteTypes {
@@ -95,46 +131,69 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/accounts'
+    | '/analytics'
     | '/contacts'
     | '/dashboard'
     | '/login'
+    | '/outreach'
     | '/reset-password'
+    | '/settings'
     | '/signup'
+    | '/territory'
     | '/accounts/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/accounts'
+    | '/analytics'
     | '/contacts'
     | '/dashboard'
     | '/login'
+    | '/outreach'
     | '/reset-password'
+    | '/settings'
     | '/signup'
+    | '/territory'
     | '/accounts/$id'
   id:
     | '__root__'
     | '/'
     | '/accounts'
+    | '/analytics'
     | '/contacts'
     | '/dashboard'
     | '/login'
+    | '/outreach'
     | '/reset-password'
+    | '/settings'
     | '/signup'
+    | '/territory'
     | '/accounts/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountsRoute: typeof AccountsRouteWithChildren
+  AnalyticsRoute: typeof AnalyticsRoute
   ContactsRoute: typeof ContactsRoute
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
+  OutreachRoute: typeof OutreachRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
+  TerritoryRoute: typeof TerritoryRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/territory': {
+      id: '/territory'
+      path: '/territory'
+      fullPath: '/territory'
+      preLoaderRoute: typeof TerritoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/signup': {
       id: '/signup'
       path: '/signup'
@@ -142,11 +201,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/outreach': {
+      id: '/outreach'
+      path: '/outreach'
+      fullPath: '/outreach'
+      preLoaderRoute: typeof OutreachRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -168,6 +241,13 @@ declare module '@tanstack/react-router' {
       path: '/contacts'
       fullPath: '/contacts'
       preLoaderRoute: typeof ContactsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analytics': {
+      id: '/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AnalyticsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/accounts': {
@@ -209,11 +289,15 @@ const AccountsRouteWithChildren = AccountsRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountsRoute: AccountsRouteWithChildren,
+  AnalyticsRoute: AnalyticsRoute,
   ContactsRoute: ContactsRoute,
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
+  OutreachRoute: OutreachRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
+  TerritoryRoute: TerritoryRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
