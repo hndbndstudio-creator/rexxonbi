@@ -42,7 +42,7 @@ function SettingsPage() {
         </header>
 
         {/* Agent status banner */}
-        <div className="rounded-xl border border-border bg-card/40 p-5">
+        <div className="surface-3 rounded-xl p-5">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-sm font-semibold flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-brand" />
@@ -84,7 +84,7 @@ function SettingsPage() {
           </TabsContent>
 
           <TabsContent value="billing" className="mt-6 space-y-4">
-            <div className="rounded-lg border border-border bg-card/40 p-5">
+            <div className="surface-2 rounded-xl p-5">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-semibold">Current plan</h3>
@@ -112,7 +112,7 @@ function SettingsPage() {
               { id: 'weekly-summary', label: 'Weekly summary email' },
               { id: 'crm-push', label: 'Auto-push to CRM on signal claim' },
             ].map((n) => (
-              <div key={n.id} className="flex items-center justify-between rounded-lg border border-border bg-card/40 p-4">
+              <div key={n.id} className="surface-1 flex items-center justify-between rounded-lg p-4 transition-colors hover:border-hairline-brand">
                 <Label htmlFor={n.id} className="cursor-pointer">{n.label}</Label>
                 <Switch id={n.id} defaultChecked={n.id !== 'crm-push'} />
               </div>
@@ -136,7 +136,7 @@ function ProfileTab({ email }: { email: string }) {
     else { toast.success('Password updated'); setPw(''); }
   };
   return (
-    <div className="rounded-lg border border-border bg-card/40 p-5 space-y-4">
+    <div className="surface-2 rounded-xl p-5 space-y-4">
       <div>
         <Label className="text-sm">Email</Label>
         <Input value={email} readOnly className="mt-1.5 bg-muted/40" />
@@ -157,7 +157,7 @@ function ProfileTab({ email }: { email: string }) {
 
 function TeamTab({ email }: { email: string }) {
   return (
-    <div className="rounded-lg border border-border bg-card/40 p-5 space-y-5">
+    <div className="surface-2 rounded-xl p-5 space-y-5">
       <div>
         <Label className="text-sm">Team name</Label>
         <Input defaultValue="My Team" className="mt-1.5" />
@@ -218,7 +218,7 @@ function EnrichmentAgentPanel() {
   };
 
   return (
-    <div className="rounded-xl border border-border bg-card/40 p-5">
+    <div className="surface-2 rounded-xl p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3">
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-brand/15 text-brand">
@@ -326,7 +326,7 @@ function IntegrationRow({ id, name, desc }: { id: string; name: string; desc: st
     toast.success(`${name} ${next ? 'connected' : 'disconnected'}`);
   };
   return (
-    <div className="flex items-center justify-between rounded-lg border border-border bg-card/40 p-4">
+    <div className="surface-1 flex items-center justify-between rounded-lg p-4 transition-colors hover:border-hairline-brand">
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-md bg-accent/40 font-semibold text-sm">
           {name[0]}

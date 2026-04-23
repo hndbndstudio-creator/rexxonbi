@@ -143,19 +143,54 @@ body {
   }
 }
 
-/* ─── Elevation tokens ─────────────────────────────────────────── */
+/* ─── Elevation tokens (3-tier system) ────────────────────────── */
+/*
+ * surface-1 → flat panels, filters, sub-sections (lowest)
+ * surface-2 → primary content cards (default)
+ * surface-3 → featured/hero cards (highest emphasis)
+ *
+ * Each tier pairs a shadow + background opacity + border treatment so
+ * hierarchy reads consistently across the entire app.
+ */
+
+.surface-1 {
+  background-color: color-mix(in oklab, var(--card) 45%, transparent);
+  border: 1px solid color-mix(in oklab, var(--foreground) 6%, transparent);
+  box-shadow:
+    0 1px 0 0 color-mix(in oklab, white 3%, transparent) inset;
+}
+
+.surface-2 {
+  background-color: color-mix(in oklab, var(--card) 70%, transparent);
+  border: 1px solid color-mix(in oklab, var(--foreground) 9%, transparent);
+  box-shadow:
+    0 1px 0 0 color-mix(in oklab, white 4%, transparent) inset,
+    0 1px 2px 0 rgb(0 0 0 / 0.35),
+    0 8px 24px -14px rgb(0 0 0 / 0.55);
+}
+
+.surface-3 {
+  background-color: color-mix(in oklab, var(--card) 88%, transparent);
+  border: 1px solid color-mix(in oklab, var(--brand) 22%, var(--border));
+  box-shadow:
+    0 1px 0 0 color-mix(in oklab, white 6%, transparent) inset,
+    0 4px 12px -2px rgb(0 0 0 / 0.4),
+    0 24px 60px -22px rgb(0 0 0 / 0.55),
+    0 0 0 1px color-mix(in oklab, var(--brand) 8%, transparent);
+}
+
+/* Aliases kept for backwards-compat with existing landing styles */
 .shadow-soft {
   box-shadow:
     0 1px 0 0 color-mix(in oklab, white 4%, transparent) inset,
-    0 1px 2px 0 rgb(0 0 0 / 0.4),
-    0 8px 24px -12px rgb(0 0 0 / 0.5);
+    0 1px 2px 0 rgb(0 0 0 / 0.35),
+    0 8px 24px -14px rgb(0 0 0 / 0.55);
 }
-
 .shadow-elevated {
   box-shadow:
     0 1px 0 0 color-mix(in oklab, white 5%, transparent) inset,
     0 4px 12px -2px rgb(0 0 0 / 0.4),
-    0 24px 60px -20px rgb(0 0 0 / 0.6);
+    0 24px 60px -22px rgb(0 0 0 / 0.55);
 }
 
 .shadow-inset-glow {
@@ -171,6 +206,16 @@ body {
 .glow-brand {
   box-shadow: 0 0 0 1px color-mix(in oklab, var(--brand) 30%, transparent),
               0 8px 40px -10px color-mix(in oklab, var(--brand) 50%, transparent);
+}
+
+/* Section divider — use to separate page-level sections */
+.section-divider {
+  border-top: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);
+}
+
+/* Hairline border emphasis (brand-tinted) for active/featured states */
+.border-hairline-brand {
+  border-color: color-mix(in oklab, var(--brand) 30%, var(--border));
 }
 
 /* Hover lift utility */

@@ -104,7 +104,7 @@ function Contacts() {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-border bg-card/40">
+      <div className="surface-2 overflow-hidden rounded-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-muted/40 text-[10px] font-mono uppercase text-muted-foreground">

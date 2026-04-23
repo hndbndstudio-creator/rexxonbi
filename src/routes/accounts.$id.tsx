@@ -164,7 +164,7 @@ function AccountDetail() {
   if (isLoading) {
     return (
       <div className="mx-auto max-w-5xl px-4 py-6 md:px-8">
-        <div className="h-32 animate-pulse rounded-xl border border-border bg-card/40" />
+        <div className="skeleton-shimmer h-32 rounded-xl border border-border" />
       </div>
     );
   }
@@ -172,7 +172,7 @@ function AccountDetail() {
   if (!company) {
     return (
       <div className="mx-auto max-w-5xl px-4 py-6 md:px-8">
-        <div className="rounded-xl border border-border bg-card/40 p-10 text-center">
+        <div className="surface-1 rounded-xl p-10 text-center">
           <h3 className="font-semibold">Company not found</h3>
           <Button asChild variant="outline" size="sm" className="mt-3">
             <Link to="/accounts">Back to accounts</Link>
@@ -194,7 +194,7 @@ function AccountDetail() {
       </Link>
 
       {/* Header */}
-      <header className="rounded-xl border border-border bg-card/60 p-5">
+      <header className="surface-3 animate-rise rounded-xl p-5">
         <div className="flex flex-wrap items-start gap-4">
           <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-muted text-lg font-bold">
             {getInitials(company.name)}
@@ -262,7 +262,7 @@ function AccountDetail() {
             <Stat label="Monitored" value={isMon ? 'Yes' : 'No'} />
           </div>
           {company.tech_stack.length > 0 && (
-            <div className="rounded-xl border border-border bg-card/60 p-4">
+            <div className="surface-2 rounded-xl p-4">
               <h3 className="mb-2 text-xs font-mono uppercase text-muted-foreground">Tech stack</h3>
               <div className="flex flex-wrap gap-1.5">
                 {company.tech_stack.map((t) => (
@@ -273,7 +273,7 @@ function AccountDetail() {
               </div>
             </div>
           )}
-          <div className="rounded-xl border border-border bg-card/60 p-4">
+          <div className="surface-2 rounded-xl p-4">
             <h3 className="mb-2 text-xs font-mono uppercase text-muted-foreground">Recent signals</h3>
             {signals.slice(0, 3).length === 0 ? (
               <p className="text-sm text-muted-foreground">No signals yet.</p>
