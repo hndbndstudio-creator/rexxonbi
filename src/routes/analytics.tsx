@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { DashboardShell } from '@/components/dashboard-shell';
+import { PageHeader } from '@/components/page-header';
 import { supabase } from '@/integrations/supabase/client';
 import {
   BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, PieChart, Pie, Cell, Legend,
@@ -134,17 +135,21 @@ function AnalyticsPage() {
 
   return (
     <DashboardShell>
+      <PageHeader
+        icon={TrendingUp}
+        eyebrow="Pipeline impact"
+        title="Analytics"
+        subtitle="What your Signal & Outreach Agents shipped over the last 30 days."
+        stats={[
+          { label: 'Signals acted on', value: `${data.actionRate}%`, accent: 'green', icon: Zap },
+          { label: 'Reply → meeting', value: `${data.conversionRate}%`, accent: 'brand', icon: Trophy },
+          { label: 'Hours saved', value: `${data.hoursSaved}h`, accent: 'amber', icon: Clock },
+          { label: 'Outreach sent', value: data.outreachSent, accent: 'cyan', icon: Send },
+        ]}
+      />
       <div className="mx-auto max-w-7xl px-6 py-8 space-y-8">
-        <header>
-          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-            <TrendingUp className="h-6 w-6 text-brand" />
-            Analytics
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">Pipeline impact from your Signal & Outreach Agents · last 30 days.</p>
-        </header>
-
         {/* Hero stat triplet — Salesmotion-style headline impact */}
-        <div className="rounded-2xl border border-border bg-gradient-to-br from-card/80 to-card/30 p-8">
+        <div className="reveal rounded-2xl border border-border bg-gradient-to-br from-card/80 to-card/30 p-8 shadow-elevated animate-rise">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             <HeroStat
               icon={Zap}

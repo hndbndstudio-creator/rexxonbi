@@ -276,14 +276,7 @@ function Section({ title, desc, children }: { title: string; desc: string; child
   );
 }
 
-function Stat({ label, value, suffix }: { label: string; value: number | string; suffix?: string }) {
-  return (
-    <div className="flex items-baseline gap-1.5">
-      <span className="font-bold tabular-nums text-base">{value}{suffix}</span>
-      <span className="text-muted-foreground">{label}</span>
-    </div>
-  );
-}
+
 
 function ChipGroup({
   items,
