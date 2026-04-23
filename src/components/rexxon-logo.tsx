@@ -3,13 +3,17 @@ import logoFull from "@/assets/rexxon-logo-full.png";
 
 type Size = "sm" | "md" | "lg";
 
-// White wordmark on a transparent background — sized by height so it blends
-// into any dark surface (sidebar, footer, nav) without a visible container.
+// White wordmark on a transparent background — sized 4x larger than before
+// with a soft glow shadow behind it for depth on dark surfaces.
 const SIZES: Record<Size, string> = {
-  sm: "h-8",
-  md: "h-10",
-  lg: "h-14",
+  sm: "h-32",
+  md: "h-40",
+  lg: "h-56",
 };
+
+// Layered drop-shadow creates a soft halo/glow behind the wordmark.
+const SHADOW =
+  "drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)] drop-shadow-[0_0_24px_rgba(139,92,246,0.35)]";
 
 /**
  * Rexxon AI logo — white wordmark, transparent background. Drops into dark
@@ -26,7 +30,7 @@ export function RexxonLogo({
     <img
       src={logoFull}
       alt="Rexxon AI"
-      className={cn("w-auto object-contain", SIZES[size], className)}
+      className={cn("w-auto object-contain", SIZES[size], SHADOW, className)}
       draggable={false}
     />
   );
