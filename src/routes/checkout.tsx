@@ -84,7 +84,7 @@ function CheckoutPage() {
     await new Promise((r) => setTimeout(r, 800));
     toast.success('Trial activated! Redirecting to your dashboard…');
     setSubmitting(false);
-    router.navigate({ to: '/dashboard' });
+    router.navigate({ to: '/birdseye' });
   };
 
   return (

@@ -41,7 +41,7 @@ function SignupPage() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (user && !loading) router.navigate({ to: '/dashboard' });
+    if (user && !loading) router.navigate({ to: '/birdseye' });
   }, [user, loading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -50,7 +50,7 @@ function SignupPage() {
     try {
       await signUp(email, password);
       toast.success('Account created! Check your email to verify.');
-      router.navigate({ to: '/dashboard' });
+      router.navigate({ to: '/birdseye' });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Signup failed');
     } finally {

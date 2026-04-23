@@ -190,7 +190,7 @@ function LandingPage() {
   useReveal();
 
   useEffect(() => {
-    if (user && !loading) router.navigate({ to: '/dashboard' });
+    if (user && !loading) router.navigate({ to: '/birdseye' });
   }, [user, loading, router]);
 
   useEffect(() => {
