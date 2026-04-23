@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { DashboardShell } from '@/components/dashboard-shell';
+import { PageHeader } from '@/components/page-header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/lib/use-auth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Settings as SettingsIcon, Users, CheckCircle2, Radio, Mail, Sparkles, Brain, UserSearch, User as UserIcon, Building2, Briefcase, Save } from 'lucide-react';
+import { Settings as SettingsIcon, Users, CheckCircle2, Radio, Mail, Sparkles, Brain, UserSearch, User as UserIcon, Building2, Briefcase, Save, Plug, Shield } from 'lucide-react';
 
 export const Route = createFileRoute('/settings')({
   head: () => ({
@@ -36,16 +37,21 @@ function SettingsPage() {
 
   return (
     <DashboardShell>
+      <PageHeader
+        icon={SettingsIcon}
+        eyebrow="Workspace"
+        title="Settings"
+        subtitle="Manage your agents, integrations, profile, and team — all in one calm place."
+        badge="All systems operational"
+        badgeTone="green"
+        stats={[
+          { label: 'Agents online', value: 3, accent: 'green', icon: Sparkles },
+          { label: 'Integrations', value: INTEGRATIONS.length, accent: 'cyan', icon: Plug },
+          { label: 'Plan', value: 'Team · Trial', accent: 'brand', icon: Shield },
+          { label: 'Members', value: 1, accent: 'amber', icon: Users },
+        ]}
+      />
       <div className="mx-auto max-w-5xl px-6 py-8 space-y-6">
-        <header>
-          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-            <SettingsIcon className="h-6 w-6 text-brand" />
-            Settings
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Manage your agents, integrations, and team.
-          </p>
-        </header>
 
         {/* Agent status banner */}
         <div className="surface-3 rounded-xl p-5">

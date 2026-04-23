@@ -12,8 +12,9 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/lib/use-auth';
 import { toast } from 'sonner';
-import { Save, Target } from 'lucide-react';
+import { Save, Target, Filter, Sparkles, Bell, Settings2 } from 'lucide-react';
 import { SIGNAL_TYPE_LABELS, type SignalType, confidenceLabel } from '@/lib/types';
+import { PageHeader } from '@/components/page-header';
 
 export const Route = createFileRoute('/territory')({
   head: () => ({
@@ -115,42 +116,29 @@ function TerritoryPage() {
 
   return (
     <DashboardShell>
-      {/* Agent header */}
-      <div className="border-b border-border bg-card/30">
-        <div className="mx-auto max-w-4xl px-6 py-5">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-md bg-brand/15 text-brand">
-                <Target className="h-4 w-4" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-lg font-bold tracking-tight">Signal Agent</h1>
-                  <span className="rounded-full bg-green-500/15 px-2 py-0.5 text-[10px] font-medium text-green-300">
-                    Monitoring
-                  </span>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Tells the agent which accounts to watch, which signals to surface, and how loud to be.
-                </p>
-              </div>
-            </div>
-            <Button onClick={() => save.mutate()} disabled={save.isPending || isLoading}>
-              <Save className="mr-2 h-4 w-4" />
-              Save changes
-            </Button>
-          </div>
-          <div className="mt-4 flex flex-wrap items-center gap-6 text-xs">
-            <Stat label="Active filters" value={activeFilters} />
-            <Stat label="Signal types on" value={signalTypes.length} />
-            <Stat label="Min confidence" value={minConfidence} suffix="%" />
-            <Stat label="Notify mode" value={notifySlack ? 'Slack + Email' : 'Email'} />
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        icon={Target}
+        eyebrow="Signal agent"
+        title="Territory"
+        subtitle="Tell the agent which accounts to watch, which signals to surface, and how loud to be."
+        badge="Monitoring"
+        badgeTone="green"
+        stats={[
+          { label: 'Active filters', value: activeFilters, icon: Filter },
+          { label: 'Signal types on', value: signalTypes.length, accent: 'brand', icon: Sparkles },
+          { label: 'Min confidence', value: `${minConfidence}%`, accent: 'amber', icon: Settings2 },
+          { label: 'Notify mode', value: notifySlack ? 'Slack + Email' : 'Email', accent: 'cyan', icon: Bell },
+        ]}
+        actions={
+          <Button onClick={() => save.mutate()} disabled={save.isPending || isLoading} className="btn-press">
+            <Save className="mr-2 h-4 w-4" />
+            {save.isPending ? 'Saving…' : 'Save changes'}
+          </Button>
+        }
+      />
 
-      <div className="mx-auto max-w-4xl px-6 py-8 space-y-8">
-        <header>
+      <div className="mx-auto max-w-4xl px-6 py-8 space-y-6">
+        <header className="animate-rise">
           <h2 className="text-base font-semibold">Configure your territory</h2>
           <p className="text-xs text-muted-foreground mt-1">
             Each change updates what the Signal Agent surfaces in real time.
@@ -288,14 +276,7 @@ function Section({ title, desc, children }: { title: string; desc: string; child
   );
 }
 
-function Stat({ label, value, suffix }: { label: string; value: number | string; suffix?: string }) {
-  return (
-    <div className="flex items-baseline gap-1.5">
-      <span className="font-bold tabular-nums text-base">{value}{suffix}</span>
-      <span className="text-muted-foreground">{label}</span>
-    </div>
-  );
-}
+
 
 function ChipGroup({
   items,
