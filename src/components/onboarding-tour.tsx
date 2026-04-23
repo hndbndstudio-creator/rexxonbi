@@ -1,6 +1,17 @@
 import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { X, ArrowRight, Check, Sparkles } from 'lucide-react';
+import {
+  X,
+  ArrowRight,
+  Check,
+  Sparkles,
+  Radar,
+  Building2,
+  UserSearch,
+  Send,
+  MapPinned,
+  type LucideIcon,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -10,6 +21,7 @@ type Step = {
   title: string;
   body: string;
   cta?: { label: string; to?: string };
+  preview: { icon: LucideIcon; label: string };
 };
 
 const STEPS: Step[] = [
@@ -18,6 +30,7 @@ const STEPS: Step[] = [
     anchor: 'nav-dashboard',
     title: '1. Your Signal Feed',
     body: 'This is mission control. Every buying signal we surface — funding rounds, key hires, tech expansions — lands here in real time. Filter by type and confidence to focus on what matters.',
+    preview: { icon: Radar, label: 'Live buying signals' },
   },
   {
     id: 'accounts',
@@ -25,6 +38,7 @@ const STEPS: Step[] = [
     title: '2. Track target accounts',
     body: 'Add companies you care about. We monitor them 24/7 and generate AI research briefs so you walk into every conversation prepared.',
     cta: { label: 'Open Accounts', to: '/accounts' },
+    preview: { icon: Building2, label: 'Monitor target accounts' },
   },
   {
     id: 'contacts',
@@ -32,6 +46,7 @@ const STEPS: Step[] = [
     title: '3. Find the right people',
     body: 'Reveal verified emails and direct dials for decision-makers tied to each signal. Export to CSV or push straight to your CRM.',
     cta: { label: 'Open Contacts', to: '/contacts' },
+    preview: { icon: UserSearch, label: 'Reach decision-makers' },
   },
   {
     id: 'outreach',
@@ -39,6 +54,7 @@ const STEPS: Step[] = [
     title: '4. Send your first outreach',
     body: 'Generate personalized emails and multi-step sequences from any signal. Edit, approve, and ship — your AI agent drafts in seconds.',
     cta: { label: 'Open Outreach', to: '/outreach' },
+    preview: { icon: Send, label: 'AI-drafted outreach' },
   },
   {
     id: 'territory',
@@ -46,6 +62,7 @@ const STEPS: Step[] = [
     title: '5. Define your territory',
     body: 'Tell the Signal Agent your ICP — industries, geographies, deal size, and signal types — so the feed only shows what you can actually close.',
     cta: { label: 'Configure Territory', to: '/territory' },
+    preview: { icon: MapPinned, label: 'Tune your territory' },
   },
 ];
 
@@ -283,19 +300,30 @@ function TourPopover({
   onCta: () => void;
 }) {
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
-  const [ready, setReady] = useState(false);
+  const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
+  const [phase, setPhase] = useState<'glimpse' | 'popover'>('glimpse');
   const popRef = useRef<HTMLDivElement>(null);
 
-  // Scroll the anchor into view when the step changes, then mark ready.
+  // Scroll the anchor into view, then enter the glimpse phase, then the popover phase.
   useEffect(() => {
-    setReady(false);
+    setPhase('glimpse');
     setPos(null);
+    setAnchorRect(null);
+
     const el = document.querySelector(`[data-tour="${step.anchor}"]`) as HTMLElement | null;
     if (!el) {
-      // Anchor may not be mounted yet — retry briefly.
-      const retry = setTimeout(() => setReady(true), 250);
+      const retry = setTimeout(() => setPhase('popover'), 250);
       return () => clearTimeout(retry);
     }
+
+    const captureRect = () => setAnchorRect(el.getBoundingClientRect());
+
+    const startGlimpse = () => {
+      captureRect();
+      // Hold the spotlight for a beat so the user clocks the target, then reveal the popover.
+      const t = setTimeout(() => setPhase('popover'), 750);
+      return () => clearTimeout(t);
+    };
 
     const rect = el.getBoundingClientRect();
     const inView =
@@ -305,16 +333,16 @@ function TourPopover({
       rect.right <= window.innerWidth;
 
     if (inView) {
-      setReady(true);
-      return;
+      return startGlimpse();
     }
 
     el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
 
-    // Wait for smooth scroll to settle before showing the popover.
     let stableFrames = 0;
     let lastTop = el.getBoundingClientRect().top;
     let raf = 0;
+    let glimpseCleanup: (() => void) | null = null;
+
     const tick = () => {
       const t = el.getBoundingClientRect().top;
       if (Math.abs(t - lastTop) < 0.5) {
@@ -324,27 +352,31 @@ function TourPopover({
         lastTop = t;
       }
       if (stableFrames > 4) {
-        setReady(true);
+        glimpseCleanup = startGlimpse();
         return;
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
 
-    // Hard fallback in case scroll never settles.
-    const fallback = setTimeout(() => setReady(true), 800);
+    const fallback = setTimeout(() => {
+      if (!glimpseCleanup) glimpseCleanup = startGlimpse();
+    }, 800);
+
     return () => {
       cancelAnimationFrame(raf);
       clearTimeout(fallback);
+      glimpseCleanup?.();
     };
   }, [step.anchor]);
 
+  // Track anchor position for both the spotlight and the popover.
   useLayoutEffect(() => {
-    if (!ready) return;
     const update = () => {
       const el = document.querySelector(`[data-tour="${step.anchor}"]`) as HTMLElement | null;
       if (!el) return;
       const r = el.getBoundingClientRect();
+      setAnchorRect(r);
       const popW = 340;
       let left = r.right + 16;
       let top = r.top;
@@ -361,70 +393,144 @@ function TourPopover({
       window.removeEventListener('resize', update);
       window.removeEventListener('scroll', update, true);
     };
-  }, [step.anchor, ready]);
-
-  if (!pos) return null;
+  }, [step.anchor, phase]);
 
   const isLast = stepIdx === total - 1;
+  const PreviewIcon = step.preview.icon;
+
+  // Spotlight box around anchor (with padding).
+  const spot = anchorRect
+    ? {
+        top: anchorRect.top - 8,
+        left: anchorRect.left - 8,
+        width: anchorRect.width + 16,
+        height: anchorRect.height + 16,
+      }
+    : null;
+
+  // Floating preview chip — placed to the right of the anchor (or below if it overflows).
+  const chip = anchorRect
+    ? (() => {
+        const chipW = 220;
+        let left = anchorRect.right + 16;
+        let top = anchorRect.top + anchorRect.height / 2;
+        if (left + chipW > window.innerWidth - 16) {
+          left = Math.max(16, anchorRect.left - chipW - 16);
+        }
+        return { top, left };
+      })()
+    : null;
 
   return (
     <>
+      {/* Backdrop — softer during glimpse, full during popover */}
       <div
-        className="fixed inset-0 z-40 bg-background/40 backdrop-blur-[2px] animate-in fade-in"
-        onClick={onClose}
+        className={cn(
+          'fixed inset-0 z-40 transition-all duration-300',
+          phase === 'glimpse'
+            ? 'bg-background/20 backdrop-blur-[1px]'
+            : 'bg-background/45 backdrop-blur-[2px]'
+        )}
+        onClick={phase === 'popover' ? onClose : undefined}
       />
-      <div
-        ref={popRef}
-        className="fixed z-50 w-[340px] animate-in fade-in zoom-in-95 rounded-xl border border-border bg-card p-5 shadow-2xl"
-        style={{ top: pos.top, left: pos.left }}
-      >
-        <button
-          onClick={onClose}
-          className="absolute right-3 top-3 rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
-          aria-label="Close"
+
+      {/* Spotlight ring around the anchor */}
+      {spot && (
+        <div
+          aria-hidden
+          className="pointer-events-none fixed z-40 rounded-xl ring-2 ring-brand/70 transition-all duration-500 ease-out"
+          style={{
+            top: spot.top,
+            left: spot.left,
+            width: spot.width,
+            height: spot.height,
+            boxShadow:
+              phase === 'glimpse'
+                ? '0 0 0 9999px hsl(var(--background) / 0.35), 0 0 38px 6px hsl(var(--brand) / 0.45)'
+                : '0 0 0 9999px hsl(var(--background) / 0.0), 0 0 22px 2px hsl(var(--brand) / 0.35)',
+          }}
+        />
+      )}
+
+      {/* Glimpse: floating preview chip with the topic */}
+      {phase === 'glimpse' && chip && (
+        <div
+          aria-hidden
+          className="fixed z-50 -translate-y-1/2 animate-in fade-in slide-in-from-left-2 duration-300"
+          style={{ top: chip.top, left: chip.left }}
         >
-          <X className="h-3.5 w-3.5" />
-        </button>
-
-        <div className="mb-2 flex items-center gap-1.5">
-          {Array.from({ length: total }).map((_, i) => (
-            <span
-              key={i}
-              className={cn(
-                'h-1 flex-1 rounded-full transition-colors',
-                i <= stepIdx ? 'bg-brand' : 'bg-muted'
-              )}
-            />
-          ))}
-        </div>
-
-        <div className="mb-1 text-[10px] font-mono uppercase tracking-wider text-brand">
-          Step {stepIdx + 1} of {total}
-        </div>
-        <h3 className="text-base font-semibold">{step.title}</h3>
-        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{step.body}</p>
-
-        <div className="mt-4 flex items-center justify-between gap-2">
-          <button
-            onClick={onClose}
-            className="text-xs text-muted-foreground hover:text-foreground"
-          >
-            Skip tour
-          </button>
-          <div className="flex gap-2">
-            {step.cta && (
-              <Button size="sm" variant="outline" onClick={onCta}>
-                {step.cta.label}
-              </Button>
-            )}
-            <Button size="sm" onClick={onNext}>
-              {isLast ? 'Finish' : 'Next'}
-              {!isLast && <ArrowRight className="ml-1 h-3 w-3" />}
-              {isLast && <Check className="ml-1 h-3 w-3" />}
-            </Button>
+          <div className="flex items-center gap-2 rounded-full border border-brand/40 bg-card/95 px-3 py-1.5 shadow-lg backdrop-blur">
+            <span className="relative flex h-5 w-5 items-center justify-center rounded-full bg-brand/15 text-brand">
+              <PreviewIcon className="h-3 w-3" />
+            </span>
+            <span className="text-[11px] font-medium text-foreground">{step.preview.label}</span>
+            <span className="text-[10px] font-mono uppercase tracking-wider text-brand/80">
+              Step {stepIdx + 1}
+            </span>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* Popover */}
+      {phase === 'popover' && pos && (
+        <div
+          ref={popRef}
+          className="fixed z-50 w-[340px] animate-in fade-in zoom-in-95 slide-in-from-left-2 duration-300 rounded-xl border border-border bg-card p-5 shadow-2xl"
+          style={{ top: pos.top, left: pos.left }}
+        >
+          <button
+            onClick={onClose}
+            className="absolute right-3 top-3 rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+            aria-label="Close"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+
+          <div className="mb-2 flex items-center gap-1.5">
+            {Array.from({ length: total }).map((_, i) => (
+              <span
+                key={i}
+                className={cn(
+                  'h-1 flex-1 rounded-full transition-colors',
+                  i <= stepIdx ? 'bg-brand' : 'bg-muted'
+                )}
+              />
+            ))}
+          </div>
+
+          <div className="mb-2 flex items-center gap-2">
+            <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-brand/15 text-brand">
+              <PreviewIcon className="h-3.5 w-3.5" />
+            </span>
+            <div className="text-[10px] font-mono uppercase tracking-wider text-brand">
+              Step {stepIdx + 1} of {total}
+            </div>
+          </div>
+          <h3 className="text-base font-semibold">{step.title}</h3>
+          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{step.body}</p>
+
+          <div className="mt-4 flex items-center justify-between gap-2">
+            <button
+              onClick={onClose}
+              className="text-xs text-muted-foreground hover:text-foreground"
+            >
+              Skip tour
+            </button>
+            <div className="flex gap-2">
+              {step.cta && (
+                <Button size="sm" variant="outline" onClick={onCta}>
+                  {step.cta.label}
+                </Button>
+              )}
+              <Button size="sm" onClick={onNext}>
+                {isLast ? 'Finish' : 'Next'}
+                {!isLast && <ArrowRight className="ml-1 h-3 w-3" />}
+                {isLast && <Check className="ml-1 h-3 w-3" />}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
