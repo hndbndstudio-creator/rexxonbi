@@ -237,7 +237,7 @@ function AccountDetail() {
       </header>
 
       {/* Tabs */}
-      <Tabs defaultValue="overview" className="mt-6">
+      <Tabs value={tab} onValueChange={setTab} className="mt-6">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="brief">
