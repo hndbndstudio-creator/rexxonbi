@@ -34,6 +34,20 @@ import {
 } from 'lucide-react';
 
 export const Route = createFileRoute('/')({
+  head: () => ({
+    meta: [
+      { title: "Rexxon AI — Real-time B2B buying signals & AI outreach platform" },
+      { name: "description", content: "Catch every buying signal — hiring, funding, leadership, earnings, compliance — across 10M+ companies. AI-drafted outreach to verified contacts. Free trial." },
+      { property: "og:title", content: "Rexxon AI — Real-time B2B buying signals" },
+      { property: "og:description", content: "Catch every buying signal across 10M+ companies. AI-drafted outreach to verified contacts." },
+      { property: "og:url", content: "https://rexxon.ai/" },
+      { property: "og:image", content: "https://rexxon.ai/og-image.jpg" },
+      { name: "twitter:title", content: "Rexxon AI — Real-time B2B buying signals" },
+      { name: "twitter:description", content: "Catch every buying signal across 10M+ companies. AI-drafted outreach to verified contacts." },
+      { name: "twitter:image", content: "https://rexxon.ai/og-image.jpg" },
+    ],
+    links: [{ rel: "canonical", href: "https://rexxon.ai/" }],
+  }),
   component: LandingPage,
 });
 
