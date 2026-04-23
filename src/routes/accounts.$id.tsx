@@ -1,5 +1,5 @@
-import { createFileRoute, Link, useParams, useSearch } from '@tanstack/react-router';
-import { useEffect, useRef } from 'react';
+import { createFileRoute, Link, useParams } from '@tanstack/react-router';
+import { useEffect, useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/lib/use-auth';
 import { DashboardShell } from '@/components/dashboard-shell';
