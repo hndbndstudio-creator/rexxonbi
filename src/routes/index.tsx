@@ -38,8 +38,11 @@ import {
   Star,
   ShieldCheck,
   CalendarCheck,
+  Play,
   X as CloseIcon,
 } from 'lucide-react';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { RexxonLogo } from '@/components/rexxon-logo';
 import { BLOG_POSTS, CASE_STUDIES } from '@/lib/blog-content';
 import birdseyeDashboard from '@/assets/birdseye-dashboard.png';
