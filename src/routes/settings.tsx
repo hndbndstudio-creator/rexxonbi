@@ -197,6 +197,103 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
+function EnrichmentAgentPanel() {
+  const KEY_BRIEF = 'rexxon.enrichment.autoBrief';
+  const KEY_CONTACTS = 'rexxon.enrichment.autoContacts';
+  const KEY_DEPTH = 'rexxon.enrichment.depth';
+
+  const [autoBrief, setAutoBrief] = useState(true);
+  const [autoContacts, setAutoContacts] = useState(true);
+  const [depth, setDepth] = useState<'fast' | 'deep'>('fast');
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    setAutoBrief(localStorage.getItem(KEY_BRIEF) !== '0');
+    setAutoContacts(localStorage.getItem(KEY_CONTACTS) !== '0');
+    setDepth((localStorage.getItem(KEY_DEPTH) as 'fast' | 'deep') ?? 'fast');
+  }, []);
+
+  const persist = (k: string, v: string) => {
+    if (typeof window !== 'undefined') localStorage.setItem(k, v);
+  };
+
+  return (
+    <div className="rounded-xl border border-border bg-card/40 p-5">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-start gap-3">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-brand/15 text-brand">
+            <Brain className="h-4 w-4" />
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold">Enrichment Agent</h3>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              Generates a sales-ready business summary for every account and finds verified buying-committee contacts.
+            </p>
+          </div>
+        </div>
+        <span className="rounded-full bg-green-500/15 px-2 py-0.5 text-[10px] font-medium text-green-300">
+          Active
+        </span>
+      </div>
+
+      <div className="mt-4 space-y-3">
+        <div className="flex items-center justify-between rounded-lg border border-border bg-background/40 p-3">
+          <div className="flex items-start gap-2.5">
+            <Sparkles className="mt-0.5 h-4 w-4 text-brand" />
+            <div>
+              <div className="text-sm font-medium">Auto-generate account brief</div>
+              <div className="text-xs text-muted-foreground">
+                Run an AI brief (summary, why now, pain points, buying committee) when an account opens.
+              </div>
+            </div>
+          </div>
+          <Switch
+            checked={autoBrief}
+            onCheckedChange={(v) => { setAutoBrief(v); persist(KEY_BRIEF, v ? '1' : '0'); }}
+          />
+        </div>
+
+        <div className="flex items-center justify-between rounded-lg border border-border bg-background/40 p-3">
+          <div className="flex items-start gap-2.5">
+            <UserSearch className="mt-0.5 h-4 w-4 text-brand" />
+            <div>
+              <div className="text-sm font-medium">Auto-find contacts</div>
+              <div className="text-xs text-muted-foreground">
+                Surface verified emails &amp; LinkedIn URLs for the buying committee on each new signal.
+              </div>
+            </div>
+          </div>
+          <Switch
+            checked={autoContacts}
+            onCheckedChange={(v) => { setAutoContacts(v); persist(KEY_CONTACTS, v ? '1' : '0'); }}
+          />
+        </div>
+
+        <div className="rounded-lg border border-border bg-background/40 p-3">
+          <Label className="text-sm font-medium">Research depth</Label>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Fast = quick summary &amp; top 3 contacts. Deep = full committee, tech stack, recent press.
+          </p>
+          <div className="mt-3 inline-flex rounded-md border border-border p-0.5">
+            {(['fast', 'deep'] as const).map((d) => (
+              <button
+                key={d}
+                type="button"
+                onClick={() => { setDepth(d); persist(KEY_DEPTH, d); }}
+                className={`px-3 py-1 text-xs rounded-sm transition-colors ${
+                  depth === d ? 'bg-brand text-brand-foreground' : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {d === 'fast' ? 'Fast' : 'Deep'}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function AgentCard({ icon: Icon, name, desc, status }: { icon: typeof Radio; name: string; desc: string; status: string }) {
   return (
     <div className="rounded-lg border border-border bg-background/40 p-4">
