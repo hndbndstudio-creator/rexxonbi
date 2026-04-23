@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import logoFull from "@/assets/rexxon-logo-full.png";
+import logoFull from "@/assets/rexxon-logo-full.webp";
 
 type Size = "sm" | "md" | "lg";
 
