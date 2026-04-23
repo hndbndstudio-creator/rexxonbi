@@ -6,7 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Activity, Check } from 'lucide-react';
+import { Check, ShieldCheck, Star } from 'lucide-react';
+import { RexxonLogo } from '@/components/rexxon-logo';
+import avatar1 from '@/assets/avatar-1.jpg';
+import avatar2 from '@/assets/avatar-2.jpg';
+import avatar3 from '@/assets/avatar-3.jpg';
+import avatar4 from '@/assets/avatar-4.jpg';
 
 export const Route = createFileRoute('/signup')({
   head: () => ({
@@ -25,12 +30,14 @@ const PLANS = [
   { id: 'team', name: 'Team', price: 349, accounts: '750 accounts', seats: '10 users' },
 ] as const;
 
+const HERO_AVATARS = [avatar1, avatar2, avatar3, avatar4];
+
 function SignupPage() {
   const { user, loading, signUp } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [plan, setPlan] = useState<'starter' | 'pro' | 'team'>('team');
+  const [plan, setPlan] = useState<'starter' | 'pro' | 'team'>('pro');
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -43,7 +50,6 @@ function SignupPage() {
     try {
       await signUp(email, password);
       toast.success('Account created! Check your email to verify.');
-      // After confirmation user can sign in. Try to redirect — works if email auto-confirm is on.
       router.navigate({ to: '/dashboard' });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Signup failed');
@@ -67,75 +73,101 @@ function SignupPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-10 bg-grid">
-      <div className="w-full max-w-md">
-        <div className="mb-8 flex flex-col items-center">
-          <Link to="/" className="mb-4 flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-brand text-brand-foreground">
-              <Activity className="h-4 w-4" />
-            </div>
-            <span className="text-lg font-semibold">Rexxon AI</span>
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-aurora px-4 py-12">
+      {/* Ambient orbs */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="orb-drift absolute -top-32 -left-24 h-[420px] w-[420px] rounded-full bg-brand/25 blur-[120px]" />
+        <div className="orb-drift absolute -bottom-32 right-0 h-[360px] w-[360px] rounded-full bg-brand-glow/20 blur-[120px]" style={{ animationDelay: '-4s' }} />
+        <div className="absolute inset-0 bg-grid opacity-[0.08]" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-md animate-fade-up">
+        <div className="mb-7 flex flex-col items-center">
+          <Link to="/" className="mb-5 flex items-center">
+            <RexxonLogo size="sm" />
           </Link>
-          <h1 className="text-2xl font-semibold">Start your free trial</h1>
-          <p className="mt-1 text-sm text-muted-foreground">14 days free · No credit card</p>
+          <h1 className="text-2xl font-bold tracking-tight">Start your free trial</h1>
+          <p className="mt-1 text-sm text-muted-foreground">14 days free · No credit card · Live in 10 min</p>
         </div>
 
-        <div className="rounded-xl border border-border bg-card p-6">
-          {/* Plan picker */}
-          <div className="mb-6">
-            <Label className="text-xs uppercase tracking-wider text-muted-foreground">Choose your plan</Label>
-            <div className="mt-2 grid grid-cols-3 gap-2">
-              {PLANS.map((p) => (
-                <button
-                  key={p.id}
-                  type="button"
-                  onClick={() => setPlan(p.id)}
-                  className={`relative rounded-lg border p-3 text-left transition-colors ${plan === p.id ? 'border-brand bg-brand/10' : 'border-border hover:border-foreground/30'}`}
-                >
-                  {plan === p.id && (
-                    <Check className="absolute right-2 top-2 h-3.5 w-3.5 text-brand" />
-                  )}
-                  <div className="text-xs font-medium">{p.name}</div>
-                  <div className="mt-1 text-sm font-bold">${p.price}<span className="text-xs font-normal text-muted-foreground">/mo</span></div>
-                  <div className="mt-1 text-[10px] text-muted-foreground">{p.accounts}</div>
-                </button>
-              ))}
+        {/* Glow wrapper */}
+        <div className="relative">
+          <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-brand/20 via-brand/10 to-brand-glow/20 blur-3xl" />
+          <div className="glow-conic relative overflow-hidden rounded-2xl border border-border bg-card/85 p-6 shadow-elevated backdrop-blur-2xl">
+            {/* Plan picker */}
+            <div className="mb-6">
+              <Label className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Choose your plan</Label>
+              <div className="mt-2 grid grid-cols-3 gap-2">
+                {PLANS.map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => setPlan(p.id)}
+                    className={`btn-press relative rounded-lg border p-3 text-left transition-colors ${plan === p.id ? 'border-hairline-brand bg-brand/10 shadow-inset-glow' : 'border-border bg-card/50 hover:border-brand/40'}`}
+                  >
+                    {plan === p.id && (
+                      <Check className="absolute right-2 top-2 h-3.5 w-3.5 text-brand" />
+                    )}
+                    <div className="text-xs font-semibold">{p.name}</div>
+                    <div className="mt-1 text-sm font-bold">${p.price}<span className="text-[10px] font-normal text-muted-foreground">/mo</span></div>
+                    <div className="mt-1 text-[10px] text-muted-foreground">{p.accounts}</div>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <Button variant="outline" className="w-full" type="button" disabled={submitting} onClick={handleGoogle}>
-            <GoogleIcon />
-            Continue with Google
-          </Button>
-
-          <div className="my-5 flex items-center gap-3">
-            <div className="h-px flex-1 bg-border" />
-            <span className="text-xs uppercase tracking-wider text-muted-foreground">or</span>
-            <div className="h-px flex-1 bg-border" />
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Work email</Label>
-              <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.com" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="At least 6 characters" />
-            </div>
-            <Button type="submit" className="w-full bg-brand text-brand-foreground hover:opacity-90" disabled={submitting}>
-              {submitting ? 'Creating account…' : 'Start 14-day free trial'}
+            <Button variant="outline" className="btn-press w-full bg-card/50" type="button" disabled={submitting} onClick={handleGoogle}>
+              <GoogleIcon />
+              Continue with Google
             </Button>
-            <p className="text-center text-xs text-muted-foreground">
-              No charges until day 15 · Cancel anytime · Setup in 10 minutes
-            </p>
-          </form>
+
+            <div className="my-5 flex items-center gap-3">
+              <div className="h-px flex-1 bg-border" />
+              <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">or</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Work email</Label>
+                <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.com" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="At least 6 characters" />
+              </div>
+              <Button type="submit" className="btn-press w-full bg-brand text-brand-foreground shadow-inset-glow" disabled={submitting}>
+                {submitting ? 'Creating account…' : 'Start 14-day free trial'}
+              </Button>
+              <p className="text-center text-xs text-muted-foreground">
+                No charges until day 15 · Cancel anytime · Setup in 10 minutes
+              </p>
+            </form>
+          </div>
         </div>
 
-        <p className="mt-6 text-center text-sm text-muted-foreground">
+        {/* Mini trust strip */}
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-xs text-muted-foreground">
+          <div className="flex -space-x-2">
+            {HERO_AVATARS.map((src, i) => (
+              <img key={i} src={src} alt="" width={20} height={20} loading="lazy" className="h-5 w-5 rounded-full border border-background object-cover" />
+            ))}
+          </div>
+          <div className="flex items-center gap-0.5">
+            {[0,1,2,3,4].map((i) => <Star key={i} className="h-3 w-3 fill-amber-400 text-amber-400" />)}
+          </div>
+          <span><span className="font-semibold text-foreground">1,240+</span> revenue teams</span>
+        </div>
+
+        <p className="mt-5 text-center text-sm text-muted-foreground">
           Already have an account?{' '}
           <Link to="/login" className="font-medium text-brand hover:underline">Sign in</Link>
         </p>
+
+        <div className="mt-4 flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground">
+          <ShieldCheck className="h-3 w-3 text-brand" />
+          SOC 2 Type II · 256-bit encryption · No credit card
+        </div>
       </div>
     </div>
   );

@@ -6,7 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Activity } from 'lucide-react';
+import { ShieldCheck, Star } from 'lucide-react';
+import { RexxonLogo } from '@/components/rexxon-logo';
+import testimonial1 from '@/assets/testimonial-1.jpg';
 
 export const Route = createFileRoute('/login')({
   head: () => ({
@@ -74,64 +76,84 @@ function LoginPage() {
     }
   };
 
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 bg-grid">
-      <div className="w-full max-w-sm">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-aurora px-4 py-12">
+      {/* Ambient orbs */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="orb-drift absolute -top-32 -left-24 h-[420px] w-[420px] rounded-full bg-brand/25 blur-[120px]" />
+        <div className="orb-drift absolute -bottom-32 right-0 h-[360px] w-[360px] rounded-full bg-brand-glow/20 blur-[120px]" style={{ animationDelay: '-4s' }} />
+        <div className="absolute inset-0 bg-grid opacity-[0.08]" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-sm animate-fade-up">
         <div className="mb-8 flex flex-col items-center">
-          <Link to="/" className="mb-4 flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-brand text-brand-foreground">
-              <Activity className="h-4 w-4" />
-            </div>
-            <span className="text-lg font-semibold">Rexxon AI</span>
+          <Link to="/" className="mb-5 flex items-center">
+            <RexxonLogo size="sm" />
           </Link>
-          <h1 className="text-2xl font-semibold">Welcome back</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Welcome back</h1>
           <p className="mt-1 text-sm text-muted-foreground">Sign in to your signal feed</p>
         </div>
 
-        <div className="rounded-xl border border-border bg-card p-6">
-          <Button
-            variant="outline"
-            className="w-full"
-            type="button"
-            disabled={submitting}
-            onClick={handleGoogle}
-          >
-            <GoogleIcon />
-            Continue with Google
-          </Button>
-
-          <div className="my-5 flex items-center gap-3">
-            <div className="h-px flex-1 bg-border" />
-            <span className="text-xs uppercase tracking-wider text-muted-foreground">or</span>
-            <div className="h-px flex-1 bg-border" />
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.com" />
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
-                <button type="button" onClick={handleForgot} className="text-xs text-muted-foreground hover:text-foreground">
-                  Forgot?
-                </button>
-              </div>
-              <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
-            </div>
-            <Button type="submit" className="w-full bg-brand text-brand-foreground hover:opacity-90" disabled={submitting}>
-              {submitting ? 'Signing in…' : 'Sign in'}
+        {/* Glow wrapper */}
+        <div className="relative">
+          <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-brand/20 via-brand/10 to-brand-glow/20 blur-3xl" />
+          <div className="glow-conic relative overflow-hidden rounded-2xl border border-border bg-card/85 p-6 shadow-elevated backdrop-blur-2xl">
+            <Button
+              variant="outline"
+              className="btn-press w-full bg-card/50"
+              type="button"
+              disabled={submitting}
+              onClick={handleGoogle}
+            >
+              <GoogleIcon />
+              Continue with Google
             </Button>
-          </form>
 
+            <div className="my-5 flex items-center gap-3">
+              <div className="h-px flex-1 bg-border" />
+              <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">or</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.com" />
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Password</Label>
+                  <button type="button" onClick={handleForgot} className="text-xs text-muted-foreground transition-colors hover:text-foreground">
+                    Forgot?
+                  </button>
+                </div>
+                <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
+              </div>
+              <Button type="submit" className="btn-press w-full bg-brand text-brand-foreground shadow-inset-glow" disabled={submitting}>
+                {submitting ? 'Signing in…' : 'Sign in'}
+              </Button>
+            </form>
+          </div>
+        </div>
+
+        {/* Mini trust strip */}
+        <div className="mt-6 flex items-center justify-center gap-3 text-xs text-muted-foreground">
+          <img src={testimonial1} alt="" width={20} height={20} loading="lazy" className="h-5 w-5 rounded-full object-cover ring-1 ring-brand/30" />
+          <div className="flex items-center gap-0.5">
+            {[0,1,2,3,4].map((i) => <Star key={i} className="h-3 w-3 fill-amber-400 text-amber-400" />)}
+          </div>
+          <span><span className="font-semibold text-foreground">1,240+</span> revenue teams trust Rexxon</span>
         </div>
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Don't have an account?{' '}
           <Link to="/signup" className="font-medium text-brand hover:underline">Start free trial</Link>
         </p>
+
+        <div className="mt-4 flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground">
+          <ShieldCheck className="h-3 w-3 text-brand" />
+          SOC 2 Type II · 256-bit encryption
+        </div>
       </div>
     </div>
   );

@@ -702,9 +702,9 @@ function LandingPage() {
 
         <div className="reveal mt-10 grid gap-6 md:grid-cols-3">
           {[
-            { name: 'Starter', price: 79, accounts: '75 accounts', users: '1 user', highlight: false, features: ['75 monitored accounts', '1 user seat', 'Real-time signal feed', 'AI outreach drafts', 'Verified contacts', 'Slack alerts', 'Email digest'] },
-            { name: 'Pro', price: 199, accounts: '250 accounts', users: '3 users', highlight: true, features: ['250 monitored accounts', '3 user seats', 'Everything in Starter', 'CRM push (Salesforce, HubSpot)', 'Outreach.io / Salesloft sync', 'Custom signal weighting', 'Priority support'] },
-            { name: 'Team', price: 349, accounts: '750 accounts', users: '10 users', highlight: false, features: ['750 monitored accounts', '10 user seats', 'Everything in Pro', 'Territory routing', 'Win/loss feedback loop', 'Dedicated CSM', 'SAML SSO'] },
+            { id: 'starter' as const, name: 'Starter', price: 79, accounts: '75 accounts', users: '1 user', highlight: false, features: ['75 monitored accounts', '1 user seat', 'Real-time signal feed', 'AI outreach drafts', 'Verified contacts', 'Slack alerts', 'Email digest'] },
+            { id: 'pro' as const, name: 'Pro', price: 199, accounts: '250 accounts', users: '3 users', highlight: true, features: ['250 monitored accounts', '3 user seats', 'Everything in Starter', 'CRM push (Salesforce, HubSpot)', 'Outreach.io / Salesloft sync', 'Custom signal weighting', 'Priority support'] },
+            { id: 'team' as const, name: 'Team', price: 349, accounts: '750 accounts', users: '10 users', highlight: false, features: ['750 monitored accounts', '10 user seats', 'Everything in Pro', 'Territory routing', 'Win/loss feedback loop', 'Dedicated CSM', 'SAML SSO'] },
           ].map((plan) => {
             const price = annual ? Math.round(plan.price * 0.8) : plan.price;
             return (
@@ -723,7 +723,10 @@ function LandingPage() {
                   <span className="text-sm text-muted-foreground">/mo</span>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">{plan.accounts} · {plan.users}</p>
-                <Link to="/signup">
+                <Link
+                  to="/checkout"
+                  search={{ plan: plan.id, billing: annual ? 'annual' : 'monthly' }}
+                >
                   <Button className={`btn-press mt-6 w-full ${plan.highlight ? 'bg-brand text-brand-foreground shadow-inset-glow' : ''}`} variant={plan.highlight ? 'default' : 'outline'}>
                     Start free trial
                   </Button>
