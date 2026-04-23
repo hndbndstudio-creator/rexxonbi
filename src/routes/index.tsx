@@ -288,7 +288,7 @@ function LandingPage() {
                 Live signal engine · 12 sources · &lt;5 min latency
               </div>
 
-              <h1 className="mt-6 text-[2.75rem] font-bold leading-[1.02] tracking-tight md:text-7xl">
+              <h1 className="mt-6 text-[2.25rem] font-bold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
                 Know who's
                 <br />
                 <span className="text-gradient-brand">about to buy.</span>
@@ -966,7 +966,7 @@ function LandingPage() {
           <div className="orb-drift absolute -top-20 left-1/4 h-72 w-72 rounded-full bg-brand/30 blur-[100px]" />
           <div className="orb-drift absolute -bottom-20 right-1/4 h-72 w-72 rounded-full bg-brand-glow/25 blur-[100px]" style={{ animationDelay: '-5s' }} />
           <div className="relative">
-            <h2 className="text-4xl font-bold tracking-tight md:text-6xl">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-6xl">
               Your competitors are{' '}
               <span className="text-gradient-brand">already calling.</span>
             </h2>
