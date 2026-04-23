@@ -41,6 +41,15 @@ import {
   X as CloseIcon,
 } from 'lucide-react';
 import { RexxonLogo } from '@/components/rexxon-logo';
+import avatar1 from '@/assets/avatar-1.jpg';
+import avatar2 from '@/assets/avatar-2.jpg';
+import avatar3 from '@/assets/avatar-3.jpg';
+import avatar4 from '@/assets/avatar-4.jpg';
+import testimonial1 from '@/assets/testimonial-1.jpg';
+import testimonial2 from '@/assets/testimonial-2.jpg';
+import testimonial3 from '@/assets/testimonial-3.jpg';
+
+const HERO_AVATARS = [avatar1, avatar2, avatar3, avatar4];
 
 export const Route = createFileRoute('/')({
   head: () => ({
@@ -283,10 +292,12 @@ function LandingPage() {
                     <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </Button>
                 </Link>
-                <Button size="lg" variant="outline" className="hover-lift backdrop-blur-sm">
-                  <CalendarCheck className="mr-1 h-4 w-4" />
-                  Book a 15-min demo
-                </Button>
+                <Link to="/schedule-demo">
+                  <Button size="lg" variant="outline" className="hover-lift backdrop-blur-sm">
+                    <CalendarCheck className="mr-1 h-4 w-4" />
+                    Book a 15-min demo
+                  </Button>
+                </Link>
               </div>
 
               <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
@@ -298,11 +309,15 @@ function LandingPage() {
               {/* Inline social proof */}
               <div className="mt-8 flex flex-wrap items-center gap-4 border-t border-border pt-6">
                 <div className="flex -space-x-2">
-                  {[0, 1, 2, 3].map((i) => (
-                    <div
+                  {HERO_AVATARS.map((src, i) => (
+                    <img
                       key={i}
-                      className="h-8 w-8 rounded-full border-2 border-background bg-gradient-to-br from-brand/40 to-brand-glow/40 shadow-soft"
-                      style={{ backgroundImage: `linear-gradient(135deg, hsl(${260 + i * 25} 70% 60%), hsl(${290 + i * 15} 70% 50%))` }}
+                      src={src}
+                      alt=""
+                      width={32}
+                      height={32}
+                      loading="lazy"
+                      className="h-8 w-8 rounded-full border-2 border-background object-cover shadow-soft"
                     />
                   ))}
                 </div>
@@ -626,13 +641,23 @@ function LandingPage() {
           />
           <div className="reveal mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[
-              { q: 'We replaced a $40k/year intent vendor with Rexxon and now book 3× the meetings. The ROI conversation took 30 seconds.', n: 'Maya Patel', r: 'VP Sales', c: 'Helio Cloud', res: '+212% meetings' },
-              { q: 'The AI insight on every signal is the unlock. My SDRs stopped guessing what to say — and our reply rate jumped to 38%.', n: 'Jordan Lee', r: 'Head of SDRs', c: 'Forge Security', res: '38% reply rate' },
-              { q: 'A new VP of Eng hire in our ICP used to take a week to surface. Now it lands in Slack in 4 minutes with a draft email attached.', n: 'Sam Chen', r: 'AE Manager', c: 'Quant Labs', res: '4-min latency' },
+              { q: 'We replaced a $40k/year intent vendor with Rexxon and now book 3× the meetings. The ROI conversation took 30 seconds.', n: 'Maya Patel', r: 'VP Sales', c: 'Helio Cloud', res: '+212% meetings', img: testimonial1 },
+              { q: 'The AI insight on every signal is the unlock. My SDRs stopped guessing what to say — and our reply rate jumped to 38%.', n: 'Jordan Lee', r: 'Head of SDRs', c: 'Forge Security', res: '38% reply rate', img: testimonial2 },
+              { q: 'A new VP of Eng hire in our ICP used to take a week to surface. Now it lands in Slack in 4 minutes with a draft email attached.', n: 'Sam Chen', r: 'AE Manager', c: 'Quant Labs', res: '4-min latency', img: testimonial3 },
             ].map((t) => (
               <div key={t.n} className="card-interactive surface-2 rounded-2xl border border-border p-7">
-                <div className="flex gap-1">
-                  {[0,1,2,3,4].map((i) => <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />)}
+                <div className="flex items-center gap-3">
+                  <img
+                    src={t.img}
+                    alt={t.n}
+                    width={44}
+                    height={44}
+                    loading="lazy"
+                    className="h-11 w-11 rounded-full border-2 border-background object-cover shadow-soft ring-1 ring-brand/30"
+                  />
+                  <div className="flex gap-1">
+                    {[0,1,2,3,4].map((i) => <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />)}
+                  </div>
                 </div>
                 <p className="mt-4 text-base leading-relaxed text-foreground/90">"{t.q}"</p>
                 <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
@@ -677,9 +702,9 @@ function LandingPage() {
 
         <div className="reveal mt-10 grid gap-6 md:grid-cols-3">
           {[
-            { name: 'Starter', price: 79, accounts: '75 accounts', users: '1 user', highlight: false, features: ['75 monitored accounts', '1 user seat', 'Real-time signal feed', 'AI outreach drafts', 'Verified contacts', 'Slack alerts', 'Email digest'] },
-            { name: 'Pro', price: 199, accounts: '250 accounts', users: '3 users', highlight: true, features: ['250 monitored accounts', '3 user seats', 'Everything in Starter', 'CRM push (Salesforce, HubSpot)', 'Outreach.io / Salesloft sync', 'Custom signal weighting', 'Priority support'] },
-            { name: 'Team', price: 349, accounts: '750 accounts', users: '10 users', highlight: false, features: ['750 monitored accounts', '10 user seats', 'Everything in Pro', 'Territory routing', 'Win/loss feedback loop', 'Dedicated CSM', 'SAML SSO'] },
+            { id: 'starter' as const, name: 'Starter', price: 79, accounts: '75 accounts', users: '1 user', highlight: false, features: ['75 monitored accounts', '1 user seat', 'Real-time signal feed', 'AI outreach drafts', 'Verified contacts', 'Slack alerts', 'Email digest'] },
+            { id: 'pro' as const, name: 'Pro', price: 199, accounts: '250 accounts', users: '3 users', highlight: true, features: ['250 monitored accounts', '3 user seats', 'Everything in Starter', 'CRM push (Salesforce, HubSpot)', 'Outreach.io / Salesloft sync', 'Custom signal weighting', 'Priority support'] },
+            { id: 'team' as const, name: 'Team', price: 349, accounts: '750 accounts', users: '10 users', highlight: false, features: ['750 monitored accounts', '10 user seats', 'Everything in Pro', 'Territory routing', 'Win/loss feedback loop', 'Dedicated CSM', 'SAML SSO'] },
           ].map((plan) => {
             const price = annual ? Math.round(plan.price * 0.8) : plan.price;
             return (
@@ -698,7 +723,10 @@ function LandingPage() {
                   <span className="text-sm text-muted-foreground">/mo</span>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">{plan.accounts} · {plan.users}</p>
-                <Link to="/signup">
+                <Link
+                  to="/checkout"
+                  search={{ plan: plan.id, billing: annual ? 'annual' : 'monthly' }}
+                >
                   <Button className={`btn-press mt-6 w-full ${plan.highlight ? 'bg-brand text-brand-foreground shadow-inset-glow' : ''}`} variant={plan.highlight ? 'default' : 'outline'}>
                     Start free trial
                   </Button>
@@ -778,10 +806,12 @@ function LandingPage() {
                   <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" className="hover-lift backdrop-blur-sm">
-                <CalendarCheck className="mr-1 h-4 w-4" />
-                Book a 15-min demo
-              </Button>
+              <Link to="/schedule-demo">
+                <Button size="lg" variant="outline" className="hover-lift backdrop-blur-sm">
+                  <CalendarCheck className="mr-1 h-4 w-4" />
+                  Book a 15-min demo
+                </Button>
+              </Link>
             </div>
             <p className="mt-5 text-xs text-muted-foreground">
               Trusted by 1,240+ revenue teams · 4.9/5 average rating
@@ -1078,8 +1108,8 @@ function OutreachVisual() {
         <span className="rounded-full bg-green-500/15 px-1.5 py-0.5 font-mono text-[9px] text-green-300">ready</span>
       </div>
       <div className="mt-3 space-y-2 text-[11px]">
-        <div className="text-muted-foreground"><span className="text-foreground/80">To:</span> raaz@wiz.io</div>
-        <div className="text-muted-foreground"><span className="text-foreground/80">Subject:</span> 5 Cloud Security hires in 14 days — quick thought</div>
+        <div className="text-muted-foreground"><span className="text-foreground/80">To:</span>{' '}raaz@wiz.io</div>
+        <div className="text-muted-foreground"><span className="text-foreground/80">Subject:</span>{' '}5 Cloud Security hires in 14 days — quick thought</div>
         <div className="rounded-lg border border-border/60 bg-card/60 p-3 leading-relaxed text-foreground/85">
           Hi Raaz,<br/><br/>
           Saw the 5 new Cloud Security Engineer roles — looks like a serious CNAPP push. We help teams in your scale-up phase consolidate runtime + IaC scanning under one roof, usually saving 30%+ vs. point tools.<br/><br/>

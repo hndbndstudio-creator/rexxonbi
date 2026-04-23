@@ -13,11 +13,13 @@ import { Route as TerritoryRouteImport } from './routes/territory'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ScheduleDemoRouteImport } from './routes/schedule-demo'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as OutreachRouteImport } from './routes/outreach'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactsRouteImport } from './routes/contacts'
+import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CaseStudiesRouteImport } from './routes/case-studies'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
@@ -49,6 +51,11 @@ const SettingsRoute = SettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScheduleDemoRoute = ScheduleDemoRouteImport.update({
+  id: '/schedule-demo',
+  path: '/schedule-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -72,6 +79,11 @@ const DashboardRoute = DashboardRouteImport.update({
 const ContactsRoute = ContactsRouteImport.update({
   id: '/contacts',
   path: '/contacts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CaseStudiesRoute = CaseStudiesRouteImport.update({
@@ -133,11 +145,13 @@ export interface FileRoutesByFullPath {
   '/analytics': typeof AnalyticsRoute
   '/blog': typeof BlogRouteWithChildren
   '/case-studies': typeof CaseStudiesRouteWithChildren
+  '/checkout': typeof CheckoutRoute
   '/contacts': typeof ContactsRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/schedule-demo': typeof ScheduleDemoRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -154,11 +168,13 @@ export interface FileRoutesByTo {
   '/analytics': typeof AnalyticsRoute
   '/blog': typeof BlogRouteWithChildren
   '/case-studies': typeof CaseStudiesRouteWithChildren
+  '/checkout': typeof CheckoutRoute
   '/contacts': typeof ContactsRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/schedule-demo': typeof ScheduleDemoRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -176,11 +192,13 @@ export interface FileRoutesById {
   '/analytics': typeof AnalyticsRoute
   '/blog': typeof BlogRouteWithChildren
   '/case-studies': typeof CaseStudiesRouteWithChildren
+  '/checkout': typeof CheckoutRoute
   '/contacts': typeof ContactsRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/schedule-demo': typeof ScheduleDemoRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -199,11 +217,13 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/blog'
     | '/case-studies'
+    | '/checkout'
     | '/contacts'
     | '/dashboard'
     | '/login'
     | '/outreach'
     | '/reset-password'
+    | '/schedule-demo'
     | '/settings'
     | '/signup'
     | '/sitemap.xml'
@@ -220,11 +240,13 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/blog'
     | '/case-studies'
+    | '/checkout'
     | '/contacts'
     | '/dashboard'
     | '/login'
     | '/outreach'
     | '/reset-password'
+    | '/schedule-demo'
     | '/settings'
     | '/signup'
     | '/sitemap.xml'
@@ -241,11 +263,13 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/blog'
     | '/case-studies'
+    | '/checkout'
     | '/contacts'
     | '/dashboard'
     | '/login'
     | '/outreach'
     | '/reset-password'
+    | '/schedule-demo'
     | '/settings'
     | '/signup'
     | '/sitemap.xml'
@@ -263,11 +287,13 @@ export interface RootRouteChildren {
   AnalyticsRoute: typeof AnalyticsRoute
   BlogRoute: typeof BlogRouteWithChildren
   CaseStudiesRoute: typeof CaseStudiesRouteWithChildren
+  CheckoutRoute: typeof CheckoutRoute
   ContactsRoute: typeof ContactsRoute
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   OutreachRoute: typeof OutreachRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  ScheduleDemoRoute: typeof ScheduleDemoRoute
   SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -304,6 +330,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/schedule-demo': {
+      id: '/schedule-demo'
+      path: '/schedule-demo'
+      fullPath: '/schedule-demo'
+      preLoaderRoute: typeof ScheduleDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
@@ -337,6 +370,13 @@ declare module '@tanstack/react-router' {
       path: '/contacts'
       fullPath: '/contacts'
       preLoaderRoute: typeof ContactsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/case-studies': {
@@ -454,11 +494,13 @@ const rootRouteChildren: RootRouteChildren = {
   AnalyticsRoute: AnalyticsRoute,
   BlogRoute: BlogRouteWithChildren,
   CaseStudiesRoute: CaseStudiesRouteWithChildren,
+  CheckoutRoute: CheckoutRoute,
   ContactsRoute: ContactsRoute,
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   OutreachRoute: OutreachRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  ScheduleDemoRoute: ScheduleDemoRoute,
   SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
