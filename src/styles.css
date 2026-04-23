@@ -507,7 +507,6 @@ a[href]:active .logo-badge { transform: scale(0.96); transition: transform 120ms
   .animate-signal-in,
   .animate-fade-up,
   .card-interactive,
-  .card-interactive::before,
   .nav-link,
   .btn-press,
   .skeleton-shimmer {
