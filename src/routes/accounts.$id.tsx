@@ -709,17 +709,124 @@ function BriefWidget({
   );
 }
 
+function SignalInterpretationPanel({
+  interpretation,
+  urgency,
+  urgencyReason,
+}: {
+  interpretation: string;
+  urgency?: 'HIGH' | 'MEDIUM' | 'LOW';
+  urgencyReason?: string;
+}) {
+  const tone =
+    urgency === 'HIGH'
+      ? { chip: 'bg-red-500/15 text-red-400 border-red-500/30', label: 'High urgency', icon: <Flame className="h-3 w-3" /> }
+      : urgency === 'MEDIUM'
+        ? { chip: 'bg-amber-500/15 text-amber-400 border-amber-500/30', label: 'Medium urgency', icon: <Flame className="h-3 w-3" /> }
+        : urgency === 'LOW'
+          ? { chip: 'bg-muted text-muted-foreground border-border', label: 'Low urgency', icon: <Flame className="h-3 w-3" /> }
+          : null;
+
+  return (
+    <div className="relative overflow-hidden rounded-xl border border-brand/30 bg-gradient-to-br from-brand/10 via-brand/5 to-transparent p-5">
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-brand">
+            <Lightbulb className="h-4 w-4" />
+          </span>
+          <div>
+            <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+              What this means
+            </span>
+            <h3 className="text-sm font-semibold">Signal interpretation</h3>
+          </div>
+        </div>
+        {tone && (
+          <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-medium ${tone.chip}`}>
+            {tone.icon}
+            {tone.label}
+          </span>
+        )}
+      </div>
+      <p className="text-[15px] leading-relaxed text-foreground">{interpretation}</p>
+      {urgencyReason && (
+        <p className="mt-2.5 text-xs text-muted-foreground">
+          <span className="font-medium text-foreground/80">Why: </span>
+          {urgencyReason}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function SellableProductsWidget({ products }: { products: SellableProduct[] }) {
+  return (
+    <div className="surface-2 hover-lift group rounded-xl p-5">
+      <div className="mb-3 flex items-start justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-brand/10 text-brand">
+            <ShoppingBag className="h-4 w-4" />
+          </span>
+          <div>
+            <h3 className="text-sm font-semibold">What you can sell</h3>
+            <p className="text-[11px] text-muted-foreground">Categories that fit the signals</p>
+          </div>
+        </div>
+        <span className="rounded-full border border-border bg-background/60 px-2 py-0.5 text-[10px] font-mono text-muted-foreground">
+          {products.length}
+        </span>
+      </div>
+      <ul className="space-y-2">
+        {products.map((p, i) => (
+          <li
+            key={i}
+            className="rounded-lg border border-border/60 bg-background/40 p-2.5"
+          >
+            <div className="flex items-start gap-2">
+              <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-[10px] font-mono font-semibold text-brand">
+                {i + 1}
+              </span>
+              <div className="min-w-0">
+                <div className="text-sm font-medium leading-snug">{p.category}</div>
+                <div className="mt-0.5 text-xs text-muted-foreground leading-relaxed">{p.rationale}</div>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function CopyBriefButton({ brief }: { brief: Brief }) {
   const [copied, setCopied] = useState(false);
   const onCopy = async () => {
-    const text = [
+    const sections: string[] = [
       `SUMMARY\n${brief.summary}`,
       `\nWHY NOW\n${brief.why_now}`,
+    ];
+    if (brief.signal_interpretation) {
+      sections.push(`\nWHAT THIS MEANS\n${brief.signal_interpretation}`);
+      if (brief.urgency) sections.push(`Urgency: ${brief.urgency}${brief.urgency_reason ? ` — ${brief.urgency_reason}` : ''}`);
+    }
+    if (brief.what_they_are_building?.length) {
+      sections.push(`\nWHAT THEY'RE BUILDING\n- ${brief.what_they_are_building.join('\n- ')}`);
+    }
+    if (brief.sellable_products?.length) {
+      sections.push(
+        `\nWHAT YOU CAN SELL\n${brief.sellable_products.map((p) => `- ${p.category} — ${p.rationale}`).join('\n')}`,
+      );
+    }
+    if (brief.budget_signals?.length) {
+      sections.push(`\nBUDGET SIGNALS\n- ${brief.budget_signals.join('\n- ')}`);
+    }
+    sections.push(
       `\nPAIN POINTS\n- ${brief.pain_points.join('\n- ')}`,
       `\nBUYING COMMITTEE\n- ${brief.buying_committee.join('\n- ')}`,
       `\nCONVERSATION STARTERS\n- ${brief.conversation_starters.join('\n- ')}`,
       `\nCOMPETITIVE RISKS\n- ${brief.competitive_risks.join('\n- ')}`,
-    ].join('\n');
+    );
+    const text = sections.join('\n');
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
