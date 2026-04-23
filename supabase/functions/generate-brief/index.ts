@@ -63,7 +63,7 @@ Deno.serve(async (req) => {
           {
             role: 'system',
             content:
-              'You are a senior B2B account researcher. Produce a tight, sales-actionable brief on a company. Use only the provided context — do not invent specific facts. Be concrete and concise.',
+              'You are a senior B2B account researcher and revenue strategist. Produce a tight, sales-actionable brief on a company. Use only the provided context — do not invent specific facts. Be concrete and concise. Pay special attention to recent signals (especially hiring, funding, leadership, tech expansion): explain what they reveal about the company\'s priorities, what they are likely building or scaling, and what products/services would be most sellable into them right now.',
           },
           {
             role: 'user',
@@ -81,12 +81,65 @@ Deno.serve(async (req) => {
                 properties: {
                   summary: { type: 'string', description: '2–3 sentence positioning summary.' },
                   why_now: { type: 'string', description: 'Why this is a good moment to engage.' },
+                  signal_interpretation: {
+                    type: 'string',
+                    description:
+                      'A 2–4 sentence narrative explaining what the recent signals (hiring, funding, leadership, tech expansion) reveal about the company\'s strategic direction. Connect the dots: e.g. "They\'re hiring 8 backend engineers and a new VP of Engineering — they\'re scaling their core platform and likely need observability, dev tooling, and infra spend." If no signals are on file, say so.',
+                  },
+                  what_they_are_building: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    minItems: 2,
+                    maxItems: 5,
+                    description: 'Concrete initiatives, capabilities, or teams the company is investing in based on the signals (e.g. "Scaling data platform team", "Standing up an enterprise security function", "Expanding into EMEA").',
+                  },
+                  sellable_products: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        category: { type: 'string', description: 'Product/service category they would buy (e.g. "Observability platform", "Sales enablement tooling", "GRC software").' },
+                        rationale: { type: 'string', description: 'One-sentence reason this fits the signals.' },
+                      },
+                      required: ['category', 'rationale'],
+                      additionalProperties: false,
+                    },
+                    minItems: 3,
+                    maxItems: 6,
+                    description: 'Specific product/service categories that would be sellable into this account right now, each tied to a signal-driven rationale.',
+                  },
+                  budget_signals: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    minItems: 1,
+                    maxItems: 4,
+                    description: 'Evidence the company has budget or hiring/spending headroom (e.g. "Series C raised 4 months ago", "12 open engineering roles", "New CFO from PE-backed firm").',
+                  },
+                  urgency: {
+                    type: 'string',
+                    enum: ['HIGH', 'MEDIUM', 'LOW'],
+                    description: 'How urgent it is to engage right now based on the signals.',
+                  },
+                  urgency_reason: { type: 'string', description: 'One sentence justifying the urgency level.' },
                   pain_points: { type: 'array', items: { type: 'string' }, minItems: 2, maxItems: 5 },
                   buying_committee: { type: 'array', items: { type: 'string' }, minItems: 2, maxItems: 5 },
                   conversation_starters: { type: 'array', items: { type: 'string' }, minItems: 2, maxItems: 5 },
                   competitive_risks: { type: 'array', items: { type: 'string' }, minItems: 1, maxItems: 4 },
                 },
-                required: ['summary', 'why_now', 'pain_points', 'buying_committee', 'conversation_starters', 'competitive_risks'],
+                required: [
+                  'summary',
+                  'why_now',
+                  'signal_interpretation',
+                  'what_they_are_building',
+                  'sellable_products',
+                  'budget_signals',
+                  'urgency',
+                  'urgency_reason',
+                  'pain_points',
+                  'buying_committee',
+                  'conversation_starters',
+                  'competitive_risks',
+                ],
                 additionalProperties: false,
               },
             },
