@@ -42,6 +42,7 @@ import {
 } from 'lucide-react';
 import { RexxonLogo } from '@/components/rexxon-logo';
 import { BLOG_POSTS, CASE_STUDIES } from '@/lib/blog-content';
+import birdseyeDashboard from '@/assets/birdseye-dashboard.png';
 import avatar1 from '@/assets/avatar-1.jpg';
 import avatar2 from '@/assets/avatar-2.jpg';
 import avatar3 from '@/assets/avatar-3.jpg';
@@ -427,6 +428,66 @@ function LandingPage() {
                 </span>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================ PRODUCT SHOWCASE ============================ */}
+      <section className="relative mx-auto max-w-7xl px-6 py-24">
+        <div className="reveal mx-auto max-w-3xl text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">Bird's-eye view</p>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">
+            Your entire pipeline. One calm screen.
+          </h2>
+          <p className="mt-4 text-base text-muted-foreground md:text-lg">
+            Wake up to a personalized command center — fresh signals, your daily goal, deals in motion, and momentum trends. No spreadsheets. No tab juggling. Just clarity.
+          </p>
+        </div>
+
+        <div className="reveal relative mt-14">
+          {/* Glow backdrop */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -inset-x-10 -inset-y-10 -z-10 opacity-70 blur-3xl"
+            style={{
+              background:
+                'radial-gradient(60% 50% at 50% 40%, color-mix(in oklab, var(--brand) 30%, transparent), transparent 70%)',
+            }}
+          />
+          <div className="overflow-hidden rounded-2xl border border-border bg-card/60 shadow-elevated backdrop-blur-sm">
+            {/* Browser chrome */}
+            <div className="flex items-center gap-2 border-b border-border bg-card/80 px-4 py-3">
+              <div className="flex gap-1.5">
+                <span className="h-3 w-3 rounded-full bg-red-500/70" />
+                <span className="h-3 w-3 rounded-full bg-yellow-500/70" />
+                <span className="h-3 w-3 rounded-full bg-green-500/70" />
+              </div>
+              <div className="ml-3 flex-1 truncate rounded-md bg-background/60 px-3 py-1 font-mono text-[11px] text-muted-foreground">
+                app.rexxon.ai/birdseye
+              </div>
+            </div>
+            <img
+              src={birdseyeDashboard}
+              alt="Rexxon Bird's-Eye dashboard showing daily goal progress, pipeline stages, fresh buying signals, and 14-day momentum"
+              loading="lazy"
+              className="block w-full"
+            />
+          </div>
+
+          {/* Floating callouts */}
+          <div className="pointer-events-none absolute -left-3 top-24 hidden rounded-xl border border-border bg-card/95 px-3 py-2 text-xs shadow-elevated backdrop-blur-sm md:block">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-brand shadow-[0_0_8px_var(--brand)]" />
+              <span className="font-semibold">Today's goal</span>
+            </div>
+            <p className="mt-0.5 text-muted-foreground">Personalized targets daily</p>
+          </div>
+          <div className="pointer-events-none absolute -right-3 bottom-32 hidden rounded-xl border border-border bg-card/95 px-3 py-2 text-xs shadow-elevated backdrop-blur-sm md:block">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-yellow-400 shadow-[0_0_8px_#facc15]" />
+              <span className="font-semibold">17 hot leads</span>
+            </div>
+            <p className="mt-0.5 text-muted-foreground">High-confidence signals</p>
           </div>
         </div>
       </section>
