@@ -20,7 +20,7 @@ export async function fetchSignals(opts: {
     .from('signals')
     .select(
       `*,
-       company:companies!signals_company_id_fkey(id,name,domain,industry,employee_range),
+       company:companies!signals_company_id_fkey(id,name,domain,industry,employee_range,hq_city,hq_country,funding_stage),
        hiring_manager:contacts!signals_hiring_manager_fk(id,first_name,last_name,title,email)`
     )
     .order('published_at', { ascending: false })
