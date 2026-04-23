@@ -149,24 +149,24 @@ function Accounts() {
       {isLoading ? (
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-36 animate-pulse rounded-xl border border-border bg-card/40" />
+            <div key={i} className="skeleton-shimmer h-36 rounded-xl border border-border" />
           ))}
         </div>
       ) : companies.length === 0 ? (
-        <div className="rounded-xl border border-border bg-card/40 p-10 text-center">
+        <div className="surface-1 rounded-xl p-10 text-center">
           <Building2 className="mx-auto h-8 w-8 text-muted-foreground" />
           <h3 className="mt-3 font-semibold">No companies found</h3>
           <p className="mt-1 text-sm text-muted-foreground">Try a different search or industry.</p>
         </div>
       ) : (
-        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <div className="stagger grid gap-3 md:grid-cols-2 lg:grid-cols-3">
           {companies.map((c) => {
             const stat = counts?.get(c.id);
             const isMon = monitored.has(c.id);
             return (
               <div
                 key={c.id}
-                className="group flex flex-col rounded-xl border border-border bg-card/60 p-4 transition-colors hover:border-brand/40"
+                className="surface-2 card-interactive group flex flex-col rounded-xl p-4"
               >
                 <div className="flex items-start gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted font-semibold">

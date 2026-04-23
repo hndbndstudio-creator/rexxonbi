@@ -177,9 +177,9 @@ function OutreachPage() {
         </TabsList>
 
         <TabsContent value="drafts" className="mt-4">
-          <div className="flex h-[calc(100vh-15rem)] overflow-hidden rounded-xl border border-border">
+          <div className="surface-2 flex h-[calc(100vh-15rem)] overflow-hidden rounded-xl">
             {/* Left panel — drafts list */}
-            <aside className="w-80 shrink-0 border-r border-border bg-card/30 overflow-y-auto">
+            <aside className="w-80 shrink-0 border-r border-border bg-background/30 overflow-y-auto">
               <div className="sticky top-0 z-10 border-b border-border bg-card/80 backdrop-blur px-4 py-3">
                 <h2 className="text-sm font-semibold">All drafts</h2>
                 <p className="text-xs text-muted-foreground">{drafts.length} total</p>
@@ -421,7 +421,7 @@ function SequencesPanel({ sequences, qc }: { sequences: SequenceRow[]; qc: Retur
 
   if (sequences.length === 0) {
     return (
-      <div className="rounded-xl border border-border bg-card/30 p-12 text-center">
+      <div className="surface-1 rounded-xl p-12 text-center">
         <Layers className="mx-auto h-10 w-10 text-muted-foreground/30" />
         <h3 className="mt-3 font-semibold">No sequences yet</h3>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -432,9 +432,9 @@ function SequencesPanel({ sequences, qc }: { sequences: SequenceRow[]; qc: Retur
   }
 
   return (
-    <div className="space-y-4">
+    <div className="stagger space-y-4">
       {sequences.map((s) => (
-        <div key={s.id} className="rounded-xl border border-border bg-card/40 p-5">
+        <div key={s.id} className="surface-2 card-interactive rounded-xl p-5">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">

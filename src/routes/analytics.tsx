@@ -255,7 +255,7 @@ function HeroStat({ icon: Icon, value, label, sub }: { icon: typeof Radio; value
 
 function Metric({ icon: Icon, label, value }: { icon: typeof Radio; label: string; value: number }) {
   return (
-    <div className="rounded-lg border border-border bg-card/40 p-4">
+    <div className="surface-2 card-interactive rounded-xl p-4">
       <div className="flex items-center justify-between">
         <span className="text-xs text-muted-foreground">{label}</span>
         <Icon className="h-4 w-4 text-muted-foreground" />
@@ -267,7 +267,7 @@ function Metric({ icon: Icon, label, value }: { icon: typeof Radio; label: strin
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-lg border border-border bg-card/40 p-4">
+    <div className="surface-2 rounded-xl p-4">
       <h3 className="text-sm font-semibold mb-3">{title}</h3>
       {children}
     </div>

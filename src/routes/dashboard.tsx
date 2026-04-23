@@ -191,7 +191,7 @@ function SignalFeed() {
       </div>
 
       {/* Filters */}
-      <div className="mb-5 flex flex-wrap items-end gap-3 rounded-xl border border-border bg-card/40 p-3 animate-rise" style={{ animationDelay: '80ms' }}>
+      <div className="surface-1 mb-5 flex flex-wrap items-end gap-3 rounded-xl p-3 animate-rise" style={{ animationDelay: '80ms' }}>
         <div className="min-w-[180px] flex-1">
           <label className="mb-1 block text-[10px] font-mono uppercase text-muted-foreground">
             Signal type
@@ -245,7 +245,7 @@ function SignalFeed() {
       )}
 
       {!isLoading && !isError && signals.length === 0 && (
-        <div className="animate-rise rounded-xl border border-border bg-card/40 p-10 text-center">
+        <div className="surface-1 animate-rise rounded-xl p-10 text-center">
           <Radio className="mx-auto h-8 w-8 text-muted-foreground" />
           <h3 className="mt-3 font-semibold">No signals match your filters</h3>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -271,7 +271,7 @@ function SignalFeed() {
 
       {/* Activity sidebar */}
       <aside className="hidden lg:block">
-        <div className="card-interactive sticky top-6 rounded-xl border border-border bg-card/40 p-4 animate-rise" style={{ animationDelay: '120ms' }}>
+        <div className="surface-2 card-interactive sticky top-6 rounded-xl p-4 animate-rise" style={{ animationDelay: '120ms' }}>
           <h2 className="flex items-center gap-2 text-sm font-semibold">
             <Activity className="h-4 w-4 text-brand" />
             Recent activity
