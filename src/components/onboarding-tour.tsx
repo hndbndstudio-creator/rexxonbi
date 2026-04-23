@@ -30,6 +30,7 @@ const STEPS: Step[] = [
     anchor: 'nav-dashboard',
     title: '1. Your Signal Feed',
     body: 'This is mission control. Every buying signal we surface — funding rounds, key hires, tech expansions — lands here in real time. Filter by type and confidence to focus on what matters.',
+    preview: { icon: Radar, label: 'Live buying signals' },
   },
   {
     id: 'accounts',
@@ -37,6 +38,7 @@ const STEPS: Step[] = [
     title: '2. Track target accounts',
     body: 'Add companies you care about. We monitor them 24/7 and generate AI research briefs so you walk into every conversation prepared.',
     cta: { label: 'Open Accounts', to: '/accounts' },
+    preview: { icon: Building2, label: 'Monitor target accounts' },
   },
   {
     id: 'contacts',
@@ -44,6 +46,7 @@ const STEPS: Step[] = [
     title: '3. Find the right people',
     body: 'Reveal verified emails and direct dials for decision-makers tied to each signal. Export to CSV or push straight to your CRM.',
     cta: { label: 'Open Contacts', to: '/contacts' },
+    preview: { icon: UserSearch, label: 'Reach decision-makers' },
   },
   {
     id: 'outreach',
@@ -51,6 +54,7 @@ const STEPS: Step[] = [
     title: '4. Send your first outreach',
     body: 'Generate personalized emails and multi-step sequences from any signal. Edit, approve, and ship — your AI agent drafts in seconds.',
     cta: { label: 'Open Outreach', to: '/outreach' },
+    preview: { icon: Send, label: 'AI-drafted outreach' },
   },
   {
     id: 'territory',
@@ -58,6 +62,7 @@ const STEPS: Step[] = [
     title: '5. Define your territory',
     body: 'Tell the Signal Agent your ICP — industries, geographies, deal size, and signal types — so the feed only shows what you can actually close.',
     cta: { label: 'Configure Territory', to: '/territory' },
+    preview: { icon: MapPinned, label: 'Tune your territory' },
   },
 ];
 
