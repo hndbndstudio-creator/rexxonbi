@@ -41,6 +41,9 @@ export const Route = createFileRoute('/dashboard')({
       { name: 'robots', content: 'noindex, nofollow, noarchive, noimageindex' },
     ],
   }),
+  validateSearch: (search: Record<string, unknown>) => ({
+    campaign: typeof search.campaign === 'string' ? search.campaign : undefined,
+  }),
   component: DashboardPage,
 });
 
@@ -53,9 +56,10 @@ function DashboardPage() {
 }
 
 function SignalFeed() {
+  const search = Route.useSearch();
   const [type, setType] = useState<'ALL' | SignalType>('ALL');
   const [minConf, setMinConf] = useState(60);
-  const [campaignId, setCampaignId] = useState<string>('NONE');
+  const [campaignId, setCampaignId] = useState<string>(search.campaign ?? 'NONE');
   const qc = useQueryClient();
   const navigate = useNavigate();
   const { user } = useAuth();
