@@ -11,3 +11,6 @@ verify_jwt = true
 
 [functions.generate-sequence]
 verify_jwt = true
+
+[functions.generate-meeting-brief]
+verify_jwt = true
