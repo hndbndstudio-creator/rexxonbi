@@ -260,9 +260,21 @@ function RfpWizard({
   const [data, setData] = useState<WizardData>(EMPTY_WIZARD);
   const [submitting, setSubmitting] = useState(false);
 
+  // Intake state (ephemeral — never uploaded as files)
+  const [sources, setSources] = useState<ExtractedSource[]>([]);
+  const [intakeNotes, setIntakeNotes] = useState('');
+  const [extracting, setExtracting] = useState(false);
+  const [prefilling, setPrefilling] = useState(false);
+  const [extractedQuestions, setExtractedQuestions] = useState<{ category: string; question: string }[]>([]);
+  const [sourceSummary, setSourceSummary] = useState<string>('');
+
   const reset = () => {
     setStep(0);
     setData(EMPTY_WIZARD);
+    setSources([]);
+    setIntakeNotes('');
+    setExtractedQuestions([]);
+    setSourceSummary('');
   };
 
   const handleClose = (v: boolean) => {
@@ -274,20 +286,100 @@ function RfpWizard({
     setData((d) => ({ ...d, [key]: value }));
 
   const canAdvance = () => {
-    if (step === 0) return data.title.trim().length > 0;
+    if (step === 0) return true; // intake is optional
+    if (step === 1) return data.title.trim().length > 0;
     return true;
+  };
+
+  const addFiles = async (files: FileList | null, kind: SourceKind) => {
+    if (!files?.length) return;
+    setExtracting(true);
+    try {
+      for (const file of Array.from(files)) {
+        if (file.size > 20 * 1024 * 1024) {
+          toast.error(`${file.name} is over 20MB`);
+          continue;
+        }
+        try {
+          const src = await extractFile(file, kind);
+          setSources((prev) => [...prev, src]);
+        } catch (e: any) {
+          toast.error(e?.message ?? `Failed to read ${file.name}`);
+        }
+      }
+    } finally {
+      setExtracting(false);
+    }
+  };
+
+  const removeSource = (idx: number) => setSources((prev) => prev.filter((_, i) => i !== idx));
+
+  const runPrefill = async () => {
+    const docs = [...sources];
+    if (intakeNotes.trim()) {
+      docs.push({ name: 'User notes', kind: 'NOTES', text: intakeNotes.trim(), size: intakeNotes.length });
+    }
+    if (!docs.length) {
+      toast.error('Add at least one document or paste notes first');
+      return;
+    }
+    setPrefilling(true);
+    try {
+      const { data: res, error } = await supabase.functions.invoke('prefill-rfp', {
+        body: {
+          mode: data.mode,
+          industry: data.industry,
+          title: data.title,
+          docs: docs.map((d) => ({ name: d.name, kind: d.kind, text: d.text })),
+        },
+      });
+      if (error) throw error;
+      if ((res as any)?.error) throw new Error((res as any).error);
+      const p = (res as any).prefill ?? {};
+      setData((d) => ({
+        ...d,
+        title: d.title || p.suggested_title || '',
+        organization: p.organization ?? d.organization,
+        background: p.background ?? d.background,
+        objectives: p.objectives ?? d.objectives,
+        in_scope: p.in_scope ?? d.in_scope,
+        out_of_scope: p.out_of_scope ?? d.out_of_scope,
+        deliverables: p.deliverables ?? d.deliverables,
+        functional: p.functional ?? d.functional,
+        technical: p.technical ?? d.technical,
+        integrations: p.integrations ?? d.integrations,
+        security: p.security ?? d.security,
+        sla: p.sla ?? d.sla,
+        budget: p.budget ?? d.budget,
+        pricing_model: p.pricing_model ?? d.pricing_model,
+        evaluation_focus: p.evaluation_focus ?? d.evaluation_focus,
+        notes: [d.notes, p.notes].filter(Boolean).join('\n\n'),
+      }));
+      setExtractedQuestions(Array.isArray(p.extracted_questions) ? p.extracted_questions : []);
+      setSourceSummary(p.source_summary ?? '');
+      toast.success('Wizard pre-filled — review each step before generating');
+      setStep(1);
+    } catch (e: any) {
+      toast.error(e?.message ?? 'Prefill failed');
+    } finally {
+      setPrefilling(false);
+    }
   };
 
   const handleSubmit = async () => {
     if (!user) return;
     if (!data.title.trim()) {
       toast.error('Title is required');
-      setStep(0);
+      setStep(1);
       return;
     }
     setSubmitting(true);
     try {
-      // Save row
+      // Save row — include extracted questions in inputs so the generator can use them
+      const inputs: Record<string, any> = { ...data };
+      if (extractedQuestions.length) inputs.extracted_questions = extractedQuestions;
+      if (sourceSummary) inputs.source_summary = sourceSummary;
+
       const { data: inserted, error: insErr } = await supabase
         .from('rfps')
         .insert([{
@@ -295,7 +387,7 @@ function RfpWizard({
           mode: data.mode,
           industry: data.industry,
           title: data.title.trim(),
-          inputs: data as any,
+          inputs: inputs as any,
           status: 'DRAFT',
         }])
         .select('id')
@@ -344,11 +436,29 @@ function RfpWizard({
           ))}
         </div>
 
-        {step === 0 && <StepBasics data={data} update={update} />}
-        {step === 1 && <StepScope data={data} update={update} />}
-        {step === 2 && <StepRequirements data={data} update={update} />}
-        {step === 3 && <StepCostTimeline data={data} update={update} />}
-        {step === 4 && <StepEvaluation data={data} update={update} />}
+        {step === 0 && (
+          <StepIntake
+            mode={data.mode}
+            industry={data.industry}
+            sources={sources}
+            notes={intakeNotes}
+            extracting={extracting}
+            prefilling={prefilling}
+            onModeChange={(v) => update('mode', v)}
+            onIndustryChange={(v) => update('industry', v)}
+            onAddFiles={addFiles}
+            onRemoveSource={removeSource}
+            onNotesChange={setIntakeNotes}
+            onPrefill={runPrefill}
+            extractedQuestions={extractedQuestions}
+            sourceSummary={sourceSummary}
+          />
+        )}
+        {step === 1 && <StepBasics data={data} update={update} />}
+        {step === 2 && <StepScope data={data} update={update} />}
+        {step === 3 && <StepRequirements data={data} update={update} />}
+        {step === 4 && <StepCostTimeline data={data} update={update} />}
+        {step === 5 && <StepEvaluation data={data} update={update} />}
 
         <DialogFooter className="mt-4 gap-2 sm:gap-2">
           <Button
@@ -360,7 +470,7 @@ function RfpWizard({
           </Button>
           {step < STEPS.length - 1 ? (
             <Button onClick={() => setStep((s) => s + 1)} disabled={!canAdvance() || submitting}>
-              Next <ArrowRight className="ml-1 h-4 w-4" />
+              {step === 0 ? 'Skip & fill manually' : 'Next'} <ArrowRight className="ml-1 h-4 w-4" />
             </Button>
           ) : (
             <Button onClick={handleSubmit} disabled={submitting}>
@@ -379,6 +489,215 @@ function RfpWizard({
 }
 
 type StepProps = { data: WizardData; update: <K extends keyof WizardData>(k: K, v: WizardData[K]) => void };
+
+function StepIntake({
+  mode,
+  industry,
+  sources,
+  notes,
+  extracting,
+  prefilling,
+  onModeChange,
+  onIndustryChange,
+  onAddFiles,
+  onRemoveSource,
+  onNotesChange,
+  onPrefill,
+  extractedQuestions,
+  sourceSummary,
+}: {
+  mode: Mode;
+  industry: Industry;
+  sources: ExtractedSource[];
+  notes: string;
+  extracting: boolean;
+  prefilling: boolean;
+  onModeChange: (v: Mode) => void;
+  onIndustryChange: (v: Industry) => void;
+  onAddFiles: (files: FileList | null, kind: SourceKind) => Promise<void>;
+  onRemoveSource: (idx: number) => void;
+  onNotesChange: (v: string) => void;
+  onPrefill: () => void;
+  extractedQuestions: { category: string; question: string }[];
+  sourceSummary: string;
+}) {
+  const companyDocs = sources.filter((s) => s.kind === 'COMPANY');
+  const inboundRfps = sources.filter((s) => s.kind === 'INBOUND_RFP');
+
+  return (
+    <div className="space-y-5">
+      <div className="rounded-md border border-dashed border-border bg-muted/30 p-3 text-xs text-muted-foreground">
+        <Sparkles className="mr-1 inline h-3.5 w-3.5 text-brand" />
+        Upload company docs and (for vendor responses) the inbound RFP. AI will read them, extract requirements, and draft every wizard field. Files are parsed in your browser — only the extracted text is sent to the AI, then discarded.
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <div className="space-y-1.5">
+          <Label>Mode</Label>
+          <Select value={mode} onValueChange={(v) => onModeChange(v as Mode)}>
+            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="BUYER">Buyer issuing RFP</SelectItem>
+              <SelectItem value="VENDOR_RESPONSE">Vendor response</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-1.5">
+          <Label>Industry</Label>
+          <Select value={industry} onValueChange={(v) => onIndustryChange(v as Industry)}>
+            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="IT">IT services & infrastructure</SelectItem>
+              <SelectItem value="SOFTWARE">Software / SaaS</SelectItem>
+              <SelectItem value="AI">AI / ML</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <UploadGroup
+        title="Company docs"
+        hint="Capabilities deck, past proposals, case studies, product overviews. PDF, DOCX, TXT, MD."
+        kind="COMPANY"
+        files={companyDocs}
+        onAdd={onAddFiles}
+        onRemove={(name) => onRemoveSource(sources.findIndex((s) => s.name === name && s.kind === 'COMPANY'))}
+        disabled={extracting || prefilling}
+      />
+
+      {mode === 'VENDOR_RESPONSE' && (
+        <UploadGroup
+          title="Inbound RFP"
+          hint="The RFP document you received from the prospect."
+          kind="INBOUND_RFP"
+          files={inboundRfps}
+          onAdd={onAddFiles}
+          onRemove={(name) => onRemoveSource(sources.findIndex((s) => s.name === name && s.kind === 'INBOUND_RFP'))}
+          disabled={extracting || prefilling}
+        />
+      )}
+
+      <div className="space-y-1.5">
+        <Label>Plain notes (optional)</Label>
+        <Textarea
+          rows={4}
+          placeholder="Paste anything else: meeting notes, pricing constraints, deal-breakers…"
+          value={notes}
+          onChange={(e) => onNotesChange(e.target.value)}
+          disabled={prefilling}
+        />
+      </div>
+
+      {sourceSummary && (
+        <div className="rounded-md border border-border bg-card p-3 text-xs">
+          <div className="mb-1 font-medium text-foreground">Source summary</div>
+          <p className="text-muted-foreground">{sourceSummary}</p>
+        </div>
+      )}
+
+      {extractedQuestions.length > 0 && (
+        <div className="rounded-md border border-border bg-card p-3 text-xs">
+          <div className="mb-1.5 font-medium text-foreground">
+            {extractedQuestions.length} questions extracted from inbound RFP
+          </div>
+          <ul className="ml-4 list-disc space-y-0.5 text-muted-foreground">
+            {extractedQuestions.slice(0, 5).map((q, i) => (
+              <li key={i}><span className="font-medium">{q.category}:</span> {q.question}</li>
+            ))}
+            {extractedQuestions.length > 5 && (
+              <li className="list-none italic">+ {extractedQuestions.length - 5} more, used during generation</li>
+            )}
+          </ul>
+        </div>
+      )}
+
+      <Button
+        onClick={onPrefill}
+        disabled={extracting || prefilling || (sources.length === 0 && !notes.trim())}
+        className="w-full"
+      >
+        {prefilling ? (
+          <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
+        ) : (
+          <Sparkles className="mr-1.5 h-4 w-4" />
+        )}
+        {prefilling ? 'Reading sources…' : 'AI-fill the wizard from these sources'}
+      </Button>
+    </div>
+  );
+}
+
+function UploadGroup({
+  title,
+  hint,
+  kind,
+  files,
+  onAdd,
+  onRemove,
+  disabled,
+}: {
+  title: string;
+  hint: string;
+  kind: SourceKind;
+  files: ExtractedSource[];
+  onAdd: (files: FileList | null, kind: SourceKind) => Promise<void>;
+  onRemove: (name: string) => void;
+  disabled: boolean;
+}) {
+  const inputId = `upload-${kind}`;
+  return (
+    <div className="space-y-1.5">
+      <Label>{title}</Label>
+      <p className="text-xs text-muted-foreground">{hint}</p>
+      <label
+        htmlFor={inputId}
+        className={cn(
+          'flex cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed border-border bg-muted/20 p-3 text-sm transition hover:bg-muted/40',
+          disabled && 'pointer-events-none opacity-50',
+        )}
+      >
+        <Upload className="h-4 w-4 text-muted-foreground" />
+        <span className="text-muted-foreground">Click to add files</span>
+        <input
+          id={inputId}
+          type="file"
+          multiple
+          accept=".pdf,.docx,.txt,.md,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown"
+          className="hidden"
+          onChange={(e) => {
+            onAdd(e.target.files, kind);
+            e.target.value = '';
+          }}
+          disabled={disabled}
+        />
+      </label>
+      {files.length > 0 && (
+        <ul className="space-y-1">
+          {files.map((f) => (
+            <li
+              key={f.name}
+              className="flex items-center justify-between rounded border border-border bg-card px-2 py-1.5 text-xs"
+            >
+              <span className="flex min-w-0 items-center gap-1.5">
+                <FileText className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                <span className="truncate">{f.name}</span>
+                <span className="shrink-0 text-muted-foreground">· {(f.size / 1000).toFixed(1)}k chars</span>
+              </span>
+              <button
+                type="button"
+                onClick={() => onRemove(f.name)}
+                className="ml-2 text-muted-foreground hover:text-foreground"
+                aria-label={`Remove ${f.name}`}
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 function StepBasics({ data, update }: StepProps) {
   return (
