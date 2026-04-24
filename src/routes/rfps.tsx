@@ -170,7 +170,7 @@ function RfpsPage() {
           icon={FileText}
           title="RFP generator"
           subtitle="AI-built request for proposals and vendor responses for IT, software & AI projects."
-          action={
+          actions={
             <Button onClick={() => setWizardOpen(true)}>
               <Plus className="mr-1.5 h-4 w-4" />
               New RFP
@@ -287,14 +287,14 @@ function RfpWizard({
       // Save row
       const { data: inserted, error: insErr } = await supabase
         .from('rfps')
-        .insert({
+        .insert([{
           user_id: user.id,
           mode: data.mode,
           industry: data.industry,
           title: data.title.trim(),
-          inputs: data,
+          inputs: data as any,
           status: 'DRAFT',
-        })
+        }])
         .select('id')
         .single();
       if (insErr) throw insErr;
