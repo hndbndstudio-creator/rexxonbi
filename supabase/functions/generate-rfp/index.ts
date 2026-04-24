@@ -71,7 +71,7 @@ Title: ${rfp.title}
 Wizard inputs (JSON):
 ${JSON.stringify(inputs, null, 2)}
 
-Produce a complete, professional document. Be concrete. Pull verbatim phrasing from the inputs where it makes sense. If a field is missing, make a reasonable, conservative assumption and flag it as [ASSUMPTION].`;
+${inputs.source_summary ? `Source material summary:\n${inputs.source_summary}\n\n` : ''}${Array.isArray(inputs.extracted_questions) && inputs.extracted_questions.length ? `IMPORTANT — the buyer asks these questions in their inbound RFP. Your vendor_questions output MUST address every one of them (rephrase as needed) in addition to any of your own:\n${inputs.extracted_questions.map((q: any) => `- [${q.category}] ${q.question}`).join('\n')}\n\n` : ''}Produce a complete, professional document. Be concrete. Pull verbatim phrasing from the inputs where it makes sense. If a field is missing, make a reasonable, conservative assumption and flag it as [ASSUMPTION].`;
 
     const aiResp = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
