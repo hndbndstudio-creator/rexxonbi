@@ -1392,3 +1392,114 @@ function OutreachVisual() {
     </div>
   );
 }
+
+function CampaignsVisual() {
+  const campaigns = [
+    { name: 'EMEA · FinServ', color: 'var(--signal-compliance)', signals: 42, meetings: 8, goal: 12 },
+    { name: 'NA · DevTools', color: 'var(--signal-tech)', signals: 67, meetings: 14, goal: 15 },
+    { name: 'APAC · Security', color: 'var(--signal-growth)', signals: 28, meetings: 5, goal: 10 },
+  ];
+  return (
+    <div className="rounded-xl border border-border bg-background/60 p-4 backdrop-blur">
+      <div className="flex items-center justify-between border-b border-border pb-2.5">
+        <div className="flex items-center gap-1.5">
+          <Layers className="h-3.5 w-3.5 text-brand" />
+          <span className="text-xs font-semibold">Campaigns</span>
+        </div>
+        <span className="flex items-center gap-1 font-mono text-[10px] text-muted-foreground">
+          <Filter className="h-3 w-3" /> per-sector filters
+        </span>
+      </div>
+      <div className="mt-3 space-y-2">
+        {campaigns.map((c) => (
+          <div key={c.name} className="rounded-lg border border-border/60 bg-card/60 p-2.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full" style={{ background: c.color, boxShadow: `0 0 6px ${c.color}` }} />
+                <span className="text-xs font-semibold">{c.name}</span>
+              </div>
+              <span className="font-mono text-[9px] text-muted-foreground">{c.signals} signals</span>
+            </div>
+            <div className="mt-1.5 flex items-center gap-2">
+              <div className="h-1 flex-1 overflow-hidden rounded-full bg-muted/40">
+                <div
+                  className="h-full rounded-full"
+                  style={{ width: `${(c.meetings / c.goal) * 100}%`, background: c.color }}
+                />
+              </div>
+              <span className="font-mono text-[9px] text-muted-foreground">{c.meetings}/{c.goal} mtgs</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function KnowledgeVisual() {
+  return (
+    <div className="rounded-xl border border-border bg-background/60 p-4 backdrop-blur">
+      <div className="flex items-center justify-between border-b border-border pb-2.5">
+        <div className="flex items-center gap-1.5">
+          <BookOpen className="h-3.5 w-3.5 text-brand" />
+          <span className="text-xs font-semibold">Ask your knowledge base</span>
+        </div>
+        <span className="font-mono text-[10px] text-muted-foreground">14 docs · 3.2k chunks</span>
+      </div>
+      <div className="mt-3 space-y-2.5 text-[11px] leading-relaxed">
+        <div className="flex items-start gap-2">
+          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-muted/40 font-mono text-[9px]">You</div>
+          <div className="rounded-lg border border-border/60 bg-card/60 p-2 text-foreground/90">
+            What's our SOC 2 commitment for mid-market deals?
+          </div>
+        </div>
+        <div className="flex items-start gap-2">
+          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/20 text-brand">
+            <MessageSquare className="h-3 w-3" />
+          </div>
+          <div className="rounded-lg border border-border/60 bg-card/60 p-2">
+            <p className="text-foreground/85">SOC 2 Type II is included on Pro and above. Audit reports are NDA-shareable in &lt;48h.</p>
+            <div className="mt-1.5 flex flex-wrap gap-1">
+              <span className="rounded bg-brand/15 px-1.5 py-0.5 font-mono text-[9px] text-brand">security-overview.pdf · p.4</span>
+              <span className="rounded bg-brand/15 px-1.5 py-0.5 font-mono text-[9px] text-brand">midmarket-playbook.docx · §2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RfpVisual() {
+  return (
+    <div className="rounded-xl border border-border bg-background/60 p-4 backdrop-blur">
+      <div className="flex items-center justify-between border-b border-border pb-2.5">
+        <div className="flex items-center gap-1.5">
+          <FileText className="h-3.5 w-3.5 text-brand" />
+          <span className="text-xs font-semibold">RFP wizard · vendor mode</span>
+        </div>
+        <span className="rounded-full bg-green-500/15 px-1.5 py-0.5 font-mono text-[9px] text-green-300">auto-drafted</span>
+      </div>
+      <div className="mt-3 space-y-2 text-[11px]">
+        <div className="flex items-center gap-2 rounded-lg border border-dashed border-border bg-card/40 p-2">
+          <Upload className="h-3.5 w-3.5 text-brand" />
+          <span className="text-muted-foreground">Acme-RFP-2025.pdf · capabilities-deck.pdf</span>
+        </div>
+        <div className="rounded-lg border border-border/60 bg-card/60 p-2.5">
+          <div className="font-mono text-[9px] uppercase tracking-wider text-brand">Extracted questions · 24</div>
+          <ul className="mt-1.5 space-y-1 text-foreground/85">
+            <li>· Describe your data residency options for EU buyers</li>
+            <li>· Provide pricing for 250 seats over 3 years</li>
+            <li>· List integrations with our existing CRM stack</li>
+          </ul>
+        </div>
+        <div className="flex items-center justify-between pt-1">
+          <span className="font-mono text-[9px] text-muted-foreground">Grounded in 3 uploaded docs</span>
+          <span className="rounded bg-brand px-1.5 py-1 text-[9px] font-semibold text-brand-foreground shadow-inset-glow">
+            Generate proposal
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
