@@ -107,14 +107,15 @@ function SignalFeed() {
     },
     onMutate: async ({ id, status }) => {
       await qc.cancelQueries({ queryKey: ['signals'] });
-      const prev = qc.getQueryData<SignalWithRelations[]>(['signals', type, minConf]);
-      qc.setQueryData<SignalWithRelations[]>(['signals', type, minConf], (old) =>
+      const key = ['signals', effectiveType, effectiveMinConf];
+      const prev = qc.getQueryData<SignalWithRelations[]>(key);
+      qc.setQueryData<SignalWithRelations[]>(key, (old) =>
         (old ?? []).map((s) => (s.id === id ? { ...s, status, is_read: true } : s))
       );
-      return { prev };
+      return { prev, key };
     },
     onError: (e, _v, ctx) => {
-      if (ctx?.prev) qc.setQueryData(['signals', type, minConf], ctx.prev);
+      if (ctx?.prev && ctx?.key) qc.setQueryData(ctx.key, ctx.prev);
       toast.error(e instanceof Error ? e.message : 'Action failed');
     },
     onSuccess: (_d, v) => {
