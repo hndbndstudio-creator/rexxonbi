@@ -702,29 +702,6 @@ function UploadGroup({
 function StepBasics({ data, update }: StepProps) {
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-1.5">
-          <Label>Mode</Label>
-          <Select value={data.mode} onValueChange={(v) => update('mode', v as Mode)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="BUYER">Buyer issuing RFP</SelectItem>
-              <SelectItem value="VENDOR_RESPONSE">Vendor response</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-1.5">
-          <Label>Industry</Label>
-          <Select value={data.industry} onValueChange={(v) => update('industry', v as Industry)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="IT">IT services & infrastructure</SelectItem>
-              <SelectItem value="SOFTWARE">Software / SaaS</SelectItem>
-              <SelectItem value="AI">AI / ML</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
       <div className="space-y-1.5">
         <Label>RFP title *</Label>
         <Input
