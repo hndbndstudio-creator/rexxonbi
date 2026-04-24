@@ -11,6 +11,7 @@ import {
   MapPin,
   Briefcase,
   Clock,
+  CalendarPlus,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -23,6 +24,7 @@ import {
   maskEmail,
 } from '@/lib/types';
 import type { SignalWithRelations } from '@/lib/queries';
+import { ScheduleMeetingDialog } from '@/components/schedule-meeting-dialog';
 
 interface Props {
   signal: SignalWithRelations;
@@ -238,6 +240,19 @@ export function SignalCard({ signal, onClaim, onDismiss, onDraft, isPending, isD
             {isDrafting ? 'Drafting…' : 'Draft Outreach'}
           </Button>
         )}
+        <ScheduleMeetingDialog
+          signalId={signal.id}
+          companyId={signal.company_id}
+          contactId={signal.hiring_manager_contact_id ?? undefined}
+          defaultTitle={company ? `Discovery with ${company.name}` : signal.title}
+          defaultNotes={signal.ai_insight}
+          trigger={
+            <Button size="sm" variant="outline" className="btn-press h-8 text-xs">
+              <CalendarPlus className="mr-1 h-3.5 w-3.5" />
+              Schedule
+            </Button>
+          }
+        />
         <div className="flex-1" />
         <Button
           size="sm"
