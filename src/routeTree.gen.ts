@@ -15,6 +15,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ScheduleDemoRouteImport } from './routes/schedule-demo'
+import { Route as RfpsRouteImport } from './routes/rfps'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as OutreachRouteImport } from './routes/outreach'
 import { Route as LoginRouteImport } from './routes/login'
@@ -61,6 +62,11 @@ const SettingsRoute = SettingsRouteImport.update({
 const ScheduleDemoRoute = ScheduleDemoRouteImport.update({
   id: '/schedule-demo',
   path: '/schedule-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RfpsRoute = RfpsRouteImport.update({
+  id: '/rfps',
+  path: '/rfps',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/rfps': typeof RfpsRoute
   '/schedule-demo': typeof ScheduleDemoRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
@@ -189,6 +196,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/rfps': typeof RfpsRoute
   '/schedule-demo': typeof ScheduleDemoRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
@@ -215,6 +223,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/rfps': typeof RfpsRoute
   '/schedule-demo': typeof ScheduleDemoRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
@@ -242,6 +251,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/outreach'
     | '/reset-password'
+    | '/rfps'
     | '/schedule-demo'
     | '/settings'
     | '/signup'
@@ -267,6 +277,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/outreach'
     | '/reset-password'
+    | '/rfps'
     | '/schedule-demo'
     | '/settings'
     | '/signup'
@@ -292,6 +303,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/outreach'
     | '/reset-password'
+    | '/rfps'
     | '/schedule-demo'
     | '/settings'
     | '/signup'
@@ -318,6 +330,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   OutreachRoute: typeof OutreachRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  RfpsRoute: typeof RfpsRoute
   ScheduleDemoRoute: typeof ScheduleDemoRoute
   SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
@@ -368,6 +381,13 @@ declare module '@tanstack/react-router' {
       path: '/schedule-demo'
       fullPath: '/schedule-demo'
       preLoaderRoute: typeof ScheduleDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rfps': {
+      id: '/rfps'
+      path: '/rfps'
+      fullPath: '/rfps'
+      preLoaderRoute: typeof RfpsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reset-password': {
@@ -541,6 +561,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   OutreachRoute: OutreachRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  RfpsRoute: RfpsRoute,
   ScheduleDemoRoute: ScheduleDemoRoute,
   SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,

@@ -414,6 +414,48 @@ export type Database = {
           },
         ]
       }
+      rfps: {
+        Row: {
+          content: Json | null
+          created_at: string
+          generated_at: string | null
+          id: string
+          industry: string
+          inputs: Json
+          mode: string
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content?: Json | null
+          created_at?: string
+          generated_at?: string | null
+          id?: string
+          industry?: string
+          inputs?: Json
+          mode?: string
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: Json | null
+          created_at?: string
+          generated_at?: string | null
+          id?: string
+          industry?: string
+          inputs?: Json
+          mode?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       signals: {
         Row: {
           ai_insight: string

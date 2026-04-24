@@ -5,6 +5,7 @@ import {
   Building2,
   CalendarDays,
   Eye,
+  FileText,
   LogOut,
   Menu,
   Radio,
@@ -24,7 +25,7 @@ import { useIsAdmin } from '@/lib/use-admin';
 import { RexxonLogo } from '@/components/rexxon-logo';
 
 type NavItem = {
-  to: '/birdseye' | '/dashboard' | '/today' | '/accounts' | '/contacts' | '/outreach' | '/territory' | '/analytics' | '/settings' | '/admin';
+  to: '/birdseye' | '/dashboard' | '/today' | '/accounts' | '/contacts' | '/outreach' | '/rfps' | '/territory' | '/analytics' | '/settings' | '/admin';
   label: string;
   icon: typeof Radio;
   tourId?: string;
@@ -38,6 +39,7 @@ const NAV: NavItem[] = [
   { to: '/accounts', label: 'Accounts', icon: Building2, tourId: 'nav-accounts' },
   { to: '/contacts', label: 'Contacts', icon: Users, tourId: 'nav-contacts' },
   { to: '/outreach', label: 'Outreach', icon: Mail, tourId: 'nav-outreach' },
+  { to: '/rfps', label: 'RFPs', icon: FileText, tourId: 'nav-rfps' },
   { to: '/territory', label: 'Territory', icon: Target, tourId: 'nav-territory' },
   { to: '/analytics', label: 'Analytics', icon: TrendingUp },
   { to: '/settings', label: 'Settings', icon: Settings },
