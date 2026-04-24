@@ -12,6 +12,8 @@ import {
   Trash2,
   ArrowRight,
   ArrowLeft,
+  Upload,
+  X,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -40,6 +42,7 @@ import {
   downloadBlob,
   type RfpContent,
 } from '@/lib/rfp-export';
+import { extractFile, type ExtractedSource, type SourceKind } from '@/lib/rfp-intake';
 
 export const Route = createFileRoute('/rfps')({
   head: () => ({
@@ -69,7 +72,7 @@ interface RfpRow {
   updated_at: string;
 }
 
-const STEPS = ['Basics', 'Scope', 'Requirements', 'Cost & timeline', 'Evaluation'] as const;
+const STEPS = ['Intake', 'Basics', 'Scope', 'Requirements', 'Cost & timeline', 'Evaluation'] as const;
 
 interface WizardData {
   mode: Mode;
