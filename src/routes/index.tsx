@@ -40,6 +40,12 @@ import {
   CalendarCheck,
   Play,
   X as CloseIcon,
+  Layers,
+  BookOpen,
+  FileText,
+  MessageSquare,
+  Filter,
+  Upload,
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { RexxonLogo } from '@/components/rexxon-logo';
@@ -783,9 +789,9 @@ function LandingPage() {
 
         <div className="reveal mt-10 grid gap-6 md:grid-cols-3">
           {[
-            { id: 'starter' as const, name: 'Starter', price: 79, accounts: '75 accounts', users: '1 user', highlight: false, features: ['75 monitored accounts', '1 user seat', 'Real-time signal feed', 'AI outreach drafts', 'Verified contacts', 'Slack alerts', 'Email digest'] },
-            { id: 'pro' as const, name: 'Pro', price: 199, accounts: '250 accounts', users: '3 users', highlight: true, features: ['250 monitored accounts', '3 user seats', 'Everything in Starter', 'CRM push (Salesforce, HubSpot)', 'Outreach.io / Salesloft sync', 'Custom signal weighting', 'Priority support'] },
-            { id: 'team' as const, name: 'Team', price: 349, accounts: '750 accounts', users: '10 users', highlight: false, features: ['750 monitored accounts', '10 user seats', 'Everything in Pro', 'Territory routing', 'Win/loss feedback loop', 'Dedicated CSM', 'SAML SSO'] },
+            { id: 'starter' as const, name: 'Starter', price: 79, accounts: '75 accounts', users: '1 user', highlight: false, features: ['75 monitored accounts', '1 user seat', 'Real-time signal feed', 'AI outreach drafts', 'Verified contacts', 'Slack alerts', 'Email digest', '1 campaign', 'Knowledge base · 50 docs', 'RFP generator · 3 / month'] },
+            { id: 'pro' as const, name: 'Pro', price: 199, accounts: '250 accounts', users: '3 users', highlight: true, features: ['250 monitored accounts', '3 user seats', 'Everything in Starter', 'CRM push (Salesforce, HubSpot)', 'Outreach.io / Salesloft sync', 'Custom signal weighting', 'Unlimited campaigns + per-sector filters', 'Knowledge base · 500 docs + cited answers', 'AI-assisted RFP · unlimited', 'Priority support'] },
+            { id: 'team' as const, name: 'Team', price: 349, accounts: '750 accounts', users: '10 users', highlight: false, features: ['750 monitored accounts', '10 user seats', 'Everything in Pro', 'Territory routing', 'Win/loss feedback loop', 'Shared campaigns across teams', 'Knowledge base · unlimited + workspace library', 'RFP collaboration + version history', 'Dedicated CSM', 'SAML SSO'] },
           ].map((plan) => {
             const price = annual ? Math.round(plan.price * 0.8) : plan.price;
             return (
@@ -1237,6 +1243,30 @@ const FEATURE_BLOCKS = [
     bullets: ['Persona + tone presets', 'Multi-step sequences', 'CRM + sequencer sync'],
     visual: <OutreachVisual />,
   },
+  {
+    eyebrow: 'Organize',
+    icon: <Layers className="h-3.5 w-3.5" />,
+    title: 'Campaigns for every sales sector',
+    body: 'Spin up named campaigns — one per region, vertical or product line — each with its own signal filters, team assignees and goals. Reps switch context in one click; leadership sees pipeline rolled up by motion.',
+    bullets: ['Filter by signal type, geo, industry, role + confidence', 'Creator-owned · team read-only', 'Goals for claims and meetings booked'],
+    visual: <CampaignsVisual />,
+  },
+  {
+    eyebrow: 'Recall',
+    icon: <BookOpen className="h-3.5 w-3.5" />,
+    title: 'Mini RAG agent on your company knowledge',
+    body: 'Upload capabilities decks, battle cards, pricing sheets and past proposals. Reps ask questions in plain English and get instant, cited answers — so they never stall on objections again.',
+    bullets: ['Upload PDFs, DOCX, notes or URLs', 'Cited answers with source links', 'Available from any page in the app'],
+    visual: <KnowledgeVisual />,
+  },
+  {
+    eyebrow: 'Respond',
+    icon: <FileText className="h-3.5 w-3.5" />,
+    title: 'AI-assisted RFP generator',
+    body: 'Drop in an inbound RFP and your company docs — Rexxon extracts every question, auto-drafts grounded answers, and outputs a polished proposal you can ship. Or fill the wizard manually for total control.',
+    bullets: ['Auto-extract questions from inbound RFPs', 'Auto-draft sections from your uploaded docs', 'Ephemeral parsing — files never stored'],
+    visual: <RfpVisual />,
+  },
 ];
 
 const FAQS = [
@@ -1357,6 +1387,117 @@ function OutreachVisual() {
             <span className="rounded bg-card px-1.5 py-1 text-[9px] ring-1 ring-border">Edit</span>
             <span className="rounded bg-brand px-1.5 py-1 text-[9px] font-semibold text-brand-foreground shadow-inset-glow">Send</span>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CampaignsVisual() {
+  const campaigns = [
+    { name: 'EMEA · FinServ', color: 'var(--signal-compliance)', signals: 42, meetings: 8, goal: 12 },
+    { name: 'NA · DevTools', color: 'var(--signal-tech)', signals: 67, meetings: 14, goal: 15 },
+    { name: 'APAC · Security', color: 'var(--signal-growth)', signals: 28, meetings: 5, goal: 10 },
+  ];
+  return (
+    <div className="rounded-xl border border-border bg-background/60 p-4 backdrop-blur">
+      <div className="flex items-center justify-between border-b border-border pb-2.5">
+        <div className="flex items-center gap-1.5">
+          <Layers className="h-3.5 w-3.5 text-brand" />
+          <span className="text-xs font-semibold">Campaigns</span>
+        </div>
+        <span className="flex items-center gap-1 font-mono text-[10px] text-muted-foreground">
+          <Filter className="h-3 w-3" /> per-sector filters
+        </span>
+      </div>
+      <div className="mt-3 space-y-2">
+        {campaigns.map((c) => (
+          <div key={c.name} className="rounded-lg border border-border/60 bg-card/60 p-2.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full" style={{ background: c.color, boxShadow: `0 0 6px ${c.color}` }} />
+                <span className="text-xs font-semibold">{c.name}</span>
+              </div>
+              <span className="font-mono text-[9px] text-muted-foreground">{c.signals} signals</span>
+            </div>
+            <div className="mt-1.5 flex items-center gap-2">
+              <div className="h-1 flex-1 overflow-hidden rounded-full bg-muted/40">
+                <div
+                  className="h-full rounded-full"
+                  style={{ width: `${(c.meetings / c.goal) * 100}%`, background: c.color }}
+                />
+              </div>
+              <span className="font-mono text-[9px] text-muted-foreground">{c.meetings}/{c.goal} mtgs</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function KnowledgeVisual() {
+  return (
+    <div className="rounded-xl border border-border bg-background/60 p-4 backdrop-blur">
+      <div className="flex items-center justify-between border-b border-border pb-2.5">
+        <div className="flex items-center gap-1.5">
+          <BookOpen className="h-3.5 w-3.5 text-brand" />
+          <span className="text-xs font-semibold">Ask your knowledge base</span>
+        </div>
+        <span className="font-mono text-[10px] text-muted-foreground">14 docs · 3.2k chunks</span>
+      </div>
+      <div className="mt-3 space-y-2.5 text-[11px] leading-relaxed">
+        <div className="flex items-start gap-2">
+          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-muted/40 font-mono text-[9px]">You</div>
+          <div className="rounded-lg border border-border/60 bg-card/60 p-2 text-foreground/90">
+            What's our SOC 2 commitment for mid-market deals?
+          </div>
+        </div>
+        <div className="flex items-start gap-2">
+          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/20 text-brand">
+            <MessageSquare className="h-3 w-3" />
+          </div>
+          <div className="rounded-lg border border-border/60 bg-card/60 p-2">
+            <p className="text-foreground/85">SOC 2 Type II is included on Pro and above. Audit reports are NDA-shareable in &lt;48h.</p>
+            <div className="mt-1.5 flex flex-wrap gap-1">
+              <span className="rounded bg-brand/15 px-1.5 py-0.5 font-mono text-[9px] text-brand">security-overview.pdf · p.4</span>
+              <span className="rounded bg-brand/15 px-1.5 py-0.5 font-mono text-[9px] text-brand">midmarket-playbook.docx · §2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RfpVisual() {
+  return (
+    <div className="rounded-xl border border-border bg-background/60 p-4 backdrop-blur">
+      <div className="flex items-center justify-between border-b border-border pb-2.5">
+        <div className="flex items-center gap-1.5">
+          <FileText className="h-3.5 w-3.5 text-brand" />
+          <span className="text-xs font-semibold">RFP wizard · vendor mode</span>
+        </div>
+        <span className="rounded-full bg-green-500/15 px-1.5 py-0.5 font-mono text-[9px] text-green-300">auto-drafted</span>
+      </div>
+      <div className="mt-3 space-y-2 text-[11px]">
+        <div className="flex items-center gap-2 rounded-lg border border-dashed border-border bg-card/40 p-2">
+          <Upload className="h-3.5 w-3.5 text-brand" />
+          <span className="text-muted-foreground">Acme-RFP-2025.pdf · capabilities-deck.pdf</span>
+        </div>
+        <div className="rounded-lg border border-border/60 bg-card/60 p-2.5">
+          <div className="font-mono text-[9px] uppercase tracking-wider text-brand">Extracted questions · 24</div>
+          <ul className="mt-1.5 space-y-1 text-foreground/85">
+            <li>· Describe your data residency options for EU buyers</li>
+            <li>· Provide pricing for 250 seats over 3 years</li>
+            <li>· List integrations with our existing CRM stack</li>
+          </ul>
+        </div>
+        <div className="flex items-center justify-between pt-1">
+          <span className="font-mono text-[9px] text-muted-foreground">Grounded in 3 uploaded docs</span>
+          <span className="rounded bg-brand px-1.5 py-1 text-[9px] font-semibold text-brand-foreground shadow-inset-glow">
+            Generate proposal
+          </span>
         </div>
       </div>
     </div>
