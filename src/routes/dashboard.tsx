@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { DashboardShell } from '@/components/dashboard-shell';
@@ -26,10 +26,13 @@ import {
   Inbox,
   Flame,
   Filter,
+  Target,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { ACTIVITY_LABELS, fetchActivity, logActivity } from '@/lib/activity';
 import { formatDistanceToNow } from 'date-fns';
+import { fetchCampaigns, type CampaignRow, CAMPAIGN_COLORS } from '@/lib/campaigns';
+import { cn } from '@/lib/utils';
 
 export const Route = createFileRoute('/dashboard')({
   head: () => ({
