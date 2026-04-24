@@ -44,6 +44,54 @@ export type Database = {
         }
         Relationships: []
       }
+      campaigns: {
+        Row: {
+          assignees: string[]
+          color: string
+          created_at: string
+          description: string | null
+          filters: Json
+          goal_claims: number
+          goal_meetings: number
+          id: string
+          name: string
+          sector: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assignees?: string[]
+          color?: string
+          created_at?: string
+          description?: string | null
+          filters?: Json
+          goal_claims?: number
+          goal_meetings?: number
+          id?: string
+          name: string
+          sector?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assignees?: string[]
+          color?: string
+          created_at?: string
+          description?: string | null
+          filters?: Json
+          goal_claims?: number
+          goal_meetings?: number
+          id?: string
+          name?: string
+          sector?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       companies: {
         Row: {
           brief: Json | null

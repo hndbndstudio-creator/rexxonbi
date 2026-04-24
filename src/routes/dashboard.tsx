@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { DashboardShell } from '@/components/dashboard-shell';
@@ -26,10 +26,13 @@ import {
   Inbox,
   Flame,
   Filter,
+  Target,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { ACTIVITY_LABELS, fetchActivity, logActivity } from '@/lib/activity';
 import { formatDistanceToNow } from 'date-fns';
+import { fetchCampaigns, type CampaignRow, CAMPAIGN_COLORS } from '@/lib/campaigns';
+import { cn } from '@/lib/utils';
 
 export const Route = createFileRoute('/dashboard')({
   head: () => ({
@@ -37,6 +40,9 @@ export const Route = createFileRoute('/dashboard')({
       { title: 'Signals — Rexxon AI' },
       { name: 'robots', content: 'noindex, nofollow, noarchive, noimageindex' },
     ],
+  }),
+  validateSearch: (search: Record<string, unknown>): { campaign?: string } => ({
+    campaign: typeof search.campaign === 'string' ? search.campaign : undefined,
   }),
   component: DashboardPage,
 });
@@ -50,16 +56,50 @@ function DashboardPage() {
 }
 
 function SignalFeed() {
+  const search = Route.useSearch();
   const [type, setType] = useState<'ALL' | SignalType>('ALL');
   const [minConf, setMinConf] = useState(60);
+  const [campaignId, setCampaignId] = useState<string>(search.campaign ?? 'NONE');
   const qc = useQueryClient();
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const { data: signals = [], isLoading, isError, refetch } = useQuery({
-    queryKey: ['signals', type, minConf],
-    queryFn: () => fetchSignals({ type, minConfidence: minConf }),
+  const { data: campaigns = [] } = useQuery({
+    queryKey: ['campaigns'],
+    queryFn: fetchCampaigns,
   });
+
+  const activeCampaign: CampaignRow | undefined = useMemo(
+    () => campaigns.find((c) => c.id === campaignId),
+    [campaigns, campaignId]
+  );
+
+  // When a campaign is active, derive effective filters from it (taking precedence)
+  const effectiveType: 'ALL' | SignalType = activeCampaign?.filters?.signal_types?.[0] ?? type;
+  const effectiveMinConf = activeCampaign?.filters?.min_confidence ?? minConf;
+
+  const { data: rawSignals = [], isLoading, isError, refetch } = useQuery({
+    queryKey: ['signals', effectiveType, effectiveMinConf],
+    queryFn: () => fetchSignals({ type: effectiveType, minConfidence: effectiveMinConf }),
+  });
+
+  // Apply remaining campaign filters client-side (industries, geos, role, seniority, domains, employees)
+  const signals = useMemo(() => {
+    if (!activeCampaign) return rawSignals;
+    const f = activeCampaign.filters ?? {};
+    return rawSignals.filter((s) => {
+      if (f.signal_types?.length && !f.signal_types.includes(s.signal_type as SignalType)) return false;
+      if (f.industries?.length && (!s.company?.industry || !f.industries.includes(s.company.industry))) return false;
+      if (f.role_categories?.length && (!s.role_category || !f.role_categories.includes(s.role_category))) return false;
+      if (f.seniority_levels?.length && (!s.seniority_level || !f.seniority_levels.includes(s.seniority_level))) return false;
+      if (f.named_domains?.length && (!s.company?.domain || !f.named_domains.includes(s.company.domain.toLowerCase()))) return false;
+      if (f.geographies?.length) {
+        const hay = `${s.company?.hq_country ?? ''} ${s.company?.hq_city ?? ''}`.toLowerCase();
+        if (!f.geographies.some((g) => hay.includes(g.toLowerCase()))) return false;
+      }
+      return true;
+    });
+  }, [rawSignals, activeCampaign]);
 
   const actionMut = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: 'CLAIMED' | 'DISMISSED' }) => {
@@ -71,14 +111,15 @@ function SignalFeed() {
     },
     onMutate: async ({ id, status }) => {
       await qc.cancelQueries({ queryKey: ['signals'] });
-      const prev = qc.getQueryData<SignalWithRelations[]>(['signals', type, minConf]);
-      qc.setQueryData<SignalWithRelations[]>(['signals', type, minConf], (old) =>
+      const key = ['signals', effectiveType, effectiveMinConf];
+      const prev = qc.getQueryData<SignalWithRelations[]>(key);
+      qc.setQueryData<SignalWithRelations[]>(key, (old) =>
         (old ?? []).map((s) => (s.id === id ? { ...s, status, is_read: true } : s))
       );
-      return { prev };
+      return { prev, key };
     },
     onError: (e, _v, ctx) => {
-      if (ctx?.prev) qc.setQueryData(['signals', type, minConf], ctx.prev);
+      if (ctx?.prev && ctx?.key) qc.setQueryData(ctx.key, ctx.prev);
       toast.error(e instanceof Error ? e.message : 'Action failed');
     },
     onSuccess: (_d, v) => {
@@ -220,10 +261,48 @@ function SignalFeed() {
             className="surface-1 mb-4 rounded-xl border border-border p-3 animate-rise md:mb-5"
             style={{ animationDelay: '160ms' }}
           >
-            <div className="mb-2 flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
-              <Filter className="h-3 w-3" /> Filters
+            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+                <Filter className="h-3 w-3" /> Filters
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Target className="h-3 w-3 text-muted-foreground" />
+                <Select value={campaignId} onValueChange={setCampaignId}>
+                  <SelectTrigger className="h-7 w-[180px] text-xs">
+                    <SelectValue placeholder="No campaign" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="NONE">No campaign</SelectItem>
+                    {campaigns.map((c) => {
+                      const colorClass = CAMPAIGN_COLORS.find((x) => x.value === c.color)?.class ?? 'bg-blue-500';
+                      return (
+                        <SelectItem key={c.id} value={c.id}>
+                          <span className="flex items-center gap-2">
+                            <span className={cn('h-2 w-2 rounded-full', colorClass)} />
+                            {c.name}
+                          </span>
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
+            {activeCampaign && (
+              <div className="mb-2 rounded-md border border-brand/30 bg-brand/5 p-2 text-[11px]">
+                <span className="font-medium text-brand">Campaign filter active:</span>{' '}
+                <span className="text-muted-foreground">{activeCampaign.name}</span>
+                {activeCampaign.sector && <span className="text-muted-foreground"> · {activeCampaign.sector}</span>}
+                <button
+                  type="button"
+                  onClick={() => setCampaignId('NONE')}
+                  className="ml-2 underline hover:no-underline"
+                >
+                  Clear
+                </button>
+              </div>
+            )}
+            <div className={cn('grid gap-3 sm:grid-cols-2', activeCampaign && 'opacity-60 pointer-events-none')}>
               <div className="min-w-0">
                 <label className="mb-1 block text-[10px] font-mono uppercase text-muted-foreground">
                   Signal type
