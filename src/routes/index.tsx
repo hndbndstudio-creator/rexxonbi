@@ -40,6 +40,12 @@ import {
   CalendarCheck,
   Play,
   X as CloseIcon,
+  Layers,
+  BookOpen,
+  FileText,
+  MessageSquare,
+  Filter,
+  Upload,
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { RexxonLogo } from '@/components/rexxon-logo';
