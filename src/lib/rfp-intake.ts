@@ -3,7 +3,6 @@
 // Returns text only — files themselves are never uploaded to the server.
 
 import * as pdfjsLib from 'pdfjs-dist';
-// @ts-expect-error - vite handles ?url
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import mammoth from 'mammoth';
 
