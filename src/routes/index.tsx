@@ -1243,6 +1243,30 @@ const FEATURE_BLOCKS = [
     bullets: ['Persona + tone presets', 'Multi-step sequences', 'CRM + sequencer sync'],
     visual: <OutreachVisual />,
   },
+  {
+    eyebrow: 'Organize',
+    icon: <Layers className="h-3.5 w-3.5" />,
+    title: 'Campaigns for every sales sector',
+    body: 'Spin up named campaigns — one per region, vertical or product line — each with its own signal filters, team assignees and goals. Reps switch context in one click; leadership sees pipeline rolled up by motion.',
+    bullets: ['Filter by signal type, geo, industry, role + confidence', 'Creator-owned · team read-only', 'Goals for claims and meetings booked'],
+    visual: <CampaignsVisual />,
+  },
+  {
+    eyebrow: 'Recall',
+    icon: <BookOpen className="h-3.5 w-3.5" />,
+    title: 'Mini RAG agent on your company knowledge',
+    body: 'Upload capabilities decks, battle cards, pricing sheets and past proposals. Reps ask questions in plain English and get instant, cited answers — so they never stall on objections again.',
+    bullets: ['Upload PDFs, DOCX, notes or URLs', 'Cited answers with source links', 'Available from any page in the app'],
+    visual: <KnowledgeVisual />,
+  },
+  {
+    eyebrow: 'Respond',
+    icon: <FileText className="h-3.5 w-3.5" />,
+    title: 'AI-assisted RFP generator',
+    body: 'Drop in an inbound RFP and your company docs — Rexxon extracts every question, auto-drafts grounded answers, and outputs a polished proposal you can ship. Or fill the wizard manually for total control.',
+    bullets: ['Auto-extract questions from inbound RFPs', 'Auto-draft sections from your uploaded docs', 'Ephemeral parsing — files never stored'],
+    visual: <RfpVisual />,
+  },
 ];
 
 const FAQS = [
