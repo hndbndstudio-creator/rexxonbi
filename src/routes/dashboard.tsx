@@ -55,14 +55,47 @@ function DashboardPage() {
 function SignalFeed() {
   const [type, setType] = useState<'ALL' | SignalType>('ALL');
   const [minConf, setMinConf] = useState(60);
+  const [campaignId, setCampaignId] = useState<string>('NONE');
   const qc = useQueryClient();
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const { data: signals = [], isLoading, isError, refetch } = useQuery({
-    queryKey: ['signals', type, minConf],
-    queryFn: () => fetchSignals({ type, minConfidence: minConf }),
+  const { data: campaigns = [] } = useQuery({
+    queryKey: ['campaigns'],
+    queryFn: fetchCampaigns,
   });
+
+  const activeCampaign: CampaignRow | undefined = useMemo(
+    () => campaigns.find((c) => c.id === campaignId),
+    [campaigns, campaignId]
+  );
+
+  // When a campaign is active, derive effective filters from it (taking precedence)
+  const effectiveType: 'ALL' | SignalType = activeCampaign?.filters?.signal_types?.[0] ?? type;
+  const effectiveMinConf = activeCampaign?.filters?.min_confidence ?? minConf;
+
+  const { data: rawSignals = [], isLoading, isError, refetch } = useQuery({
+    queryKey: ['signals', effectiveType, effectiveMinConf],
+    queryFn: () => fetchSignals({ type: effectiveType, minConfidence: effectiveMinConf }),
+  });
+
+  // Apply remaining campaign filters client-side (industries, geos, role, seniority, domains, employees)
+  const signals = useMemo(() => {
+    if (!activeCampaign) return rawSignals;
+    const f = activeCampaign.filters ?? {};
+    return rawSignals.filter((s) => {
+      if (f.signal_types?.length && !f.signal_types.includes(s.signal_type as SignalType)) return false;
+      if (f.industries?.length && (!s.company?.industry || !f.industries.includes(s.company.industry))) return false;
+      if (f.role_categories?.length && (!s.role_category || !f.role_categories.includes(s.role_category))) return false;
+      if (f.seniority_levels?.length && (!s.seniority_level || !f.seniority_levels.includes(s.seniority_level))) return false;
+      if (f.named_domains?.length && (!s.company?.domain || !f.named_domains.includes(s.company.domain.toLowerCase()))) return false;
+      if (f.geographies?.length) {
+        const hay = `${s.company?.hq_country ?? ''} ${s.company?.hq_city ?? ''}`.toLowerCase();
+        if (!f.geographies.some((g) => hay.includes(g.toLowerCase()))) return false;
+      }
+      return true;
+    });
+  }, [rawSignals, activeCampaign]);
 
   const actionMut = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: 'CLAIMED' | 'DISMISSED' }) => {
