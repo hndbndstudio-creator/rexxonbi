@@ -789,9 +789,9 @@ function LandingPage() {
 
         <div className="reveal mt-10 grid gap-6 md:grid-cols-3">
           {[
-            { id: 'starter' as const, name: 'Starter', price: 79, accounts: '75 accounts', users: '1 user', highlight: false, features: ['75 monitored accounts', '1 user seat', 'Real-time signal feed', 'AI outreach drafts', 'Verified contacts', 'Slack alerts', 'Email digest'] },
-            { id: 'pro' as const, name: 'Pro', price: 199, accounts: '250 accounts', users: '3 users', highlight: true, features: ['250 monitored accounts', '3 user seats', 'Everything in Starter', 'CRM push (Salesforce, HubSpot)', 'Outreach.io / Salesloft sync', 'Custom signal weighting', 'Priority support'] },
-            { id: 'team' as const, name: 'Team', price: 349, accounts: '750 accounts', users: '10 users', highlight: false, features: ['750 monitored accounts', '10 user seats', 'Everything in Pro', 'Territory routing', 'Win/loss feedback loop', 'Dedicated CSM', 'SAML SSO'] },
+            { id: 'starter' as const, name: 'Starter', price: 79, accounts: '75 accounts', users: '1 user', highlight: false, features: ['75 monitored accounts', '1 user seat', 'Real-time signal feed', 'AI outreach drafts', 'Verified contacts', 'Slack alerts', 'Email digest', '1 campaign', 'Knowledge base · 50 docs', 'RFP generator · 3 / month'] },
+            { id: 'pro' as const, name: 'Pro', price: 199, accounts: '250 accounts', users: '3 users', highlight: true, features: ['250 monitored accounts', '3 user seats', 'Everything in Starter', 'CRM push (Salesforce, HubSpot)', 'Outreach.io / Salesloft sync', 'Custom signal weighting', 'Unlimited campaigns + per-sector filters', 'Knowledge base · 500 docs + cited answers', 'AI-assisted RFP · unlimited', 'Priority support'] },
+            { id: 'team' as const, name: 'Team', price: 349, accounts: '750 accounts', users: '10 users', highlight: false, features: ['750 monitored accounts', '10 user seats', 'Everything in Pro', 'Territory routing', 'Win/loss feedback loop', 'Shared campaigns across teams', 'Knowledge base · unlimited + workspace library', 'RFP collaboration + version history', 'Dedicated CSM', 'SAML SSO'] },
           ].map((plan) => {
             const price = annual ? Math.round(plan.price * 0.8) : plan.price;
             return (
