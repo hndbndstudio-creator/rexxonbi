@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TodayRouteImport } from './routes/today'
 import { Route as TerritoryRouteImport } from './routes/territory'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SignupRouteImport } from './routes/signup'
@@ -32,6 +33,11 @@ import { Route as CaseStudiesSlugRouteImport } from './routes/case-studies.$slug
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AccountsIdRouteImport } from './routes/accounts.$id'
 
+const TodayRoute = TodayRouteImport.update({
+  id: '/today',
+  path: '/today',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TerritoryRoute = TerritoryRouteImport.update({
   id: '/territory',
   path: '/territory',
@@ -163,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/territory': typeof TerritoryRoute
+  '/today': typeof TodayRoute
   '/accounts/$id': typeof AccountsIdRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/case-studies/$slug': typeof CaseStudiesSlugRoute
@@ -187,6 +194,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/territory': typeof TerritoryRoute
+  '/today': typeof TodayRoute
   '/accounts/$id': typeof AccountsIdRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/case-studies/$slug': typeof CaseStudiesSlugRoute
@@ -212,6 +220,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/territory': typeof TerritoryRoute
+  '/today': typeof TodayRoute
   '/accounts/$id': typeof AccountsIdRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/case-studies/$slug': typeof CaseStudiesSlugRoute
@@ -238,6 +247,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/sitemap.xml'
     | '/territory'
+    | '/today'
     | '/accounts/$id'
     | '/blog/$slug'
     | '/case-studies/$slug'
@@ -262,6 +272,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/sitemap.xml'
     | '/territory'
+    | '/today'
     | '/accounts/$id'
     | '/blog/$slug'
     | '/case-studies/$slug'
@@ -286,6 +297,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/sitemap.xml'
     | '/territory'
+    | '/today'
     | '/accounts/$id'
     | '/blog/$slug'
     | '/case-studies/$slug'
@@ -311,10 +323,18 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TerritoryRoute: typeof TerritoryRoute
+  TodayRoute: typeof TodayRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/today': {
+      id: '/today'
+      path: '/today'
+      fullPath: '/today'
+      preLoaderRoute: typeof TodayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/territory': {
       id: '/territory'
       path: '/territory'
@@ -526,6 +546,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TerritoryRoute: TerritoryRoute,
+  TodayRoute: TodayRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
