@@ -257,10 +257,48 @@ function SignalFeed() {
             className="surface-1 mb-4 rounded-xl border border-border p-3 animate-rise md:mb-5"
             style={{ animationDelay: '160ms' }}
           >
-            <div className="mb-2 flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
-              <Filter className="h-3 w-3" /> Filters
+            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+                <Filter className="h-3 w-3" /> Filters
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Target className="h-3 w-3 text-muted-foreground" />
+                <Select value={campaignId} onValueChange={setCampaignId}>
+                  <SelectTrigger className="h-7 w-[180px] text-xs">
+                    <SelectValue placeholder="No campaign" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="NONE">No campaign</SelectItem>
+                    {campaigns.map((c) => {
+                      const colorClass = CAMPAIGN_COLORS.find((x) => x.value === c.color)?.class ?? 'bg-blue-500';
+                      return (
+                        <SelectItem key={c.id} value={c.id}>
+                          <span className="flex items-center gap-2">
+                            <span className={cn('h-2 w-2 rounded-full', colorClass)} />
+                            {c.name}
+                          </span>
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
+            {activeCampaign && (
+              <div className="mb-2 rounded-md border border-brand/30 bg-brand/5 p-2 text-[11px]">
+                <span className="font-medium text-brand">Campaign filter active:</span>{' '}
+                <span className="text-muted-foreground">{activeCampaign.name}</span>
+                {activeCampaign.sector && <span className="text-muted-foreground"> · {activeCampaign.sector}</span>}
+                <button
+                  type="button"
+                  onClick={() => setCampaignId('NONE')}
+                  className="ml-2 underline hover:no-underline"
+                >
+                  Clear
+                </button>
+              </div>
+            )}
+            <div className={cn('grid gap-3 sm:grid-cols-2', activeCampaign && 'opacity-60 pointer-events-none')}>
               <div className="min-w-0">
                 <label className="mb-1 block text-[10px] font-mono uppercase text-muted-foreground">
                   Signal type
