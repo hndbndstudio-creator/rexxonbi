@@ -3,6 +3,7 @@ import { Link, useRouter, useLocation } from '@tanstack/react-router';
 import { useAuth } from '@/lib/use-auth';
 import {
   Building2,
+  CalendarDays,
   Eye,
   LogOut,
   Menu,
@@ -23,7 +24,7 @@ import { useIsAdmin } from '@/lib/use-admin';
 import { RexxonLogo } from '@/components/rexxon-logo';
 
 type NavItem = {
-  to: '/birdseye' | '/dashboard' | '/accounts' | '/contacts' | '/outreach' | '/territory' | '/analytics' | '/settings' | '/admin';
+  to: '/birdseye' | '/dashboard' | '/today' | '/accounts' | '/contacts' | '/outreach' | '/territory' | '/analytics' | '/settings' | '/admin';
   label: string;
   icon: typeof Radio;
   tourId?: string;
@@ -33,6 +34,7 @@ type NavItem = {
 const NAV: NavItem[] = [
   { to: '/birdseye', label: "Bird's-Eye", icon: Eye, tourId: 'nav-birdseye' },
   { to: '/dashboard', label: 'Signals', icon: Radio, tourId: 'nav-dashboard' },
+  { to: '/today', label: 'Today', icon: CalendarDays, tourId: 'nav-today' },
   { to: '/accounts', label: 'Accounts', icon: Building2, tourId: 'nav-accounts' },
   { to: '/contacts', label: 'Contacts', icon: Users, tourId: 'nav-contacts' },
   { to: '/outreach', label: 'Outreach', icon: Mail, tourId: 'nav-outreach' },

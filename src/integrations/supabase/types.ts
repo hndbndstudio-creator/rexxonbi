@@ -154,6 +154,79 @@ export type Database = {
           },
         ]
       }
+      meetings: {
+        Row: {
+          brief: Json | null
+          brief_generated_at: string | null
+          company_id: string | null
+          contact_id: string | null
+          created_at: string
+          duration_minutes: number
+          id: string
+          notes: string | null
+          scheduled_at: string
+          signal_id: string | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          brief?: Json | null
+          brief_generated_at?: string | null
+          company_id?: string | null
+          contact_id?: string | null
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          notes?: string | null
+          scheduled_at: string
+          signal_id?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          brief?: Json | null
+          brief_generated_at?: string | null
+          company_id?: string | null
+          contact_id?: string | null
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          notes?: string | null
+          scheduled_at?: string
+          signal_id?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meetings_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "meetings_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "meetings_signal_id_fkey"
+            columns: ["signal_id"]
+            isOneToOne: false
+            referencedRelation: "signals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       monitored_accounts: {
         Row: {
           company_id: string
