@@ -41,7 +41,7 @@ export const Route = createFileRoute('/dashboard')({
       { name: 'robots', content: 'noindex, nofollow, noarchive, noimageindex' },
     ],
   }),
-  validateSearch: (search: Record<string, unknown>) => ({
+  validateSearch: (search: Record<string, unknown>): { campaign?: string } => ({
     campaign: typeof search.campaign === 'string' ? search.campaign : undefined,
   }),
   component: DashboardPage,
