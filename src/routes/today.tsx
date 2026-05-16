@@ -17,6 +17,12 @@ import {
   ListChecks,
   Plus,
   CalendarPlus,
+  CalendarCheck,
+  Download,
+  Link2,
+  Rss,
+  Copy,
+  Check,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -27,7 +33,30 @@ import { PageHeader } from '@/components/page-header';
 import { ScheduleMeetingDialog } from '@/components/schedule-meeting-dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import {
+  googleCalendarUrl,
+  outlookCalendarUrl,
+  buildIcs,
+  downloadIcs,
+  type CalendarEvent,
+} from '@/lib/calendar';
 
 export const Route = createFileRoute('/today')({
   head: () => ({
