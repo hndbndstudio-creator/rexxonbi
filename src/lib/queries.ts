@@ -50,6 +50,35 @@ export async function fetchCompanies(opts: { search?: string; industry?: string;
   return data ?? [];
 }
 
+export async function insertCompany(input: {
+  name: string;
+  domain: string;
+  industry?: string | null;
+  employee_range?: string | null;
+  funding_stage?: string | null;
+  hq_city?: string | null;
+  hq_country?: string | null;
+  description?: string | null;
+}) {
+  const payload = {
+    name: input.name.trim(),
+    domain: input.domain.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/\/$/, ''),
+    industry: input.industry || null,
+    employee_range: input.employee_range || null,
+    funding_stage: input.funding_stage || null,
+    hq_city: input.hq_city || null,
+    hq_country: input.hq_country || 'US',
+    description: input.description || null,
+  };
+  const { data, error } = await supabase
+    .from('companies')
+    .insert(payload)
+    .select('*')
+    .single();
+  if (error) throw error;
+  return data;
+}
+
 export async function fetchCompanyById(id: string) {
   const { data, error } = await supabase
     .from('companies')
