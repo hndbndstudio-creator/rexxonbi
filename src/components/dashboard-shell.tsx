@@ -55,7 +55,7 @@ const NAV_SECTIONS: NavSection[] = [
     label: 'Engage',
     items: [
       { to: '/outreach', label: 'Outreach', icon: Mail, tourId: 'nav-outreach' },
-      { to: '/rfps', label: 'RFPs', icon: FileText, tourId: 'nav-rfps' },
+      { to: '/proposals', label: 'Proposals', icon: FileText, tourId: 'nav-proposals' },
     ],
   },
   {
