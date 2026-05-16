@@ -1257,9 +1257,9 @@ const FEATURE_BLOCKS = [
   {
     eyebrow: 'Respond',
     icon: <FileText className="h-3.5 w-3.5" />,
-    title: 'AI-assisted RFP generator',
-    body: 'Drop in an inbound RFP and your company docs — Rexxon extracts every question, auto-drafts grounded answers, and outputs a polished proposal you can ship. Or fill the wizard manually for total control.',
-    bullets: ['Auto-extract questions from inbound RFPs', 'Auto-draft sections from your uploaded docs', 'Ephemeral parsing — files never stored'],
+    title: 'AI-assisted proposal generator',
+    body: 'Drop in your prospect brief and your company docs — Rexxon extracts every requirement, auto-drafts grounded sections, and outputs a polished proposal you can ship. Or fill the wizard manually for total control.',
+    bullets: ['Auto-extract requirements from any prospect brief', 'Auto-draft sections from your uploaded docs', 'Ephemeral parsing — files never stored'],
     visual: <RfpVisual />,
   },
 ];
@@ -1471,14 +1471,14 @@ function RfpVisual() {
       <div className="flex items-center justify-between border-b border-border pb-2.5">
         <div className="flex items-center gap-1.5">
           <FileText className="h-3.5 w-3.5 text-brand" />
-          <span className="text-xs font-semibold">RFP wizard · vendor mode</span>
+          <span className="text-xs font-semibold">Proposal wizard · auto-draft</span>
         </div>
         <span className="rounded-full bg-green-500/15 px-1.5 py-0.5 font-mono text-[9px] text-green-300">auto-drafted</span>
       </div>
       <div className="mt-3 space-y-2 text-[11px]">
         <div className="flex items-center gap-2 rounded-lg border border-dashed border-border bg-card/40 p-2">
           <Upload className="h-3.5 w-3.5 text-brand" />
-          <span className="text-muted-foreground">Acme-RFP-2025.pdf · capabilities-deck.pdf</span>
+          <span className="text-muted-foreground">Acme-brief-2025.pdf · capabilities-deck.pdf</span>
         </div>
         <div className="rounded-lg border border-border/60 bg-card/60 p-2.5">
           <div className="font-mono text-[9px] uppercase tracking-wider text-brand">Extracted questions · 24</div>

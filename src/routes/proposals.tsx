@@ -44,15 +44,15 @@ import {
 } from '@/lib/rfp-export';
 import { extractFile, type ExtractedSource, type SourceKind } from '@/lib/rfp-intake';
 
-export const Route = createFileRoute('/rfps')({
+export const Route = createFileRoute('/proposals')({
   head: () => ({
     meta: [
-      { title: 'RFP generator — Rexxon AI' },
-      { name: 'description', content: 'Generate IT, software and AI RFPs and vendor responses with AI.' },
+      { title: 'Proposal generator — Rexxon AI' },
+      { name: 'description', content: 'Generate winning sales proposals for IT, software, and AI projects with AI.' },
       { name: 'robots', content: 'noindex, nofollow' },
     ],
   }),
-  component: RfpsPage,
+  component: ProposalsPage,
 });
 
 type Mode = 'BUYER' | 'VENDOR_RESPONSE';
@@ -100,7 +100,7 @@ interface WizardData {
 }
 
 const EMPTY_WIZARD: WizardData = {
-  mode: 'BUYER',
+  mode: 'VENDOR_RESPONSE',
   industry: 'SOFTWARE',
   title: '',
   organization: '',
@@ -124,7 +124,7 @@ const EMPTY_WIZARD: WizardData = {
   notes: '',
 };
 
-function RfpsPage() {
+function ProposalsPage() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const [wizardOpen, setWizardOpen] = useState(false);
@@ -151,7 +151,7 @@ function RfpsPage() {
       if (error) throw error;
     },
     onSuccess: () => {
-      toast.success('RFP deleted');
+      toast.success('Proposal deleted');
       qc.invalidateQueries({ queryKey: ['rfps'] });
       setSelectedId(null);
     },
@@ -161,7 +161,7 @@ function RfpsPage() {
   if (selected) {
     return (
       <DashboardShell>
-        <RfpDetail rfp={selected} onBack={() => setSelectedId(null)} onDelete={() => deleteMut.mutate(selected.id)} />
+        <ProposalDetail rfp={selected} onBack={() => setSelectedId(null)} onDelete={() => deleteMut.mutate(selected.id)} />
       </DashboardShell>
     );
   }
@@ -171,12 +171,12 @@ function RfpsPage() {
       <div className="mx-auto max-w-6xl space-y-6 p-4 md:p-8">
         <PageHeader
           icon={FileText}
-          title="RFP generator"
-          subtitle="AI-built request for proposals and vendor responses for IT, software & AI projects."
+          title="Proposal generator"
+          subtitle="Drop in your prospect's brief and your company docs — Rexxon drafts a polished, ready-to-send proposal."
           actions={
             <Button onClick={() => setWizardOpen(true)}>
               <Plus className="mr-1.5 h-4 w-4" />
-              New RFP
+              New proposal
             </Button>
           }
         />
@@ -199,7 +199,7 @@ function RfpsPage() {
                   <div className="min-w-0 flex-1">
                     <h3 className="truncate font-medium text-foreground">{rfp.title}</h3>
                     <p className="text-xs text-muted-foreground">
-                      {rfp.industry} · {rfp.mode === 'BUYER' ? 'Issuing RFP' : 'Vendor response'}
+                      {rfp.industry} · Proposal
                     </p>
                   </div>
                   <Badge variant={rfp.status === 'GENERATED' ? 'default' : 'secondary'} className="text-[10px]">
@@ -214,7 +214,7 @@ function RfpsPage() {
           </div>
         )}
 
-        <RfpWizard
+        <ProposalWizard
           open={wizardOpen}
           onOpenChange={setWizardOpen}
           onCreated={(id) => {
@@ -232,13 +232,13 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
   return (
     <div className="rounded-lg border border-dashed border-border bg-card/50 p-12 text-center">
       <FileText className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
-      <h3 className="mb-1 font-medium">No RFPs yet</h3>
+      <h3 className="mb-1 font-medium">No proposals yet</h3>
       <p className="mb-4 text-sm text-muted-foreground">
-        Generate your first AI-built RFP for an IT, software, or AI project.
+        Generate your first AI-built proposal for an IT, software, or AI project.
       </p>
       <Button onClick={onCreate}>
         <Plus className="mr-1.5 h-4 w-4" />
-        Create RFP
+        Create proposal
       </Button>
     </div>
   );
@@ -246,7 +246,7 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
 
 // Wizard ------------------------------------------------------------------
 
-function RfpWizard({
+function ProposalWizard({
   open,
   onOpenChange,
   onCreated,
@@ -395,7 +395,7 @@ function RfpWizard({
       if (insErr) throw insErr;
       const rfpId = (inserted as any).id as string;
 
-      toast.info('Generating RFP… this can take 20–30 seconds');
+      toast.info('Generating proposal… this can take 20–30 seconds');
 
       // Generate
       const { data: genData, error: genErr } = await supabase.functions.invoke('generate-rfp', {
@@ -404,11 +404,11 @@ function RfpWizard({
       if (genErr) throw genErr;
       if ((genData as any)?.error) throw new Error((genData as any).error);
 
-      toast.success('RFP generated');
+      toast.success('Proposal generated');
       onCreated(rfpId);
       reset();
     } catch (e: any) {
-      toast.error(e?.message ?? 'Failed to generate RFP');
+      toast.error(e?.message ?? 'Failed to generate proposal');
     } finally {
       setSubmitting(false);
     }
@@ -418,7 +418,7 @@ function RfpWizard({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>New RFP</DialogTitle>
+          <DialogTitle>New proposal</DialogTitle>
           <DialogDescription>
             Step {step + 1} of {STEPS.length} · {STEPS[step]}
           </DialogDescription>
@@ -479,7 +479,7 @@ function RfpWizard({
               ) : (
                 <Sparkles className="mr-1 h-4 w-4" />
               )}
-              Generate RFP
+              Generate proposal
             </Button>
           )}
         </DialogFooter>
@@ -528,31 +528,19 @@ function StepIntake({
     <div className="space-y-5">
       <div className="rounded-md border border-dashed border-border bg-muted/30 p-3 text-xs text-muted-foreground">
         <Sparkles className="mr-1 inline h-3.5 w-3.5 text-brand" />
-        Upload company docs and (for vendor responses) the inbound RFP. AI will read them, extract requirements, and draft every wizard field. Files are parsed in your browser — only the extracted text is sent to the AI, then discarded.
+        Upload company docs and (for vendor responses) the prospect's brief. AI will read them, extract requirements, and draft every wizard field. Files are parsed in your browser — only the extracted text is sent to the AI, then discarded.
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-1.5">
-          <Label>Mode</Label>
-          <Select value={mode} onValueChange={(v) => onModeChange(v as Mode)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="BUYER">Buyer issuing RFP</SelectItem>
-              <SelectItem value="VENDOR_RESPONSE">Vendor response</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-1.5">
-          <Label>Industry</Label>
-          <Select value={industry} onValueChange={(v) => onIndustryChange(v as Industry)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="IT">IT services & infrastructure</SelectItem>
-              <SelectItem value="SOFTWARE">Software / SaaS</SelectItem>
-              <SelectItem value="AI">AI / ML</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+      <div className="space-y-1.5">
+        <Label>Industry</Label>
+        <Select value={industry} onValueChange={(v) => onIndustryChange(v as Industry)}>
+          <SelectTrigger><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="IT">IT services & infrastructure</SelectItem>
+            <SelectItem value="SOFTWARE">Software / SaaS</SelectItem>
+            <SelectItem value="AI">AI / ML</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <UploadGroup
@@ -565,17 +553,15 @@ function StepIntake({
         disabled={extracting || prefilling}
       />
 
-      {mode === 'VENDOR_RESPONSE' && (
-        <UploadGroup
-          title="Inbound RFP"
-          hint="The RFP document you received from the prospect."
-          kind="INBOUND_RFP"
-          files={inboundRfps}
-          onAdd={onAddFiles}
-          onRemove={(name) => onRemoveSource(sources.findIndex((s) => s.name === name && s.kind === 'INBOUND_RFP'))}
-          disabled={extracting || prefilling}
-        />
-      )}
+      <UploadGroup
+        title="Prospect brief"
+        hint="The RFP, brief, or requirements document you received from the prospect."
+        kind="INBOUND_RFP"
+        files={inboundRfps}
+        onAdd={onAddFiles}
+        onRemove={(name) => onRemoveSource(sources.findIndex((s) => s.name === name && s.kind === 'INBOUND_RFP'))}
+        disabled={extracting || prefilling}
+      />
 
       <div className="space-y-1.5">
         <Label>Plain notes (optional)</Label>
@@ -598,7 +584,7 @@ function StepIntake({
       {extractedQuestions.length > 0 && (
         <div className="rounded-md border border-border bg-card p-3 text-xs">
           <div className="mb-1.5 font-medium text-foreground">
-            {extractedQuestions.length} questions extracted from inbound RFP
+            {extractedQuestions.length} questions extracted from the brief
           </div>
           <ul className="ml-4 list-disc space-y-0.5 text-muted-foreground">
             {extractedQuestions.slice(0, 5).map((q, i) => (
@@ -703,7 +689,7 @@ function StepBasics({ data, update }: StepProps) {
   return (
     <div className="space-y-4">
       <div className="space-y-1.5">
-        <Label>RFP title *</Label>
+        <Label>Proposal title *</Label>
         <Input
           placeholder="e.g. Enterprise CRM platform 2025"
           value={data.title}
@@ -722,7 +708,7 @@ function StepBasics({ data, update }: StepProps) {
         <Label>Background</Label>
         <Textarea
           rows={4}
-          placeholder="Brief background: what the org does, current state, pain points driving this RFP."
+          placeholder="Brief background: what the org does, current state, pain points the prospect wants to solve."
           value={data.background}
           onChange={(e) => update('background', e.target.value)}
         />
@@ -826,7 +812,7 @@ function StepEvaluation({ data, update }: StepProps) {
       </div>
       <div className="space-y-1.5">
         <Label>Primary contact (email)</Label>
-        <Input type="email" placeholder="rfp@company.com" value={data.contact_email} onChange={(e) => update('contact_email', e.target.value)} />
+        <Input type="email" placeholder="proposals@company.com" value={data.contact_email} onChange={(e) => update('contact_email', e.target.value)} />
       </div>
       <div className="space-y-1.5">
         <Label>Anything else for the AI</Label>
@@ -838,7 +824,7 @@ function StepEvaluation({ data, update }: StepProps) {
 
 // Detail view --------------------------------------------------------------
 
-function RfpDetail({ rfp, onBack, onDelete }: { rfp: RfpRow; onBack: () => void; onDelete: () => void }) {
+function ProposalDetail({ rfp, onBack, onDelete }: { rfp: RfpRow; onBack: () => void; onDelete: () => void }) {
   const [regenerating, setRegenerating] = useState(false);
   const qc = useQueryClient();
 
@@ -850,7 +836,7 @@ function RfpDetail({ rfp, onBack, onDelete }: { rfp: RfpRow; onBack: () => void;
       });
       if (error) throw error;
       if ((data as any)?.error) throw new Error((data as any).error);
-      toast.success('RFP regenerated');
+      toast.success('Proposal regenerated');
       qc.invalidateQueries({ queryKey: ['rfps'] });
     } catch (e: any) {
       toast.error(e?.message ?? 'Failed to regenerate');
@@ -893,7 +879,7 @@ function RfpDetail({ rfp, onBack, onDelete }: { rfp: RfpRow; onBack: () => void;
           <div className="mb-1 flex items-center gap-2">
             <Badge variant="secondary" className="text-[10px]">{rfp.industry}</Badge>
             <Badge variant="outline" className="text-[10px]">
-              {rfp.mode === 'BUYER' ? 'Buyer issuing RFP' : 'Vendor response'}
+              Proposal
             </Badge>
           </div>
           <h1 className="text-2xl font-semibold">{rfp.title}</h1>
@@ -925,7 +911,7 @@ function RfpDetail({ rfp, onBack, onDelete }: { rfp: RfpRow; onBack: () => void;
           {regenerating ? (
             <div className="flex flex-col items-center gap-2">
               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">Generating RFP…</p>
+              <p className="text-sm text-muted-foreground">Generating proposal…</p>
             </div>
           ) : (
             <>
@@ -937,13 +923,13 @@ function RfpDetail({ rfp, onBack, onDelete }: { rfp: RfpRow; onBack: () => void;
           )}
         </div>
       ) : (
-        <RfpContentView content={rfp.content} />
+        <ProposalContentView content={rfp.content} />
       )}
     </div>
   );
 }
 
-function RfpContentView({ content }: { content: RfpContent }) {
+function ProposalContentView({ content }: { content: RfpContent }) {
   return (
     <article className="space-y-8 rounded-lg border border-border bg-card p-6 md:p-8">
       <Section title="1. Executive summary">
@@ -1108,5 +1094,5 @@ function slug(s: string) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '')
-    .slice(0, 60) || 'rfp';
+    .slice(0, 60) || 'proposal';
 }
