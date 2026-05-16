@@ -1,19 +1,17 @@
-import { createFileRoute, Link, useRouter, useSearch } from '@tanstack/react-router';
+import { createFileRoute, Link, useSearch } from '@tanstack/react-router';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { toast } from 'sonner';
 import {
   ArrowLeft,
   Check,
-  CreditCard,
   Lock,
   ShieldCheck,
   Sparkles,
   Star,
 } from 'lucide-react';
 import { RexxonLogo } from '@/components/rexxon-logo';
+import { StripeEmbeddedCheckout } from '@/components/StripeEmbeddedCheckout';
+import { useAuth } from '@/lib/use-auth';
 import testimonial1 from '@/assets/testimonial-1.jpg';
 
 type PlanId = 'starter' | 'pro' | 'team';
@@ -58,19 +56,11 @@ export const Route = createFileRoute('/checkout')({
 });
 
 function CheckoutPage() {
-  const router = useRouter();
   const search = useSearch({ from: '/checkout' });
+  const { user } = useAuth();
   const planId: PlanId = (search.plan ?? 'pro') as PlanId;
   const [billing, setBilling] = useState<'monthly' | 'annual'>(search.billing ?? 'annual');
   const [plan, setPlan] = useState<PlanId>(planId);
-
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [company, setCompany] = useState('');
-  const [card, setCard] = useState('');
-  const [exp, setExp] = useState('');
-  const [cvc, setCvc] = useState('');
-  const [submitting, setSubmitting] = useState(false);
 
   const selected = PLANS[plan];
   const monthly = selected.price;
@@ -79,14 +69,11 @@ function CheckoutPage() {
   const dueToday = monthlyEffective;
   const annualSavings = (monthly - monthlyEffective) * 12;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 800));
-    toast.success('Subscription activated! Redirecting to your dashboard…');
-    setSubmitting(false);
-    router.navigate({ to: '/birdseye' });
-  };
+  const priceId = `${plan}_${billing === 'annual' ? 'annual' : 'monthly'}`;
+  const returnUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}/birdseye?checkout=success&session_id={CHECKOUT_SESSION_ID}`
+    : '/birdseye';
+
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-aurora">
@@ -223,72 +210,37 @@ function CheckoutPage() {
             </div>
           </div>
 
-          {/* RIGHT — Payment */}
+          {/* RIGHT — Embedded Stripe Checkout */}
           <div className="animate-fade-up [animation-delay:120ms]">
             <div className="relative">
               <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-brand/20 via-brand/10 to-brand-glow/20 blur-3xl" />
-              <div className="glow-conic relative overflow-hidden rounded-2xl border border-border bg-card/85 p-6 shadow-elevated backdrop-blur-2xl md:p-8">
-                <div className="flex items-center gap-2">
-                  <CreditCard className="h-4 w-4 text-brand" />
-                  <h2 className="text-sm font-semibold">Payment details</h2>
-                  <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-green-500/15 px-2 py-0.5 font-mono text-[10px] text-green-300">
-                    <Lock className="h-3 w-3" /> secure
-                  </span>
-                </div>
-
-                <form onSubmit={handleSubmit} className="mt-5 space-y-4">
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Cardholder name</Label>
-                      <Input id="name" required value={name} onChange={(e) => setName(e.target.value)} placeholder="Jane Doe" />
+              <div className="glow-conic relative overflow-hidden rounded-2xl border border-border bg-card/85 p-2 shadow-elevated backdrop-blur-2xl md:p-4">
+                {user ? (
+                  <StripeEmbeddedCheckout
+                    key={`${priceId}-${user.id}`}
+                    priceId={priceId}
+                    customerEmail={user.email ?? undefined}
+                    userId={user.id}
+                    returnUrl={returnUrl}
+                  />
+                ) : (
+                  <div className="p-6 text-center space-y-4">
+                    <div className="flex items-center justify-center gap-2 text-sm font-semibold">
+                      <Lock className="h-4 w-4 text-brand" /> Sign in to complete checkout
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="company">Company</Label>
-                      <Input id="company" required value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Acme Inc." />
-                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Create your account first so your subscription is linked to your workspace.
+                    </p>
+                    <Link to="/signup">
+                      <Button size="lg" className="btn-press w-full bg-brand text-brand-foreground shadow-inset-glow">
+                        Create account · ${dueToday}/mo
+                      </Button>
+                    </Link>
+                    <Link to="/login" className="block text-xs text-muted-foreground hover:text-foreground">
+                      Already have an account? Log in
+                    </Link>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Work email</Label>
-                    <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.com" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="card">Card number</Label>
-                    <Input
-                      id="card"
-                      required
-                      value={card}
-                      onChange={(e) => setCard(e.target.value)}
-                      placeholder="1234 1234 1234 1234"
-                      inputMode="numeric"
-                      autoComplete="cc-number"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="exp">Expiration</Label>
-                      <Input id="exp" required value={exp} onChange={(e) => setExp(e.target.value)} placeholder="MM / YY" autoComplete="cc-exp" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="cvc">CVC</Label>
-                      <Input id="cvc" required value={cvc} onChange={(e) => setCvc(e.target.value)} placeholder="123" inputMode="numeric" autoComplete="cc-csc" />
-                    </div>
-                  </div>
-
-                  <Button
-                    type="submit"
-                    size="lg"
-                    disabled={submitting}
-                    className="btn-press w-full bg-brand text-brand-foreground shadow-inset-glow"
-                  >
-                    {submitting ? 'Activating…' : `Get started · $${dueToday}/mo`}
-                  </Button>
-
-                  <p className="text-center text-xs text-muted-foreground">
-                    By continuing you agree to our Terms and Privacy. Cancel anytime · 30-day money-back guarantee.
-                  </p>
-                </form>
+                )}
               </div>
             </div>
           </div>
