@@ -553,17 +553,15 @@ function StepIntake({
         disabled={extracting || prefilling}
       />
 
-      {mode === 'VENDOR_RESPONSE' && (
-        <UploadGroup
-          title="Prospect brief"
-          hint="The RFP, brief, or requirements document you received from the prospect."
-          kind="INBOUND_RFP"
-          files={inboundRfps}
-          onAdd={onAddFiles}
-          onRemove={(name) => onRemoveSource(sources.findIndex((s) => s.name === name && s.kind === 'INBOUND_RFP'))}
-          disabled={extracting || prefilling}
-        />
-      )}
+      <UploadGroup
+        title="Prospect brief"
+        hint="The RFP, brief, or requirements document you received from the prospect."
+        kind="INBOUND_RFP"
+        files={inboundRfps}
+        onAdd={onAddFiles}
+        onRemove={(name) => onRemoveSource(sources.findIndex((s) => s.name === name && s.kind === 'INBOUND_RFP'))}
+        disabled={extracting || prefilling}
+      />
 
       <div className="space-y-1.5">
         <Label>Plain notes (optional)</Label>
