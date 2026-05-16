@@ -272,86 +272,149 @@ function SignalFeed() {
 
       <div className="mx-auto grid max-w-7xl gap-4 px-4 py-5 md:gap-6 md:px-8 md:py-6 lg:grid-cols-[1fr_320px]">
         <div className="min-w-0">
-          {/* Filters */}
-          <div
-            className="surface-1 mb-4 rounded-xl border border-border p-3 animate-rise md:mb-5"
-            style={{ animationDelay: '160ms' }}
-          >
-            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-              <div className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
-                <Filter className="h-3 w-3" /> Filters
+          {/* Hot now rail — top 3 highest-confidence open signals, the "do this next" */}
+          {!isLoading && hotNow.length > 0 && (
+            <div className="mb-4 animate-rise md:mb-5" style={{ animationDelay: '100ms' }}>
+              <div className="mb-2 flex items-center justify-between">
+                <div className="flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-rose-300">
+                  <Flame className="h-3 w-3" />
+                  Hot now · do this next
+                </div>
+                <span className="text-[10px] text-muted-foreground">
+                  Top {hotNow.length} by confidence
+                </span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <Target className="h-3 w-3 text-muted-foreground" />
-                <Select value={campaignId} onValueChange={setCampaignId}>
-                  <SelectTrigger className="h-7 w-[180px] text-xs">
-                    <SelectValue placeholder="No campaign" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="NONE">No campaign</SelectItem>
-                    {campaigns.map((c) => {
-                      const colorClass = CAMPAIGN_COLORS.find((x) => x.value === c.color)?.class ?? 'bg-blue-500';
-                      return (
-                        <SelectItem key={c.id} value={c.id}>
-                          <span className="flex items-center gap-2">
-                            <span className={cn('h-2 w-2 rounded-full', colorClass)} />
-                            {c.name}
-                          </span>
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
+              <div className="grid gap-3 sm:grid-cols-3">
+                {hotNow.map((s) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => user && draftMut.mutate(s)}
+                    disabled={draftMut.isPending}
+                    className="group relative overflow-hidden rounded-xl border border-rose-500/25 bg-gradient-to-br from-rose-500/[0.06] via-card to-card p-3 text-left transition-all hover:border-rose-500/50 hover:shadow-[0_0_0_1px_rgba(244,63,94,0.2)] disabled:opacity-60"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="truncate text-sm font-semibold">
+                        {s.company?.name ?? 'Unknown'}
+                      </span>
+                      <span className="shrink-0 rounded-md bg-rose-500/15 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-rose-300">
+                        {s.confidence_score}
+                      </span>
+                    </div>
+                    <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                      {SIGNAL_TYPE_LABELS[s.signal_type as SignalType] ?? s.signal_type}
+                      {s.headline ? ` · ${s.headline}` : ''}
+                    </p>
+                    <div className="mt-3 inline-flex items-center gap-1 text-[11px] font-medium text-brand opacity-90 transition-opacity group-hover:opacity-100">
+                      <Zap className="h-3 w-3" />
+                      Draft outreach
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
-            {activeCampaign && (
-              <div className="mb-2 rounded-md border border-brand/30 bg-brand/5 p-2 text-[11px]">
-                <span className="font-medium text-brand">Campaign filter active:</span>{' '}
-                <span className="text-muted-foreground">{activeCampaign.name}</span>
-                {activeCampaign.sector && <span className="text-muted-foreground"> · {activeCampaign.sector}</span>}
-                <button
-                  type="button"
-                  onClick={() => setCampaignId('NONE')}
-                  className="ml-2 underline hover:no-underline"
-                >
-                  Clear
-                </button>
+          )}
+
+          {/* Filter pill bar — collapsed by default unless filters are active */}
+          <div className="surface-1 mb-4 rounded-xl border border-border animate-rise md:mb-5" style={{ animationDelay: '160ms' }}>
+            <button
+              type="button"
+              onClick={() => setFiltersOpen((o) => !o)}
+              className="flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left"
+              aria-expanded={filtersOpen}
+            >
+              <div className="flex min-w-0 flex-wrap items-center gap-2 text-xs">
+                <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                  <Filter className="h-3 w-3" /> Filters
+                </span>
+                <span className="rounded-full bg-card px-2 py-0.5 text-[11px] ring-1 ring-border">
+                  {type === 'ALL' ? 'All signals' : SIGNAL_TYPE_LABELS[type as SignalType]}
+                </span>
+                <span className="rounded-full bg-card px-2 py-0.5 text-[11px] ring-1 ring-border">
+                  Confidence {minConf}+
+                </span>
+                {activeCampaign && (
+                  <span className="rounded-full bg-brand/10 px-2 py-0.5 text-[11px] text-brand ring-1 ring-brand/30">
+                    {activeCampaign.name}
+                  </span>
+                )}
+                {hasActiveFilters && (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setType('ALL');
+                      setMinConf(60);
+                      setCampaignId('NONE');
+                    }}
+                    className="text-[11px] text-muted-foreground underline hover:text-foreground"
+                  >
+                    Reset
+                  </button>
+                )}
+              </div>
+              <ChevronDown className={cn('h-4 w-4 text-muted-foreground transition-transform', filtersOpen && 'rotate-180')} />
+            </button>
+            {filtersOpen && (
+              <div className="border-t border-border p-3">
+                <div className="mb-2 flex items-center justify-end gap-1.5">
+                  <Target className="h-3 w-3 text-muted-foreground" />
+                  <Select value={campaignId} onValueChange={setCampaignId}>
+                    <SelectTrigger className="h-7 w-[180px] text-xs">
+                      <SelectValue placeholder="No campaign" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="NONE">No campaign</SelectItem>
+                      {campaigns.map((c) => {
+                        const colorClass = CAMPAIGN_COLORS.find((x) => x.value === c.color)?.class ?? 'bg-blue-500';
+                        return (
+                          <SelectItem key={c.id} value={c.id}>
+                            <span className="flex items-center gap-2">
+                              <span className={cn('h-2 w-2 rounded-full', colorClass)} />
+                              {c.name}
+                            </span>
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className={cn('grid gap-3 sm:grid-cols-2', activeCampaign && 'opacity-60 pointer-events-none')}>
+                  <div className="min-w-0">
+                    <label className="mb-1 block text-[10px] font-mono uppercase text-muted-foreground">
+                      Signal type
+                    </label>
+                    <Select value={type} onValueChange={(v) => setType(v as any)}>
+                      <SelectTrigger className="h-9 w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="ALL">All types</SelectItem>
+                        {(Object.keys(SIGNAL_TYPE_LABELS) as SignalType[]).map((k) => (
+                          <SelectItem key={k} value={k}>
+                            {SIGNAL_TYPE_LABELS[k]}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="min-w-0">
+                    <label className="mb-1 flex items-center justify-between text-[10px] font-mono uppercase text-muted-foreground">
+                      <span>Min confidence</span>
+                      <span className="text-foreground">{minConf}</span>
+                    </label>
+                    <Slider
+                      value={[minConf]}
+                      min={0}
+                      max={100}
+                      step={5}
+                      onValueChange={(v) => setMinConf(v[0])}
+                      className="py-2"
+                    />
+                  </div>
+                </div>
               </div>
             )}
-            <div className={cn('grid gap-3 sm:grid-cols-2', activeCampaign && 'opacity-60 pointer-events-none')}>
-              <div className="min-w-0">
-                <label className="mb-1 block text-[10px] font-mono uppercase text-muted-foreground">
-                  Signal type
-                </label>
-                <Select value={type} onValueChange={(v) => setType(v as any)}>
-                  <SelectTrigger className="h-9 w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="ALL">All types</SelectItem>
-                    {(Object.keys(SIGNAL_TYPE_LABELS) as SignalType[]).map((k) => (
-                      <SelectItem key={k} value={k}>
-                        {SIGNAL_TYPE_LABELS[k]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="min-w-0">
-                <label className="mb-1 flex items-center justify-between text-[10px] font-mono uppercase text-muted-foreground">
-                  <span>Min confidence</span>
-                  <span className="text-foreground">{minConf}</span>
-                </label>
-                <Slider
-                  value={[minConf]}
-                  min={0}
-                  max={100}
-                  step={5}
-                  onValueChange={(v) => setMinConf(v[0])}
-                  className="py-2"
-                />
-              </div>
-            </div>
           </div>
 
           {/* Feed */}
