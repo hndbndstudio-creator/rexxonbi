@@ -74,7 +74,7 @@ export const Route = createFileRoute('/')({
       { property: 'og:title', content: 'Rexxon AI — Real-time B2B buying signals & AI outreach' },
       {
         property: 'og:description',
-        content: 'Catch every buying signal across 10M+ companies. AI-drafted outreach to verified contacts. Free trial.',
+        content: 'Catch every buying signal across 10M+ companies. AI-drafted outreach to verified contacts. Get started today.',
       },
       { property: 'og:url', content: 'https://rexxon.ai/' },
       { property: 'og:image', content: 'https://rexxon.ai/og-image.jpg' },
@@ -306,7 +306,7 @@ function LandingPage() {
               <div className="mt-8 flex flex-wrap items-center gap-5">
                 <Link to="/signup">
                   <Button size="lg" className="btn-press group bg-brand text-brand-foreground shadow-inset-glow h-12 px-6 text-base">
-                    Start free — see signals in 60s
+                    Get started — see signals in 60s
                     <ArrowRight className="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </Button>
                 </Link>
@@ -324,9 +324,9 @@ function LandingPage() {
               </div>
 
               <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-brand" /> No credit card</span>
                 <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-brand" /> Live in 10 minutes</span>
                 <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-brand" /> Cancel anytime</span>
+                <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-brand" /> 30-day money-back</span>
               </p>
 
               {/* Inline social proof */}
@@ -854,7 +854,7 @@ function LandingPage() {
                   search={{ plan: plan.id, billing: annual ? 'annual' : 'monthly' }}
                 >
                   <Button className={`btn-press mt-6 w-full ${plan.highlight ? 'bg-brand text-brand-foreground shadow-inset-glow' : ''}`} variant={plan.highlight ? 'default' : 'outline'}>
-                    Start free trial
+                    Get started
                   </Button>
                 </Link>
                 <div className="mt-6 space-y-5 border-t border-border pt-5">
@@ -1019,12 +1019,12 @@ function LandingPage() {
               <span className="text-gradient-brand">already calling.</span>
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground md:text-lg">
-              7 days free. No credit card. Live in under 10 minutes. The first signal usually fires within the hour.
+              Live in under 10 minutes. The first signal usually fires within the hour. 30-day money-back guarantee.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-5">
               <Link to="/signup">
                 <Button size="lg" className="btn-press group bg-brand text-brand-foreground shadow-inset-glow h-12 px-6 text-base">
-                  Start your free trial
+                  Get started
                   <ArrowRight className="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Button>
               </Link>
@@ -1072,8 +1072,8 @@ function LandingPage() {
               <CloseIcon className="h-4 w-4" />
             </button>
             <div className="min-w-0 flex-1">
-              <div className="truncate text-sm font-semibold">Start free · 7 days</div>
-              <div className="truncate text-xs text-muted-foreground">No credit card required</div>
+              <div className="truncate text-sm font-semibold">Get started in 10 minutes</div>
+              <div className="truncate text-xs text-muted-foreground">30-day money-back guarantee</div>
             </div>
             <Link to="/signup" className="shrink-0">
               <Button size="sm" className="btn-press bg-brand text-brand-foreground shadow-inset-glow">
@@ -1145,7 +1145,7 @@ function LandingPage() {
             </div>
             <Link to="/signup" onClick={() => setDemoOpen(false)}>
               <Button size="sm" className="btn-press w-full bg-brand text-brand-foreground shadow-inset-glow sm:w-auto">
-                Start free trial
+                Get started
                 <ArrowRight className="ml-1 h-3.5 w-3.5" />
               </Button>
             </Link>
@@ -1326,8 +1326,8 @@ const FAQS = [
     a: 'Under 10 minutes. Sign up, define your territory (industries, sizes, geos, named accounts), connect Slack or your CRM, and the first signals usually fire within the hour.',
   },
   {
-    q: 'What\'s included in the free trial?',
-    a: 'Full Pro-tier access for 7 days. Real-time signals, AI briefs, verified contact reveals, AI outreach drafts, Slack alerts and CRM push. No credit card required.',
+    q: 'What\'s included when I sign up?',
+    a: 'Full access to real-time signals, AI briefs, verified contact reveals, AI outreach drafts, Slack alerts and CRM push from day one. Cancel anytime, plus a 30-day money-back guarantee.',
   },
   {
     q: 'Do you have an ROI guarantee?',

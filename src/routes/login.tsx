@@ -151,7 +151,7 @@ function LoginPage() {
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Don't have an account?{' '}
-          <Link to="/signup" className="font-medium text-brand hover:underline">Start free trial</Link>
+          <Link to="/signup" className="font-medium text-brand hover:underline">Get started</Link>
         </p>
 
         <div className="mt-4 flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground">
