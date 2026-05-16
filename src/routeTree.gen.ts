@@ -32,6 +32,7 @@ import { Route as AffiliatesRouteImport } from './routes/affiliates'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountsIndexRouteImport } from './routes/accounts.index'
+import { Route as ProposalsHistoryRouteImport } from './routes/proposals.history'
 import { Route as CaseStudiesSlugRouteImport } from './routes/case-studies.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AccountsIdRouteImport } from './routes/accounts.$id'
@@ -152,6 +153,11 @@ const AccountsIndexRoute = AccountsIndexRouteImport.update({
   path: '/accounts/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProposalsHistoryRoute = ProposalsHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => ProposalsRoute,
+} as any)
 const CaseStudiesSlugRoute = CaseStudiesSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -187,7 +193,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
-  '/proposals': typeof ProposalsRoute
+  '/proposals': typeof ProposalsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/rfps': typeof RfpsRoute
   '/schedule-demo': typeof ScheduleDemoRoute
@@ -199,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/accounts/$id': typeof AccountsIdRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/case-studies/$slug': typeof CaseStudiesSlugRoute
+  '/proposals/history': typeof ProposalsHistoryRoute
   '/accounts/': typeof AccountsIndexRoute
   '/api/public/calendar/$token': typeof ApiPublicCalendarTokenRoute
 }
@@ -216,7 +223,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
-  '/proposals': typeof ProposalsRoute
+  '/proposals': typeof ProposalsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/rfps': typeof RfpsRoute
   '/schedule-demo': typeof ScheduleDemoRoute
@@ -228,6 +235,7 @@ export interface FileRoutesByTo {
   '/accounts/$id': typeof AccountsIdRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/case-studies/$slug': typeof CaseStudiesSlugRoute
+  '/proposals/history': typeof ProposalsHistoryRoute
   '/accounts': typeof AccountsIndexRoute
   '/api/public/calendar/$token': typeof ApiPublicCalendarTokenRoute
 }
@@ -246,7 +254,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
-  '/proposals': typeof ProposalsRoute
+  '/proposals': typeof ProposalsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/rfps': typeof RfpsRoute
   '/schedule-demo': typeof ScheduleDemoRoute
@@ -258,6 +266,7 @@ export interface FileRoutesById {
   '/accounts/$id': typeof AccountsIdRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/case-studies/$slug': typeof CaseStudiesSlugRoute
+  '/proposals/history': typeof ProposalsHistoryRoute
   '/accounts/': typeof AccountsIndexRoute
   '/api/public/calendar/$token': typeof ApiPublicCalendarTokenRoute
 }
@@ -289,6 +298,7 @@ export interface FileRouteTypes {
     | '/accounts/$id'
     | '/blog/$slug'
     | '/case-studies/$slug'
+    | '/proposals/history'
     | '/accounts/'
     | '/api/public/calendar/$token'
   fileRoutesByTo: FileRoutesByTo
@@ -318,6 +328,7 @@ export interface FileRouteTypes {
     | '/accounts/$id'
     | '/blog/$slug'
     | '/case-studies/$slug'
+    | '/proposals/history'
     | '/accounts'
     | '/api/public/calendar/$token'
   id:
@@ -347,6 +358,7 @@ export interface FileRouteTypes {
     | '/accounts/$id'
     | '/blog/$slug'
     | '/case-studies/$slug'
+    | '/proposals/history'
     | '/accounts/'
     | '/api/public/calendar/$token'
   fileRoutesById: FileRoutesById
@@ -365,7 +377,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   OutreachRoute: typeof OutreachRoute
-  ProposalsRoute: typeof ProposalsRoute
+  ProposalsRoute: typeof ProposalsRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
   RfpsRoute: typeof RfpsRoute
   ScheduleDemoRoute: typeof ScheduleDemoRoute
@@ -542,6 +554,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/proposals/history': {
+      id: '/proposals/history'
+      path: '/history'
+      fullPath: '/proposals/history'
+      preLoaderRoute: typeof ProposalsHistoryRouteImport
+      parentRoute: typeof ProposalsRoute
+    }
     '/case-studies/$slug': {
       id: '/case-studies/$slug'
       path: '/$slug'
@@ -595,6 +614,18 @@ const CaseStudiesRouteWithChildren = CaseStudiesRoute._addFileChildren(
   CaseStudiesRouteChildren,
 )
 
+interface ProposalsRouteChildren {
+  ProposalsHistoryRoute: typeof ProposalsHistoryRoute
+}
+
+const ProposalsRouteChildren: ProposalsRouteChildren = {
+  ProposalsHistoryRoute: ProposalsHistoryRoute,
+}
+
+const ProposalsRouteWithChildren = ProposalsRoute._addFileChildren(
+  ProposalsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
@@ -609,7 +640,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   OutreachRoute: OutreachRoute,
-  ProposalsRoute: ProposalsRoute,
+  ProposalsRoute: ProposalsRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
   RfpsRoute: RfpsRoute,
   ScheduleDemoRoute: ScheduleDemoRoute,

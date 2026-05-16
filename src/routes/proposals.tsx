@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { formatDistanceToNow } from 'date-fns';
@@ -14,6 +14,7 @@ import {
   ArrowLeft,
   Upload,
   X,
+  History,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -174,10 +175,18 @@ function ProposalsPage() {
           title="Proposal generator"
           subtitle="Drop in your prospect's brief and your company docs — Rexxon drafts a polished, ready-to-send proposal."
           actions={
-            <Button onClick={() => setWizardOpen(true)}>
-              <Plus className="mr-1.5 h-4 w-4" />
-              New proposal
-            </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" asChild>
+                <Link to="/proposals/history">
+                  <History className="mr-1.5 h-4 w-4" />
+                  History
+                </Link>
+              </Button>
+              <Button onClick={() => setWizardOpen(true)}>
+                <Plus className="mr-1.5 h-4 w-4" />
+                New proposal
+              </Button>
+            </div>
           }
         />
 
