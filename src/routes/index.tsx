@@ -969,18 +969,17 @@ function LandingPage() {
             <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground md:text-lg">
               7 days free. No credit card. Live in under 10 minutes. The first signal usually fires within the hour.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-5">
               <Link to="/signup">
-                <Button size="lg" className="btn-press group bg-brand text-brand-foreground shadow-inset-glow">
+                <Button size="lg" className="btn-press group bg-brand text-brand-foreground shadow-inset-glow h-12 px-6 text-base">
                   Start your free trial
-                  <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  <ArrowRight className="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Button>
               </Link>
-              <Link to="/schedule-demo">
-                <Button size="lg" variant="outline" className="hover-lift backdrop-blur-sm">
-                  <CalendarCheck className="mr-1 h-4 w-4" />
-                  Book a 15-min demo
-                </Button>
+              <Link to="/schedule-demo" className="group inline-flex items-center gap-1.5 text-sm font-medium text-foreground/80 transition-colors hover:text-brand">
+                <CalendarCheck className="h-4 w-4" />
+                Book a 15-min demo
+                <ArrowRight className="h-3.5 w-3.5 opacity-60 transition-transform group-hover:translate-x-0.5" />
               </Link>
             </div>
             <p className="mt-5 text-xs text-muted-foreground">
