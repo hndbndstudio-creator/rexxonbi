@@ -143,7 +143,7 @@ function CheckoutPage() {
                     onClick={() => setBilling('annual')}
                     className={`btn-press rounded-full px-3 py-1 transition-colors ${billing === 'annual' ? 'bg-brand text-brand-foreground shadow-inset-glow' : 'text-muted-foreground'}`}
                   >
-                    Annual <span className="ml-0.5 opacity-80">−20%</span>
+                    Annual <span className="ml-0.5 opacity-80">−10%</span>
                   </button>
                 </div>
               </div>
@@ -162,7 +162,7 @@ function CheckoutPage() {
                       {active && <Check className="absolute right-2 top-2 h-3.5 w-3.5 text-brand" />}
                       <div className="text-xs font-semibold">{p.name}</div>
                       <div className="mt-1 text-sm font-bold">
-                        ${billing === 'annual' ? Math.round(p.price * 0.8) : p.price}
+                        ${billing === 'annual' ? Math.round(p.price * (id === 'starter' ? 1 : 0.9)) : p.price}
                         <span className="text-[10px] font-normal text-muted-foreground">/mo</span>
                       </div>
                       <div className="mt-1 text-[10px] text-muted-foreground">{p.accounts}</div>
