@@ -9,10 +9,22 @@ import {
   fetchCompanySignalCounts,
   fetchMonitoredAccountIds,
   toggleMonitor,
+  insertCompany,
 } from '@/lib/queries';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import {
   Select,
   SelectContent,
@@ -29,6 +41,8 @@ import {
   Radio,
   Sparkles,
   Filter,
+  Plus,
+  Loader2,
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { getInitials } from '@/lib/types';
