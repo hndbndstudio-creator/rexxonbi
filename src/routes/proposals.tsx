@@ -199,7 +199,7 @@ function ProposalsPage() {
                   <div className="min-w-0 flex-1">
                     <h3 className="truncate font-medium text-foreground">{rfp.title}</h3>
                     <p className="text-xs text-muted-foreground">
-                      {rfp.industry} · {rfp.mode === 'BUYER' ? 'Issuing brief' : 'Vendor response'}
+                      {rfp.industry} · Proposal
                     </p>
                   </div>
                   <Badge variant={rfp.status === 'GENERATED' ? 'default' : 'secondary'} className="text-[10px]">
