@@ -203,9 +203,11 @@ function SignalFeed() {
     },
   });
 
-  const unreadCount = signals.filter((s) => !s.is_read).length;
-  const hotCount = signals.filter((s) => s.confidence_score >= 85).length;
-  const claimedCount = signals.filter((s) => s.status === 'CLAIMED').length;
+  const unreadCount = rawSignals.filter((s) => !s.is_read).length;
+  const hotCount = rawSignals.filter((s) => s.confidence_score >= 85).length;
+  const claimedCount = rawSignals.filter((s) => s.status === 'CLAIMED').length;
+  const dismissedCount = rawSignals.filter((s) => s.status === 'DISMISSED').length;
+  const openCount = rawSignals.filter((s) => s.status !== 'CLAIMED' && s.status !== 'DISMISSED').length;
 
   // Top 3 unclaimed, highest-confidence unread signals — the "do this next" rail
   const hotNow = useMemo(
