@@ -14,6 +14,7 @@ import {
   ArrowLeft,
   Upload,
   X,
+  History,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
