@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { supabaseAdmin } from '@/integrations/supabase/client.server';
 import { buildIcs, type CalendarEvent } from '@/lib/calendar';
 
-export const Route = createFileRoute('/api/public/calendar/$token.ics')({
+export const Route = createFileRoute('/api/public/calendar/$token')({
   server: {
     handlers: {
       GET: async ({ params }) => {
