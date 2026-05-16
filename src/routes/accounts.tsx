@@ -9,10 +9,22 @@ import {
   fetchCompanySignalCounts,
   fetchMonitoredAccountIds,
   toggleMonitor,
+  insertCompany,
 } from '@/lib/queries';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import {
   Select,
   SelectContent,
@@ -29,6 +41,8 @@ import {
   Radio,
   Sparkles,
   Filter,
+  Plus,
+  Loader2,
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { getInitials } from '@/lib/types';
@@ -136,9 +150,12 @@ function Accounts() {
           { label: 'Total signals', value: totalSignals, accent: 'amber', icon: Sparkles },
         ]}
         actions={
-          <Button size="sm" variant="outline" className="btn-press" onClick={exportCsv}>
-            <FileDown className="mr-1.5 h-3.5 w-3.5" /> Export CSV
-          </Button>
+          <div className="flex items-center gap-2">
+            <AddCompanyDialog />
+            <Button size="sm" variant="outline" className="btn-press" onClick={exportCsv}>
+              <FileDown className="mr-1.5 h-3.5 w-3.5" /> Export CSV
+            </Button>
+          </div>
         }
       />
 
@@ -188,9 +205,12 @@ function Accounts() {
               <Building2 className="h-6 w-6 text-brand" />
             </div>
             <h3 className="mt-4 font-semibold">No companies found</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Try a different search term or industry.
+            <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
+              Adjust your filters, or add a target account manually so the agent can start tracking it.
             </p>
+            <div className="mt-4 flex justify-center">
+              <AddCompanyDialog />
+            </div>
           </div>
         ) : (
           <div className="stagger grid gap-3 md:grid-cols-2 lg:grid-cols-3">
@@ -286,5 +306,132 @@ function Accounts() {
         )}
       </div>
     </>
+  );
+}
+
+const INDUSTRY_OPTIONS = [
+  'Technology', 'SaaS', 'Finance', 'Healthcare', 'Legal', 'HR', 'Marketing',
+  'Retail', 'Manufacturing', 'Education', 'Media', 'Real Estate', 'Other',
+];
+const EMPLOYEE_RANGES = ['1-10', '11-50', '51-200', '201-500', '501-1000', '1001-5000', '5001+'];
+const FUNDING_STAGES = ['SEED', 'SERIES_A', 'SERIES_B', 'SERIES_C', 'SERIES_D_PLUS', 'PUBLIC', 'PRIVATE', 'BOOTSTRAPPED'];
+
+function AddCompanyDialog() {
+  const { user } = useAuth();
+  const qc = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const [form, setForm] = useState({
+    name: '',
+    domain: '',
+    industry: '',
+    employee_range: '',
+    funding_stage: '',
+    hq_city: '',
+    hq_country: 'US',
+    description: '',
+  });
+
+  const mut = useMutation({
+    mutationFn: () => insertCompany(form),
+    onSuccess: (row) => {
+      qc.invalidateQueries({ queryKey: ['companies'] });
+      qc.invalidateQueries({ queryKey: ['signal-counts'] });
+      if (user) logActivity(user.id, 'ACCOUNT_ADDED', {
+        entity_type: 'company', entity_id: row.id, metadata: { name: row.name },
+      });
+      toast.success(`${row.name} added`);
+      setOpen(false);
+      setForm({ name: '', domain: '', industry: '', employee_range: '', funding_stage: '', hq_city: '', hq_country: 'US', description: '' });
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : 'Failed to add company'),
+  });
+
+  const canSubmit = form.name.trim().length > 1 && /\./.test(form.domain.trim());
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm" className="btn-press">
+          <Plus className="mr-1.5 h-3.5 w-3.5" /> Add company
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-lg">
+        <DialogHeader>
+          <DialogTitle>Add a target account</DialogTitle>
+          <DialogDescription>
+            Add a company manually. The agent will start tracking signals as soon as you save.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="grid gap-3 py-2">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label htmlFor="ac-name">Company name *</Label>
+              <Input id="ac-name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Acme Inc." />
+            </div>
+            <div>
+              <Label htmlFor="ac-domain">Domain *</Label>
+              <Input id="ac-domain" value={form.domain} onChange={(e) => setForm({ ...form, domain: e.target.value })} placeholder="acme.com" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label>Industry</Label>
+              <Select value={form.industry} onValueChange={(v) => setForm({ ...form, industry: v })}>
+                <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                <SelectContent>
+                  {INDUSTRY_OPTIONS.map((i) => <SelectItem key={i} value={i}>{i}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Employees</Label>
+              <Select value={form.employee_range} onValueChange={(v) => setForm({ ...form, employee_range: v })}>
+                <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                <SelectContent>
+                  {EMPLOYEE_RANGES.map((r) => <SelectItem key={r} value={r}>{r}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label>Funding stage</Label>
+              <Select value={form.funding_stage} onValueChange={(v) => setForm({ ...form, funding_stage: v })}>
+                <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                <SelectContent>
+                  {FUNDING_STAGES.map((s) => <SelectItem key={s} value={s}>{s.replace(/_/g, ' ')}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="ac-city">HQ city</Label>
+              <Input id="ac-city" value={form.hq_city} onChange={(e) => setForm({ ...form, hq_city: e.target.value })} placeholder="San Francisco" />
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="ac-desc">Short description</Label>
+            <Textarea
+              id="ac-desc"
+              rows={3}
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              placeholder="What does this company do? (optional)"
+            />
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+          <Button disabled={!canSubmit || mut.isPending} onClick={() => mut.mutate()}>
+            {mut.isPending ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <Plus className="mr-1.5 h-3.5 w-3.5" />}
+            Add company
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

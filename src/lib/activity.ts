@@ -10,7 +10,8 @@ export type ActivityType =
   | 'CRM_PUSHED'
   | 'CSV_EXPORTED'
   | 'CONTACT_REVEALED'
-  | 'ACCOUNT_MONITORED';
+  | 'ACCOUNT_MONITORED'
+  | 'ACCOUNT_ADDED';
 
 export type ActivityEvent = {
   id: string;
@@ -62,4 +63,5 @@ export const ACTIVITY_LABELS: Record<ActivityType, string> = {
   CSV_EXPORTED: 'Exported CSV',
   CONTACT_REVEALED: 'Revealed a contact',
   ACCOUNT_MONITORED: 'Toggled monitor',
+  ACCOUNT_ADDED: 'Added an account',
 };
