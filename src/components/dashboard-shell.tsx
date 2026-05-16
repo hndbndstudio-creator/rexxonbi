@@ -32,19 +32,45 @@ type NavItem = {
   adminOnly?: boolean;
 };
 
-const NAV: NavItem[] = [
-  { to: '/birdseye', label: "Bird's-Eye", icon: Eye, tourId: 'nav-birdseye' },
-  { to: '/dashboard', label: 'Signals', icon: Radio, tourId: 'nav-dashboard' },
-  { to: '/today', label: 'Today', icon: CalendarDays, tourId: 'nav-today' },
-  { to: '/campaigns', label: 'Campaigns', icon: Target, tourId: 'nav-campaigns' },
-  { to: '/accounts', label: 'Accounts', icon: Building2, tourId: 'nav-accounts' },
-  { to: '/contacts', label: 'Contacts', icon: Users, tourId: 'nav-contacts' },
-  { to: '/outreach', label: 'Outreach', icon: Mail, tourId: 'nav-outreach' },
-  { to: '/rfps', label: 'RFPs', icon: FileText, tourId: 'nav-rfps' },
-  { to: '/territory', label: 'Territory', icon: Target, tourId: 'nav-territory' },
-  { to: '/analytics', label: 'Analytics', icon: TrendingUp },
-  { to: '/settings', label: 'Settings', icon: Settings },
-  { to: '/admin', label: 'Admin', icon: ShieldCheck, adminOnly: true },
+type NavSection = { label?: string; items: NavItem[] };
+
+const NAV_SECTIONS: NavSection[] = [
+  {
+    label: 'Today',
+    items: [
+      { to: '/birdseye', label: "Bird's-eye", icon: Eye, tourId: 'nav-birdseye' },
+      { to: '/today', label: 'Today', icon: CalendarDays, tourId: 'nav-today' },
+    ],
+  },
+  {
+    label: 'Prospect',
+    items: [
+      { to: '/dashboard', label: 'Signals', icon: Radio, tourId: 'nav-dashboard' },
+      { to: '/campaigns', label: 'Campaigns', icon: Target, tourId: 'nav-campaigns' },
+      { to: '/accounts', label: 'Accounts', icon: Building2, tourId: 'nav-accounts' },
+      { to: '/contacts', label: 'Contacts', icon: Users, tourId: 'nav-contacts' },
+    ],
+  },
+  {
+    label: 'Engage',
+    items: [
+      { to: '/outreach', label: 'Outreach', icon: Mail, tourId: 'nav-outreach' },
+      { to: '/rfps', label: 'RFPs', icon: FileText, tourId: 'nav-rfps' },
+    ],
+  },
+  {
+    label: 'Measure',
+    items: [
+      { to: '/territory', label: 'Territory', icon: Target, tourId: 'nav-territory' },
+      { to: '/analytics', label: 'Analytics', icon: TrendingUp },
+    ],
+  },
+  {
+    items: [
+      { to: '/settings', label: 'Settings', icon: Settings },
+      { to: '/admin', label: 'Admin', icon: ShieldCheck, adminOnly: true },
+    ],
+  },
 ];
 
 export function DashboardShell({ children }: { children: ReactNode }) {
