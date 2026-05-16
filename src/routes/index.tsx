@@ -1257,9 +1257,9 @@ const FEATURE_BLOCKS = [
   {
     eyebrow: 'Respond',
     icon: <FileText className="h-3.5 w-3.5" />,
-    title: 'AI-assisted RFP generator',
-    body: 'Drop in an inbound RFP and your company docs — Rexxon extracts every question, auto-drafts grounded answers, and outputs a polished proposal you can ship. Or fill the wizard manually for total control.',
-    bullets: ['Auto-extract questions from inbound RFPs', 'Auto-draft sections from your uploaded docs', 'Ephemeral parsing — files never stored'],
+    title: 'AI-assisted proposal generator',
+    body: 'Drop in your prospect brief and your company docs — Rexxon extracts every requirement, auto-drafts grounded sections, and outputs a polished proposal you can ship. Or fill the wizard manually for total control.',
+    bullets: ['Auto-extract requirements from any prospect brief', 'Auto-draft sections from your uploaded docs', 'Ephemeral parsing — files never stored'],
     visual: <RfpVisual />,
   },
 ];
