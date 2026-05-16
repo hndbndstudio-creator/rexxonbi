@@ -414,6 +414,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          calendar_token: string
           company_name: string | null
           created_at: string
           first_name: string | null
@@ -424,6 +425,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          calendar_token?: string
           company_name?: string | null
           created_at?: string
           first_name?: string | null
@@ -434,6 +436,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          calendar_token?: string
           company_name?: string | null
           created_at?: string
           first_name?: string | null

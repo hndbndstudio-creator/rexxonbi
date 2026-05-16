@@ -34,6 +34,7 @@ import { Route as AccountsIndexRouteImport } from './routes/accounts.index'
 import { Route as CaseStudiesSlugRouteImport } from './routes/case-studies.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AccountsIdRouteImport } from './routes/accounts.$id'
+import { Route as ApiPublicCalendarTokenRouteImport } from './routes/api/public/calendar.$token'
 
 const TodayRoute = TodayRouteImport.update({
   id: '/today',
@@ -156,9 +157,14 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   getParentRoute: () => BlogRoute,
 } as any)
 const AccountsIdRoute = AccountsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AccountsRoute,
+  id: '/accounts/$id',
+  path: '/accounts/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicCalendarTokenRoute = ApiPublicCalendarTokenRouteImport.update({
+  id: '/api/public/calendar/$token',
+  path: '/api/public/calendar/$token',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -187,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/case-studies/$slug': typeof CaseStudiesSlugRoute
   '/accounts/': typeof AccountsIndexRoute
+  '/api/public/calendar/$token': typeof ApiPublicCalendarTokenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -214,6 +221,7 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/case-studies/$slug': typeof CaseStudiesSlugRoute
   '/accounts': typeof AccountsIndexRoute
+  '/api/public/calendar/$token': typeof ApiPublicCalendarTokenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -242,6 +250,7 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/case-studies/$slug': typeof CaseStudiesSlugRoute
   '/accounts/': typeof AccountsIndexRoute
+  '/api/public/calendar/$token': typeof ApiPublicCalendarTokenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -271,6 +280,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/case-studies/$slug'
     | '/accounts/'
+    | '/api/public/calendar/$token'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -298,6 +308,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/case-studies/$slug'
     | '/accounts'
+    | '/api/public/calendar/$token'
   id:
     | '__root__'
     | '/'
@@ -325,6 +336,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/case-studies/$slug'
     | '/accounts/'
+    | '/api/public/calendar/$token'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -349,7 +361,9 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TerritoryRoute: typeof TerritoryRoute
   TodayRoute: typeof TodayRoute
+  AccountsIdRoute: typeof AccountsIdRoute
   AccountsIndexRoute: typeof AccountsIndexRoute
+  ApiPublicCalendarTokenRoute: typeof ApiPublicCalendarTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -524,10 +538,17 @@ declare module '@tanstack/react-router' {
     }
     '/accounts/$id': {
       id: '/accounts/$id'
-      path: '/$id'
+      path: '/accounts/$id'
       fullPath: '/accounts/$id'
       preLoaderRoute: typeof AccountsIdRouteImport
-      parentRoute: typeof AccountsRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/calendar/$token': {
+      id: '/api/public/calendar/$token'
+      path: '/api/public/calendar/$token'
+      fullPath: '/api/public/calendar/$token'
+      preLoaderRoute: typeof ApiPublicCalendarTokenRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -576,7 +597,9 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TerritoryRoute: TerritoryRoute,
   TodayRoute: TodayRoute,
+  AccountsIdRoute: AccountsIdRoute,
   AccountsIndexRoute: AccountsIndexRoute,
+  ApiPublicCalendarTokenRoute: ApiPublicCalendarTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

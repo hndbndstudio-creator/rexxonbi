@@ -17,6 +17,12 @@ import {
   ListChecks,
   Plus,
   CalendarPlus,
+  CalendarCheck,
+  Download,
+  Link2,
+  Rss,
+  Copy,
+  Check,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -27,7 +33,30 @@ import { PageHeader } from '@/components/page-header';
 import { ScheduleMeetingDialog } from '@/components/schedule-meeting-dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import {
+  googleCalendarUrl,
+  outlookCalendarUrl,
+  buildIcs,
+  downloadIcs,
+  type CalendarEvent,
+} from '@/lib/calendar';
 
 export const Route = createFileRoute('/today')({
   head: () => ({
@@ -67,6 +96,27 @@ function TodayBriefing() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [syncOpen, setSyncOpen] = useState(false);
+
+  // Fetch the user's personal calendar feed token
+  const { data: calendarToken } = useQuery({
+    queryKey: ['profile-calendar-token', user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('calendar_token')
+        .eq('user_id', user!.id)
+        .maybeSingle();
+      if (error) throw error;
+      return (data as any)?.calendar_token as string | undefined;
+    },
+  });
+
+  const feedUrl =
+    typeof window !== 'undefined' && calendarToken
+      ? `${window.location.origin}/api/public/calendar/${calendarToken}`
+      : '';
 
   const { data: meetings = [], isLoading, isError, refetch } = useQuery({
     queryKey: ['meetings', 'today', user?.id],
@@ -132,15 +182,27 @@ function TodayBriefing() {
           },
         ]}
         actions={
-          <ScheduleMeetingDialog
-            trigger={
-              <Button size="sm" className="btn-press">
-                <CalendarPlus className="mr-1.5 h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Schedule meeting</span>
-                <span className="sm:hidden">Schedule</span>
-              </Button>
-            }
-          />
+          <>
+            <Button
+              size="sm"
+              variant="outline"
+              className="btn-press"
+              onClick={() => setSyncOpen(true)}
+            >
+              <Rss className="mr-1.5 h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Sync calendar</span>
+              <span className="sm:hidden">Sync</span>
+            </Button>
+            <ScheduleMeetingDialog
+              trigger={
+                <Button size="sm" className="btn-press">
+                  <CalendarPlus className="mr-1.5 h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">Schedule meeting</span>
+                  <span className="sm:hidden">Schedule</span>
+                </Button>
+              }
+            />
+          </>
         }
       />
 
@@ -195,7 +257,95 @@ function TodayBriefing() {
           ))}
         </div>
       </div>
+
+      <SyncCalendarDialog open={syncOpen} onOpenChange={setSyncOpen} feedUrl={feedUrl} />
     </>
+  );
+}
+
+function SyncCalendarDialog({
+  open,
+  onOpenChange,
+  feedUrl,
+}: {
+  open: boolean;
+  onOpenChange: (o: boolean) => void;
+  feedUrl: string;
+}) {
+  const [copied, setCopied] = useState(false);
+  const webcalUrl = feedUrl.replace(/^https?:/, 'webcal:');
+
+  const copy = async () => {
+    if (!feedUrl) return;
+    await navigator.clipboard.writeText(feedUrl);
+    setCopied(true);
+    toast.success('Feed URL copied');
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>Sync to your calendar</DialogTitle>
+          <DialogDescription>
+            Subscribe once and every meeting you schedule in Rexxon shows up in your calendar
+            automatically. Updates every ~15 minutes.
+          </DialogDescription>
+        </DialogHeader>
+
+        {!feedUrl ? (
+          <div className="rounded-md border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
+            Generating your private feed…
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div>
+              <div className="mb-1.5 text-[10px] font-mono uppercase text-muted-foreground">
+                Your private feed URL
+              </div>
+              <div className="flex gap-2">
+                <Input readOnly value={feedUrl} className="font-mono text-xs" />
+                <Button size="sm" variant="outline" onClick={copy}>
+                  {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                </Button>
+              </div>
+              <p className="mt-1.5 text-xs text-muted-foreground">
+                Keep this URL private — anyone with it can read your meetings.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+              <a
+                href={`https://calendar.google.com/calendar/r/settings/addbyurl?cid=${encodeURIComponent(feedUrl)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center gap-2 rounded-md border border-border bg-background/40 px-3 py-2 text-xs font-medium hover:bg-muted/40"
+              >
+                <CalendarCheck className="h-3.5 w-3.5" />
+                Google Calendar
+              </a>
+              <a
+                href={webcalUrl}
+                className="flex items-center justify-center gap-2 rounded-md border border-border bg-background/40 px-3 py-2 text-xs font-medium hover:bg-muted/40"
+              >
+                <CalendarCheck className="h-3.5 w-3.5" />
+                Apple Calendar
+              </a>
+              <a
+                href={`https://outlook.live.com/owa?path=/calendar/action/compose&rru=addsubscription&url=${encodeURIComponent(feedUrl)}&name=Rexxon`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center gap-2 rounded-md border border-border bg-background/40 px-3 py-2 text-xs font-medium hover:bg-muted/40"
+              >
+                <CalendarCheck className="h-3.5 w-3.5" />
+                Outlook
+              </a>
+            </div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -273,6 +423,7 @@ function MeetingCard({
           )}
         </div>
         <div className="flex shrink-0 flex-wrap items-center gap-1.5">
+          <AddToCalendarMenu meeting={meeting} />
           {!hasBrief ? (
             <Button
               size="sm"
@@ -476,5 +627,65 @@ function ScriptBlock({ label, text }: { label: string; text: string }) {
         {text}
       </p>
     </div>
+  );
+}
+
+function AddToCalendarMenu({ meeting }: { meeting: MeetingRow }) {
+  const descParts: string[] = [];
+  if (meeting.company?.name) descParts.push(`Account: ${meeting.company.name}`);
+  if (meeting.contact)
+    descParts.push(
+      `Contact: ${meeting.contact.first_name} ${meeting.contact.last_name}${meeting.contact.title ? ` (${meeting.contact.title})` : ''}`,
+    );
+  if (meeting.notes) descParts.push('', meeting.notes);
+
+  const event: CalendarEvent = {
+    id: meeting.id,
+    title: meeting.title,
+    description: descParts.join('\n'),
+    startISO: meeting.scheduled_at,
+    durationMinutes: meeting.duration_minutes,
+    location: meeting.company?.domain ?? null,
+  };
+
+  const onDownloadIcs = () => {
+    const ics = buildIcs([event], meeting.title);
+    downloadIcs(`${meeting.title.replace(/\s+/g, '-').toLowerCase()}.ics`, ics);
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          size="sm"
+          variant="outline"
+          className="btn-press h-8"
+          title="Add to your calendar"
+        >
+          <CalendarPlus className="mr-1.5 h-3.5 w-3.5" />
+          <span className="hidden md:inline">Add</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-52">
+        <DropdownMenuLabel className="text-xs">Add to calendar</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <a href={googleCalendarUrl(event)} target="_blank" rel="noreferrer">
+            <Link2 className="mr-2 h-3.5 w-3.5" />
+            Google Calendar
+          </a>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <a href={outlookCalendarUrl(event)} target="_blank" rel="noreferrer">
+            <Link2 className="mr-2 h-3.5 w-3.5" />
+            Outlook
+          </a>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={onDownloadIcs}>
+          <Download className="mr-2 h-3.5 w-3.5" />
+          Download .ics (Apple)
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
