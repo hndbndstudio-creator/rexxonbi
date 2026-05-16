@@ -107,33 +107,46 @@ export function DashboardShell({ children }: { children: ReactNode }) {
   }
 
   const renderNav = (onItemClick?: () => void) => (
-    <nav className="flex-1 space-y-0.5 p-2">
-      {NAV.filter((i) => !i.adminOnly || isAdmin).map((item) => {
-        const active = location.pathname === item.to ||
-          (item.to !== '/dashboard' && location.pathname.startsWith(item.to));
-        const Icon = item.icon;
+    <nav className="flex-1 space-y-3 overflow-y-auto p-2">
+      {NAV_SECTIONS.map((section, sIdx) => {
+        const items = section.items.filter((i) => !i.adminOnly || isAdmin);
+        if (items.length === 0) return null;
         return (
-          <Link key={item.to} to={item.to as any} onClick={onItemClick}>
-            <div
-              data-tour={item.tourId}
-              data-active={active ? 'true' : 'false'}
-              className={cn(
-                'nav-link group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm',
-                active
-                  ? 'bg-sidebar-accent text-sidebar-accent-foreground'
-                  : 'text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground',
-                item.adminOnly && 'border border-brand/30 bg-brand/5'
-              )}
-            >
-              <Icon className={cn('nav-icon h-4 w-4', active && 'text-brand', item.adminOnly && 'text-brand')} />
-              <span className="flex-1">{item.label}</span>
-              {item.adminOnly && (
-                <span className="rounded-sm bg-brand/20 px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-wider text-brand">
-                  Sudo
-                </span>
-              )}
-            </div>
-          </Link>
+          <div key={sIdx} className="space-y-0.5">
+            {section.label && (
+              <div className="px-2.5 pb-1 pt-1 font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70">
+                {section.label}
+              </div>
+            )}
+            {items.map((item) => {
+              const active = location.pathname === item.to ||
+                (item.to !== '/dashboard' && location.pathname.startsWith(item.to));
+              const Icon = item.icon;
+              return (
+                <Link key={item.to} to={item.to as any} onClick={onItemClick}>
+                  <div
+                    data-tour={item.tourId}
+                    data-active={active ? 'true' : 'false'}
+                    className={cn(
+                      'nav-link group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm',
+                      active
+                        ? 'bg-sidebar-accent text-sidebar-accent-foreground'
+                        : 'text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground',
+                      item.adminOnly && 'border border-brand/30 bg-brand/5'
+                    )}
+                  >
+                    <Icon className={cn('nav-icon h-4 w-4', active && 'text-brand', item.adminOnly && 'text-brand')} />
+                    <span className="flex-1">{item.label}</span>
+                    {item.adminOnly && (
+                      <span className="rounded-sm bg-brand/20 px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-wider text-brand">
+                        Sudo
+                      </span>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         );
       })}
     </nav>
