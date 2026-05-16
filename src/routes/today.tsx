@@ -629,3 +629,63 @@ function ScriptBlock({ label, text }: { label: string; text: string }) {
     </div>
   );
 }
+
+function AddToCalendarMenu({ meeting }: { meeting: MeetingRow }) {
+  const descParts: string[] = [];
+  if (meeting.company?.name) descParts.push(`Account: ${meeting.company.name}`);
+  if (meeting.contact)
+    descParts.push(
+      `Contact: ${meeting.contact.first_name} ${meeting.contact.last_name}${meeting.contact.title ? ` (${meeting.contact.title})` : ''}`,
+    );
+  if (meeting.notes) descParts.push('', meeting.notes);
+
+  const event: CalendarEvent = {
+    id: meeting.id,
+    title: meeting.title,
+    description: descParts.join('\n'),
+    startISO: meeting.scheduled_at,
+    durationMinutes: meeting.duration_minutes,
+    location: meeting.company?.domain ?? null,
+  };
+
+  const onDownloadIcs = () => {
+    const ics = buildIcs([event], meeting.title);
+    downloadIcs(`${meeting.title.replace(/\s+/g, '-').toLowerCase()}.ics`, ics);
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          size="sm"
+          variant="outline"
+          className="btn-press h-8"
+          title="Add to your calendar"
+        >
+          <CalendarPlus className="mr-1.5 h-3.5 w-3.5" />
+          <span className="hidden md:inline">Add</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-52">
+        <DropdownMenuLabel className="text-xs">Add to calendar</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <a href={googleCalendarUrl(event)} target="_blank" rel="noreferrer">
+            <Link2 className="mr-2 h-3.5 w-3.5" />
+            Google Calendar
+          </a>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <a href={outlookCalendarUrl(event)} target="_blank" rel="noreferrer">
+            <Link2 className="mr-2 h-3.5 w-3.5" />
+            Outlook
+          </a>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={onDownloadIcs}>
+          <Download className="mr-2 h-3.5 w-3.5" />
+          Download .ics (Apple)
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
