@@ -22,8 +22,9 @@ function KnowledgePage() {
   return (
     <DashboardShell>
       <PageHeader
+        icon={BookOpen}
         title="Knowledge base"
-        description="Upload your company docs and chat with them — grounded, cited answers your reps can trust."
+        subtitle="Upload your company docs and chat with them — grounded, cited answers your reps can trust."
       />
       <div className="mx-auto max-w-5xl px-4 py-5 md:px-8 md:py-6">
         {isLoading ? (
