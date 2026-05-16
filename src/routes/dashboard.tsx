@@ -303,7 +303,7 @@ function SignalFeed() {
                     </div>
                     <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
                       {SIGNAL_TYPE_LABELS[s.signal_type as SignalType] ?? s.signal_type}
-                      {s.headline ? ` · ${s.headline}` : ''}
+                      {s.title ? ` · ${s.title}` : ''}
                     </p>
                     <div className="mt-3 inline-flex items-center gap-1 text-[11px] font-medium text-brand opacity-90 transition-opacity group-hover:opacity-100">
                       <Zap className="h-3 w-3" />
