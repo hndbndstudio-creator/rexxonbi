@@ -1,19 +1,17 @@
-import { createFileRoute, Link, useRouter, useSearch } from '@tanstack/react-router';
+import { createFileRoute, Link, useSearch } from '@tanstack/react-router';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { toast } from 'sonner';
 import {
   ArrowLeft,
   Check,
-  CreditCard,
   Lock,
   ShieldCheck,
   Sparkles,
   Star,
 } from 'lucide-react';
 import { RexxonLogo } from '@/components/rexxon-logo';
+import { StripeEmbeddedCheckout } from '@/components/StripeEmbeddedCheckout';
+import { useAuth } from '@/lib/use-auth';
 import testimonial1 from '@/assets/testimonial-1.jpg';
 
 type PlanId = 'starter' | 'pro' | 'team';
