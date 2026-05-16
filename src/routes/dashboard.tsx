@@ -63,6 +63,7 @@ function SignalFeed() {
   const [type, setType] = useState<'ALL' | SignalType>('ALL');
   const [minConf, setMinConf] = useState(60);
   const [campaignId, setCampaignId] = useState<string>(search.campaign ?? 'NONE');
+  const [statusTab, setStatusTab] = useState<'ALL' | 'OPEN' | 'CLAIMED' | 'DISMISSED'>('ALL');
   const [filtersOpen, setFiltersOpen] = useState(false);
   const qc = useQueryClient();
   const navigate = useNavigate();
@@ -89,9 +90,8 @@ function SignalFeed() {
 
   // Apply remaining campaign filters client-side (industries, geos, role, seniority, domains, employees)
   const signals = useMemo(() => {
-    if (!activeCampaign) return rawSignals;
-    const f = activeCampaign.filters ?? {};
-    return rawSignals.filter((s) => {
+    const base = !activeCampaign ? rawSignals : rawSignals.filter((s) => {
+      const f = activeCampaign.filters ?? {};
       if (f.signal_types?.length && !f.signal_types.includes(s.signal_type as SignalType)) return false;
       if (f.industries?.length && (!s.company?.industry || !f.industries.includes(s.company.industry))) return false;
       if (f.role_categories?.length && (!s.role_category || !f.role_categories.includes(s.role_category))) return false;
@@ -103,7 +103,10 @@ function SignalFeed() {
       }
       return true;
     });
-  }, [rawSignals, activeCampaign]);
+    if (statusTab === 'ALL') return base;
+    if (statusTab === 'OPEN') return base.filter((s) => s.status !== 'CLAIMED' && s.status !== 'DISMISSED');
+    return base.filter((s) => s.status === statusTab);
+  }, [rawSignals, activeCampaign, statusTab]);
 
   const actionMut = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: 'CLAIMED' | 'DISMISSED' }) => {
@@ -200,9 +203,11 @@ function SignalFeed() {
     },
   });
 
-  const unreadCount = signals.filter((s) => !s.is_read).length;
-  const hotCount = signals.filter((s) => s.confidence_score >= 85).length;
-  const claimedCount = signals.filter((s) => s.status === 'CLAIMED').length;
+  const unreadCount = rawSignals.filter((s) => !s.is_read).length;
+  const hotCount = rawSignals.filter((s) => s.confidence_score >= 85).length;
+  const claimedCount = rawSignals.filter((s) => s.status === 'CLAIMED').length;
+  const dismissedCount = rawSignals.filter((s) => s.status === 'DISMISSED').length;
+  const openCount = rawSignals.filter((s) => s.status !== 'CLAIMED' && s.status !== 'DISMISSED').length;
 
   // Top 3 unclaimed, highest-confidence unread signals — the "do this next" rail
   const hotNow = useMemo(
@@ -309,6 +314,38 @@ function SignalFeed() {
               </div>
             </div>
           )}
+
+          {/* Status tabs */}
+          <div className="mb-3 flex flex-wrap items-center gap-1.5 animate-rise" style={{ animationDelay: '140ms' }}>
+            {([
+              { key: 'ALL', label: 'All', count: rawSignals.length },
+              { key: 'OPEN', label: 'Open', count: openCount },
+              { key: 'CLAIMED', label: 'Claimed', count: claimedCount },
+              { key: 'DISMISSED', label: 'Dismissed', count: dismissedCount },
+            ] as const).map((t) => {
+              const active = statusTab === t.key;
+              return (
+                <button
+                  key={t.key}
+                  type="button"
+                  onClick={() => setStatusTab(t.key)}
+                  className={cn(
+                    'inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs transition-colors',
+                    active
+                      ? 'border-brand bg-brand/10 text-brand'
+                      : 'border-border bg-card text-muted-foreground hover:text-foreground'
+                  )}
+                  aria-pressed={active}
+                >
+                  {t.key === 'CLAIMED' && <CheckCheck className="h-3 w-3" />}
+                  <span>{t.label}</span>
+                  <span className={cn('rounded-full px-1.5 py-0 text-[10px] font-mono tabular-nums', active ? 'bg-brand/15' : 'bg-muted/60')}>
+                    {t.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
 
           {/* Filter pill bar — collapsed by default unless filters are active */}
           <div className="surface-1 mb-4 rounded-xl border border-border animate-rise md:mb-5" style={{ animationDelay: '160ms' }}>
