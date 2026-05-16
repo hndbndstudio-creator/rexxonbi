@@ -65,11 +65,11 @@ export const Route = createFileRoute('/')({
   head: () => ({
     meta: [
       { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1' },
-      { title: 'Rexxon AI — Know who\'s about to buy. Before your competitors do.' },
+      { title: 'Rexxon AI — Real-time B2B buying signals' },
       {
         name: 'description',
         content:
-          'Rexxon\'s AI agents watch 10M+ companies 24/7 and surface the moment a budget activates — with verified contacts and ready-to-send outreach. Book 2× more meetings. 7-day free trial.',
+          'AI agents monitor 10M+ companies for buying signals — hiring, funding, leadership shifts — and draft outreach to verified contacts. Book 2× more meetings.',
       },
       { property: 'og:title', content: 'Rexxon AI — Real-time B2B buying signals & AI outreach' },
       {

@@ -67,8 +67,6 @@ export const Route = createRootRoute({
       // AI / LLM crawler hints
       { name: "application-name", content: "Rexxon AI" },
       { name: "apple-mobile-web-app-title", content: "Rexxon AI" },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7bf82701-614c-456f-9d0b-6ff72c52bc19/id-preview-c102766b--9650b500-ead4-4ee9-92f3-a20497d74a31.lovable.app-1776972583161.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7bf82701-614c-456f-9d0b-6ff72c52bc19/id-preview-c102766b--9650b500-ead4-4ee9-92f3-a20497d74a31.lovable.app-1776972583161.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -150,7 +148,9 @@ function RootShell({ children }: { children: React.ReactNode }) {
 function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <main id="main">
+        <Outlet />
+      </main>
       <Toaster theme="dark" />
     </QueryClientProvider>
   );
