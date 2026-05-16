@@ -96,6 +96,27 @@ function TodayBriefing() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [syncOpen, setSyncOpen] = useState(false);
+
+  // Fetch the user's personal calendar feed token
+  const { data: calendarToken } = useQuery({
+    queryKey: ['profile-calendar-token', user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('calendar_token')
+        .eq('user_id', user!.id)
+        .maybeSingle();
+      if (error) throw error;
+      return (data as any)?.calendar_token as string | undefined;
+    },
+  });
+
+  const feedUrl =
+    typeof window !== 'undefined' && calendarToken
+      ? `${window.location.origin}/api/public/calendar/${calendarToken}`
+      : '';
 
   const { data: meetings = [], isLoading, isError, refetch } = useQuery({
     queryKey: ['meetings', 'today', user?.id],
