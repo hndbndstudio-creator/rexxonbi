@@ -911,7 +911,7 @@ function ProposalDetail({ rfp, onBack, onDelete }: { rfp: RfpRow; onBack: () => 
           {regenerating ? (
             <div className="flex flex-col items-center gap-2">
               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">Generating RFP…</p>
+              <p className="text-sm text-muted-foreground">Generating proposal…</p>
             </div>
           ) : (
             <>
