@@ -399,91 +399,286 @@ function assembleDocChildren(
 }
 
 // PDF Export ---------------------------------------------------------------
+// Branded, designed proposal template.
+
+const BRAND = { r: 139, g: 92, b: 246 };       // primary purple
+const BRAND_DARK = { r: 91, g: 33, b: 182 };   // deeper purple for accents
+const INK = { r: 24, g: 22, b: 38 };           // body text
+const MUTED = { r: 110, g: 105, b: 130 };      // secondary text
+const HAIRLINE = { r: 224, g: 220, b: 235 };   // dividers
+const ROW_TINT = { r: 247, g: 245, b: 251 };   // table alt row
+const HEADER_BG = { r: 31, g: 23, b: 56 };     // dark header bar
 
 export function exportRfpPdf(title: string, content: RfpContent): Blob {
   const doc = new jsPDF({ unit: 'pt', format: 'letter' });
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
   const marginX = 54;
-  const marginY = 54;
+  const marginTop = 72;
+  const marginBottom = 64;
   const maxWidth = pageWidth - marginX * 2;
-  let y = marginY;
+  let y = marginTop;
+  let sectionCount = 0;
 
-  const ensureSpace = (needed: number) => {
-    if (y + needed > pageHeight - marginY) {
-      doc.addPage();
-      y = marginY;
-    }
+  const setFill = (c: { r: number; g: number; b: number }) => doc.setFillColor(c.r, c.g, c.b);
+  const setText = (c: { r: number; g: number; b: number }) => doc.setTextColor(c.r, c.g, c.b);
+  const setDraw = (c: { r: number; g: number; b: number }) => doc.setDrawColor(c.r, c.g, c.b);
+
+  const drawPageChrome = () => {
+    setFill(BRAND);
+    doc.rect(0, 0, pageWidth, 4, 'F');
+    setText(MUTED);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    const footerY = pageHeight - 28;
+    doc.text(title, marginX, footerY);
+    doc.text('Proposal', pageWidth / 2, footerY, { align: 'center' });
+    setText(INK);
   };
 
-  const writeWrapped = (text: string, opts: { size?: number; bold?: boolean; spacing?: number } = {}) => {
-    const size = opts.size ?? 11;
+  const newPage = () => {
+    doc.addPage();
+    y = marginTop;
+    drawPageChrome();
+  };
+
+  const ensureSpace = (needed: number) => {
+    if (y + needed > pageHeight - marginBottom) newPage();
+  };
+
+  const writeWrapped = (
+    text: string,
+    opts: { size?: number; bold?: boolean; spacing?: number; color?: { r: number; g: number; b: number }; italic?: boolean } = {},
+  ) => {
+    const size = opts.size ?? 10.5;
     doc.setFontSize(size);
-    doc.setFont('helvetica', opts.bold ? 'bold' : 'normal');
+    doc.setFont('helvetica', opts.italic ? 'italic' : opts.bold ? 'bold' : 'normal');
+    setText(opts.color ?? INK);
     const lines = doc.splitTextToSize(text || '', maxWidth);
-    const lineHeight = size * 1.3;
+    const lineHeight = size * 1.45;
     lines.forEach((line: string) => {
       ensureSpace(lineHeight);
       doc.text(line, marginX, y);
       y += lineHeight;
     });
-    y += opts.spacing ?? 4;
+    y += opts.spacing ?? 6;
+    setText(INK);
   };
 
-  const heading1 = (text: string) => {
-    y += 8;
-    ensureSpace(28);
-    writeWrapped(text, { size: 18, bold: true, spacing: 6 });
+  const heading1 = (label: string) => {
+    sectionCount += 1;
+    y += 14;
+    ensureSpace(60);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    setText(BRAND);
+    doc.text(String(sectionCount).padStart(2, '0'), marginX, y);
+    setText(INK);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(17);
+    doc.text(label, marginX + 22, y);
+    y += 10;
+    setDraw(BRAND);
+    doc.setLineWidth(1.2);
+    doc.line(marginX, y, marginX + 40, y);
+    setDraw(HAIRLINE);
+    doc.setLineWidth(0.5);
+    doc.line(marginX + 40, y, pageWidth - marginX, y);
+    y += 18;
   };
-  const heading2 = (text: string) => {
-    y += 4;
+
+  const heading2 = (label: string) => {
+    y += 6;
     ensureSpace(22);
-    writeWrapped(text, { size: 13, bold: true, spacing: 4 });
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    setText(BRAND_DARK);
+    doc.text(label.toUpperCase(), marginX, y);
+    y += 14;
+    setText(INK);
   };
 
   const bulletWrite = (items: string[]) => {
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10.5);
     items.forEach((item) => {
-      const lines = doc.splitTextToSize(item, maxWidth - 18);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(11);
+      const indent = 16;
+      const lines = doc.splitTextToSize(item, maxWidth - indent);
+      const lineHeight = 14;
       lines.forEach((line: string, i: number) => {
-        ensureSpace(14);
-        const prefix = i === 0 ? '•  ' : '   ';
-        doc.text(prefix + line, marginX, y);
-        y += 14;
+        ensureSpace(lineHeight);
+        if (i === 0) {
+          setFill(BRAND);
+          doc.circle(marginX + 3, y - 3.5, 1.8, 'F');
+          setText(INK);
+        }
+        doc.text(line, marginX + indent, y);
+        y += lineHeight;
       });
-      y += 2;
+      y += 3;
     });
     y += 4;
   };
 
-  // Title
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(22);
-  const titleLines = doc.splitTextToSize(title, maxWidth);
-  titleLines.forEach((line: string) => {
-    doc.text(line, pageWidth / 2, y, { align: 'center' });
-    y += 26;
-  });
-  doc.setFont('helvetica', 'italic');
-  doc.setFontSize(10);
-  doc.setTextColor(120);
-  doc.text(`Request for Proposal · ${new Date().toLocaleDateString()}`, pageWidth / 2, y, {
-    align: 'center',
-  });
-  doc.setTextColor(0);
-  y += 28;
+  const drawTable = (headers: string[], rows: string[][], widths: number[]) => {
+    const colWidths = widths.map((w) => w * maxWidth);
+    const padX = 8;
+    const padY = 7;
+    const headerH = 22;
 
-  heading1('1. Executive summary');
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9.5);
+    const rowHeights = rows.map((r) => {
+      let h = padY * 2;
+      r.forEach((cell, i) => {
+        const lines = doc.splitTextToSize(cell ?? '', colWidths[i] - padX * 2);
+        h = Math.max(h, padY * 2 + lines.length * 12);
+      });
+      return Math.max(h, 22);
+    });
+
+    const renderHeader = () => {
+      ensureSpace(headerH + 4);
+      setFill(HEADER_BG);
+      doc.rect(marginX, y, maxWidth, headerH, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(255, 255, 255);
+      let x = marginX;
+      headers.forEach((h, i) => {
+        doc.text(h.toUpperCase(), x + padX, y + headerH / 2 + 3);
+        x += colWidths[i];
+      });
+      setText(INK);
+      y += headerH;
+    };
+
+    renderHeader();
+
+    rows.forEach((row, ri) => {
+      const h = rowHeights[ri];
+      if (y + h > pageHeight - marginBottom) {
+        newPage();
+        renderHeader();
+      }
+      if (ri % 2 === 0) {
+        setFill(ROW_TINT);
+        doc.rect(marginX, y, maxWidth, h, 'F');
+      }
+      setDraw(HAIRLINE);
+      doc.setLineWidth(0.3);
+      doc.line(marginX, y + h, marginX + maxWidth, y + h);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9.5);
+      setText(INK);
+      let x = marginX;
+      row.forEach((cell, i) => {
+        const lines = doc.splitTextToSize(cell ?? '', colWidths[i] - padX * 2);
+        lines.forEach((line: string, li: number) => {
+          doc.text(line, x + padX, y + padY + 9 + li * 12);
+        });
+        x += colWidths[i];
+      });
+      y += h;
+    });
+    y += 12;
+  };
+
+  const kvBlock = (label: string, value: string) => {
+    ensureSpace(28);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8.5);
+    setText(MUTED);
+    doc.text(label.toUpperCase(), marginX, y);
+    y += 13;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    setText(INK);
+    const lines = doc.splitTextToSize(value || '—', maxWidth);
+    lines.forEach((line: string) => {
+      ensureSpace(14);
+      doc.text(line, marginX, y);
+      y += 14;
+    });
+    y += 8;
+  };
+
+  // -------------------- COVER PAGE --------------------
+  setFill(BRAND);
+  doc.rect(0, 0, pageWidth, 220, 'F');
+  setFill(BRAND_DARK);
+  doc.rect(0, 200, pageWidth, 20, 'F');
+  setFill({ r: 167, g: 139, b: 250 });
+  doc.triangle(pageWidth, 0, pageWidth, 180, pageWidth - 180, 0, 'F');
+
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.text('PROPOSAL', marginX, 60, { charSpace: 4 });
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(230, 220, 255);
+  doc.text(
+    new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+    marginX,
+    78,
+  );
+
+  setText(INK);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(32);
+  const titleLines = doc.splitTextToSize(title, maxWidth);
+  let titleY = 290;
+  titleLines.forEach((line: string) => {
+    doc.text(line, marginX, titleY);
+    titleY += 38;
+  });
+
+  setDraw(BRAND);
+  doc.setLineWidth(3);
+  doc.line(marginX, titleY + 16, marginX + 60, titleY + 16);
+  titleY += 36;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(12);
+  setText(MUTED);
+  doc.text('Prepared for the evaluation committee', marginX, titleY);
+  titleY += 18;
+  doc.text('A complete response to your requirements.', marginX, titleY);
+
+  setFill({ r: 247, g: 245, b: 251 });
+  doc.rect(0, pageHeight - 90, pageWidth, 90, 'F');
+  setDraw(BRAND);
+  doc.setLineWidth(2);
+  doc.line(0, pageHeight - 90, pageWidth, pageHeight - 90);
+
+  setText(INK);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.text('CONFIDENTIAL', marginX, pageHeight - 58);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  setText(MUTED);
+  doc.text(
+    'This proposal contains proprietary information. Not for redistribution without consent.',
+    marginX,
+    pageHeight - 42,
+  );
+
+  // -------------------- BODY --------------------
+  newPage();
+
+  heading1('Executive summary');
   writeWrapped(content.executive_summary);
 
-  heading1('2. Background');
+  heading1('Background');
   writeWrapped(content.background);
 
-  heading1('3. Objectives');
+  heading1('Objectives');
   bulletWrite(content.objectives);
 
-  heading1('4. Scope of work');
+  heading1('Scope of work');
   heading2('In scope');
   bulletWrite(content.scope_of_work.in_scope);
   heading2('Out of scope');
@@ -491,7 +686,7 @@ export function exportRfpPdf(title: string, content: RfpContent): Blob {
   heading2('Deliverables');
   bulletWrite(content.scope_of_work.deliverables);
 
-  heading1('5. Requirements');
+  heading1('Requirements');
   heading2('Functional');
   bulletWrite(content.requirements.functional);
   heading2('Technical');
@@ -505,54 +700,63 @@ export function exportRfpPdf(title: string, content: RfpContent): Blob {
   heading2('SLA');
   bulletWrite(content.requirements.sla);
 
-  heading1('6. Cost');
-  writeWrapped(`Pricing model: ${content.cost.pricing_model}`, { bold: true });
-  writeWrapped(`Budget range: ${content.cost.budget_range}`);
-  writeWrapped(`Payment terms: ${content.cost.payment_terms}`);
+  heading1('Investment');
+  kvBlock('Pricing model', content.cost.pricing_model);
+  kvBlock('Budget range', content.cost.budget_range);
+  kvBlock('Payment terms', content.cost.payment_terms);
   heading2('Cost breakdown');
-  content.cost.cost_breakdown.forEach((row) => {
-    writeWrapped(`${row.line_item} — ${row.estimated_cost}`, { bold: true });
-    writeWrapped(row.description);
-  });
+  drawTable(
+    ['Line item', 'Description', 'Estimated cost'],
+    content.cost.cost_breakdown.map((c) => [c.line_item, c.description, c.estimated_cost]),
+    [0.26, 0.54, 0.2],
+  );
 
-  heading1('7. Timeline');
-  writeWrapped(`Submission deadline: ${content.timeline.submission_deadline}`, { bold: true });
-  writeWrapped(`Decision date: ${content.timeline.decision_date}`, { bold: true });
+  heading1('Timeline');
+  kvBlock('Submission deadline', content.timeline.submission_deadline);
+  kvBlock('Decision date', content.timeline.decision_date);
   heading2('Milestones');
-  content.timeline.milestones.forEach((m) => {
-    writeWrapped(`${m.name} — ${m.target_date}`, { bold: true });
-    writeWrapped(m.description);
-  });
+  drawTable(
+    ['Milestone', 'Target', 'Detail'],
+    content.timeline.milestones.map((m) => [m.name, m.target_date, m.description]),
+    [0.26, 0.18, 0.56],
+  );
 
-  heading1('8. Vendor questions');
-  const map = new Map<string, string[]>();
+  heading1('Vendor questions');
+  const grouped = new Map<string, string[]>();
   content.vendor_questions.forEach((q) => {
-    if (!map.has(q.category)) map.set(q.category, []);
-    map.get(q.category)!.push(q.question);
+    if (!grouped.has(q.category)) grouped.set(q.category, []);
+    grouped.get(q.category)!.push(q.question);
   });
-  map.forEach((qs, cat) => {
+  grouped.forEach((qs, cat) => {
     heading2(cat);
     bulletWrite(qs);
   });
 
-  heading1('9. Evaluation criteria');
-  content.evaluation_criteria.forEach((c) => {
-    writeWrapped(`${c.criterion} — ${c.weight_pct}%`, { bold: true });
-    writeWrapped(c.notes);
-  });
+  heading1('Evaluation criteria');
+  drawTable(
+    ['Criterion', 'Weight', 'Notes'],
+    content.evaluation_criteria.map((c) => [c.criterion, `${c.weight_pct}%`, c.notes]),
+    [0.3, 0.12, 0.58],
+  );
 
-  heading1('10. Submission process');
-  writeWrapped('Response format', { bold: true });
-  writeWrapped(content.submission_process.response_format);
-  writeWrapped('Contact', { bold: true });
-  writeWrapped(content.submission_process.contact);
-  writeWrapped('Questions deadline', { bold: true });
-  writeWrapped(content.submission_process.questions_deadline);
-  writeWrapped('Additional instructions', { bold: true });
-  writeWrapped(content.submission_process.additional_instructions);
+  heading1('Submission process');
+  kvBlock('Response format', content.submission_process.response_format);
+  kvBlock('Contact', content.submission_process.contact);
+  kvBlock('Questions deadline', content.submission_process.questions_deadline);
+  kvBlock('Additional instructions', content.submission_process.additional_instructions);
 
-  heading1('11. Assumptions & constraints');
+  heading1('Assumptions & constraints');
   bulletWrite(content.assumptions_and_constraints);
+
+  // -------------------- PAGE NUMBERS --------------------
+  const total = doc.getNumberOfPages();
+  for (let i = 2; i <= total; i++) {
+    doc.setPage(i);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    setText(MUTED);
+    doc.text(`${i - 1} / ${total - 1}`, pageWidth - marginX, pageHeight - 28, { align: 'right' });
+  }
 
   return doc.output('blob');
 }
