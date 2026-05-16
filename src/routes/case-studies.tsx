@@ -8,7 +8,7 @@ export const Route = createFileRoute("/case-studies")({
   head: () => ({
     meta: [
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
-      { title: "Customer Case Studies — Real Pipeline Built With Rexxon AI" },
+      { title: "Case studies — Pipeline built with Rexxon AI" },
       {
         name: "description",
         content:

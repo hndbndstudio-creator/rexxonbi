@@ -8,7 +8,7 @@ export const Route = createFileRoute("/blog")({
   head: () => ({
     meta: [
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
-      { title: "Rexxon AI Blog — B2B Buying Signals, Outbound & AI Sales Insights" },
+      { title: "Blog — B2B buying signals & outbound | Rexxon AI" },
       {
         name: "description",
         content:
