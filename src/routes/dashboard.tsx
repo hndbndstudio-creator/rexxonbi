@@ -35,6 +35,7 @@ import { ACTIVITY_LABELS, fetchActivity, logActivity } from '@/lib/activity';
 import { formatDistanceToNow } from 'date-fns';
 import { fetchCampaigns, type CampaignRow, CAMPAIGN_COLORS } from '@/lib/campaigns';
 import { cn } from '@/lib/utils';
+import { KnowledgeBaseWidget } from '@/components/knowledge-base-widget';
 
 export const Route = createFileRoute('/dashboard')({
   head: () => ({
@@ -271,6 +272,9 @@ function SignalFeed() {
 
       <div className="mx-auto grid max-w-7xl gap-4 px-4 py-5 md:gap-6 md:px-8 md:py-6 lg:grid-cols-[1fr_320px]">
         <div className="min-w-0">
+          <div className="mb-4 animate-rise md:mb-5" style={{ animationDelay: '60ms' }}>
+            <KnowledgeBaseWidget />
+          </div>
           {/* Hot now rail — top 3 highest-confidence open signals, the "do this next" */}
           {!isLoading && hotNow.length > 0 && (
             <div className="mb-4 animate-rise md:mb-5" style={{ animationDelay: '100ms' }}>
