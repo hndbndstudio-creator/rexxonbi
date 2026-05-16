@@ -1,6 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Building2, Quote, Tag } from "lucide-react";
-import { CASE_STUDIES } from "@/lib/blog-content";
+import { CASE_STUDIES, type CaseStudy } from "@/lib/blog-content";
+
+type Metric = CaseStudy["metrics"][number];
 import { BlogNav, BlogFooter, formatDate } from "./blog";
 
 export const Route = createFileRoute("/case-studies/$slug")({
@@ -79,7 +81,7 @@ function CaseStudyPage() {
         <p className="mt-4 text-muted-foreground">{c.description}</p>
 
         <div className="mt-8 grid grid-cols-2 gap-4 rounded-2xl border border-border bg-card p-6 sm:grid-cols-4">
-          {c.metrics.map((m) => (
+          {c.metrics.map((m: Metric) => (
             <div key={m.label}>
               <p className="text-2xl font-semibold text-foreground">{m.value}</p>
               <p className="mt-1 text-[11px] uppercase tracking-wide text-muted-foreground">{m.label}</p>
@@ -95,7 +97,7 @@ function CaseStudyPage() {
         <section className="mt-10">
           <h2 className="text-xl font-semibold tracking-tight">The approach</h2>
           <ul className="mt-3 space-y-2.5">
-            {c.approach.map((a, i) => (
+            {c.approach.map((a: string, i: number) => (
               <li key={i} className="flex gap-2 text-foreground/90">
                 <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
                 <span>{a}</span>
@@ -107,7 +109,7 @@ function CaseStudyPage() {
         <section className="mt-10">
           <h2 className="text-xl font-semibold tracking-tight">The outcome</h2>
           <ul className="mt-3 space-y-2.5">
-            {c.outcome.map((o, i) => (
+            {c.outcome.map((o: string, i: number) => (
               <li key={i} className="flex gap-2 text-foreground/90">
                 <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
                 <span>{o}</span>
@@ -127,14 +129,14 @@ function CaseStudyPage() {
         <section className="mt-10">
           <h3 className="text-sm font-mono uppercase tracking-widest text-muted-foreground">Signals used</h3>
           <div className="mt-3 flex flex-wrap gap-2">
-            {c.signalsUsed.map((s) => (
+            {c.signalsUsed.map((s: string) => (
               <span key={s} className="rounded-md border border-border bg-card px-3 py-1.5 text-xs">{s}</span>
             ))}
           </div>
         </section>
 
         <div className="mt-10 flex flex-wrap gap-2">
-          {c.keywords.map((k) => (
+          {c.keywords.map((k: string) => (
             <span key={k} className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
               <Tag className="h-3 w-3" /> {k}
             </span>
