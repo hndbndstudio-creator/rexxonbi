@@ -203,6 +203,19 @@ function SignalFeed() {
   const hotCount = signals.filter((s) => s.confidence_score >= 85).length;
   const claimedCount = signals.filter((s) => s.status === 'CLAIMED').length;
 
+  // Top 3 unclaimed, highest-confidence unread signals — the "do this next" rail
+  const hotNow = useMemo(
+    () =>
+      [...signals]
+        .filter((s) => s.status !== 'CLAIMED' && s.status !== 'DISMISSED')
+        .sort((a, b) => (b.confidence_score ?? 0) - (a.confidence_score ?? 0))
+        .slice(0, 3),
+    [signals]
+  );
+
+  const hasActiveFilters =
+    type !== 'ALL' || minConf !== 60 || campaignId !== 'NONE';
+
   const { data: activity = [] } = useQuery({
     queryKey: ['activity', user?.id],
     enabled: !!user,
