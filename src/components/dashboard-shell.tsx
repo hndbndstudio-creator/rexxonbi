@@ -25,7 +25,7 @@ import { useIsAdmin } from '@/lib/use-admin';
 import { RexxonLogo } from '@/components/rexxon-logo';
 
 type NavItem = {
-  to: '/birdseye' | '/dashboard' | '/today' | '/campaigns' | '/accounts' | '/contacts' | '/outreach' | '/rfps' | '/territory' | '/analytics' | '/settings' | '/admin';
+  to: '/birdseye' | '/dashboard' | '/today' | '/campaigns' | '/accounts' | '/contacts' | '/outreach' | '/proposals' | '/territory' | '/analytics' | '/settings' | '/admin';
   label: string;
   icon: typeof Radio;
   tourId?: string;
