@@ -294,37 +294,33 @@ function LandingPage() {
                 Live signal engine · 12 sources · &lt;5 min latency
               </div>
 
-              <h1 className="mt-6 text-[2.25rem] font-bold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-                Know who's
-                <br />
-                <span className="text-gradient-brand">about to buy.</span>
-                <br />
-                <span className="text-foreground/90">Before they Google.</span>
+              <h1 className="mt-6 text-[2.5rem] font-bold leading-[1.02] tracking-tight sm:text-5xl md:text-6xl">
+                Know who's <span className="text-gradient-brand">about to buy</span>
+                <span className="text-foreground/90"> — before they Google.</span>
               </h1>
 
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-                Rexxon's AI agents watch 10M+ companies 24/7 and surface the moment a budget activates —
-                with the verified buyer, the why-now context, and an outreach draft ready to send.
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
+                AI agents watch 10M+ companies, catch the budget moment, and hand you the buyer with a draft ready to send.
               </p>
 
-              <div className="mt-9 flex flex-wrap items-center gap-3">
+              <div className="mt-8 flex flex-wrap items-center gap-5">
                 <Link to="/signup">
-                  <Button size="lg" className="btn-press group bg-brand text-brand-foreground shadow-inset-glow">
-                    Start 7-day free trial
-                    <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  <Button size="lg" className="btn-press group bg-brand text-brand-foreground shadow-inset-glow h-12 px-6 text-base">
+                    Start free — see signals in 60s
+                    <ArrowRight className="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </Button>
                 </Link>
-                <Button
-                  size="lg"
-                  variant="outline"
+                <button
+                  type="button"
                   onClick={() => setDemoOpen(true)}
-                  className="hover-lift group backdrop-blur-sm"
+                  className="group inline-flex items-center gap-2 text-sm font-medium text-foreground/80 transition-colors hover:text-brand"
                 >
-                  <span className="relative mr-2 flex h-6 w-6 items-center justify-center rounded-full bg-brand/15 text-brand transition-colors group-hover:bg-brand group-hover:text-brand-foreground">
+                  <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-brand/15 text-brand transition-colors group-hover:bg-brand group-hover:text-brand-foreground">
                     <Play className="h-3 w-3 fill-current" />
                   </span>
-                  Watch 30-second demo
-                </Button>
+                  Watch 30s demo
+                  <ArrowRight className="h-3.5 w-3.5 opacity-60 transition-transform group-hover:translate-x-0.5" />
+                </button>
               </div>
 
               <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
@@ -973,18 +969,17 @@ function LandingPage() {
             <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground md:text-lg">
               7 days free. No credit card. Live in under 10 minutes. The first signal usually fires within the hour.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-5">
               <Link to="/signup">
-                <Button size="lg" className="btn-press group bg-brand text-brand-foreground shadow-inset-glow">
+                <Button size="lg" className="btn-press group bg-brand text-brand-foreground shadow-inset-glow h-12 px-6 text-base">
                   Start your free trial
-                  <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  <ArrowRight className="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Button>
               </Link>
-              <Link to="/schedule-demo">
-                <Button size="lg" variant="outline" className="hover-lift backdrop-blur-sm">
-                  <CalendarCheck className="mr-1 h-4 w-4" />
-                  Book a 15-min demo
-                </Button>
+              <Link to="/schedule-demo" className="group inline-flex items-center gap-1.5 text-sm font-medium text-foreground/80 transition-colors hover:text-brand">
+                <CalendarCheck className="h-4 w-4" />
+                Book a 15-min demo
+                <ArrowRight className="h-3.5 w-3.5 opacity-60 transition-transform group-hover:translate-x-0.5" />
               </Link>
             </div>
             <p className="mt-5 text-xs text-muted-foreground">
