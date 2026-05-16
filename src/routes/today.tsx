@@ -182,15 +182,27 @@ function TodayBriefing() {
           },
         ]}
         actions={
-          <ScheduleMeetingDialog
-            trigger={
-              <Button size="sm" className="btn-press">
-                <CalendarPlus className="mr-1.5 h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Schedule meeting</span>
-                <span className="sm:hidden">Schedule</span>
-              </Button>
-            }
-          />
+          <>
+            <Button
+              size="sm"
+              variant="outline"
+              className="btn-press"
+              onClick={() => setSyncOpen(true)}
+            >
+              <Rss className="mr-1.5 h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Sync calendar</span>
+              <span className="sm:hidden">Sync</span>
+            </Button>
+            <ScheduleMeetingDialog
+              trigger={
+                <Button size="sm" className="btn-press">
+                  <CalendarPlus className="mr-1.5 h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">Schedule meeting</span>
+                  <span className="sm:hidden">Schedule</span>
+                </Button>
+              }
+            />
+          </>
         }
       />
 
