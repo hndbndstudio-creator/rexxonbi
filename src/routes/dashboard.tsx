@@ -63,6 +63,7 @@ function SignalFeed() {
   const [type, setType] = useState<'ALL' | SignalType>('ALL');
   const [minConf, setMinConf] = useState(60);
   const [campaignId, setCampaignId] = useState<string>(search.campaign ?? 'NONE');
+  const [statusTab, setStatusTab] = useState<'ALL' | 'OPEN' | 'CLAIMED' | 'DISMISSED'>('ALL');
   const [filtersOpen, setFiltersOpen] = useState(false);
   const qc = useQueryClient();
   const navigate = useNavigate();
