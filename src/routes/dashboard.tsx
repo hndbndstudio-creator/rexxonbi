@@ -315,6 +315,38 @@ function SignalFeed() {
             </div>
           )}
 
+          {/* Status tabs */}
+          <div className="mb-3 flex flex-wrap items-center gap-1.5 animate-rise" style={{ animationDelay: '140ms' }}>
+            {([
+              { key: 'ALL', label: 'All', count: rawSignals.length },
+              { key: 'OPEN', label: 'Open', count: openCount },
+              { key: 'CLAIMED', label: 'Claimed', count: claimedCount },
+              { key: 'DISMISSED', label: 'Dismissed', count: dismissedCount },
+            ] as const).map((t) => {
+              const active = statusTab === t.key;
+              return (
+                <button
+                  key={t.key}
+                  type="button"
+                  onClick={() => setStatusTab(t.key)}
+                  className={cn(
+                    'inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs transition-colors',
+                    active
+                      ? 'border-brand bg-brand/10 text-brand'
+                      : 'border-border bg-card text-muted-foreground hover:text-foreground'
+                  )}
+                  aria-pressed={active}
+                >
+                  {t.key === 'CLAIMED' && <CheckCheck className="h-3 w-3" />}
+                  <span>{t.label}</span>
+                  <span className={cn('rounded-full px-1.5 py-0 text-[10px] font-mono tabular-nums', active ? 'bg-brand/15' : 'bg-muted/60')}>
+                    {t.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
           {/* Filter pill bar — collapsed by default unless filters are active */}
           <div className="surface-1 mb-4 rounded-xl border border-border animate-rise md:mb-5" style={{ animationDelay: '160ms' }}>
             <button
