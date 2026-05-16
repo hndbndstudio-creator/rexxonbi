@@ -227,15 +227,14 @@ function SignalFeed() {
     <>
       <PageHeader
         icon={Radio}
-        eyebrow="Live feed"
         title="Signals"
-        subtitle="Every buying moment, the instant it happens. Claim what fits — let the rest go."
-        badge="Streaming"
+        subtitle="Every buying moment, the instant it happens."
+        badge="Live"
         badgeTone="green"
         stats={[
           { label: 'Total', value: signals.length, icon: Inbox },
           { label: 'Unread', value: unreadCount, accent: 'amber', icon: Sparkles },
-          { label: 'Hot leads', value: hotCount, accent: 'rose', icon: Flame },
+          { label: 'Hot', value: hotCount, accent: 'rose', icon: Flame },
           { label: 'Claimed', value: claimedCount, accent: 'green', icon: CheckCheck },
         ]}
         actions={
@@ -275,14 +274,9 @@ function SignalFeed() {
           {/* Hot now rail — top 3 highest-confidence open signals, the "do this next" */}
           {!isLoading && hotNow.length > 0 && (
             <div className="mb-4 animate-rise md:mb-5" style={{ animationDelay: '100ms' }}>
-              <div className="mb-2 flex items-center justify-between">
-                <div className="flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-rose-300">
-                  <Flame className="h-3 w-3" />
-                  Hot now · do this next
-                </div>
-                <span className="text-[10px] text-muted-foreground">
-                  Top {hotNow.length} by confidence
-                </span>
+              <div className="mb-2 flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-rose-300/80">
+                <Flame className="h-3 w-3" />
+                Hot now
               </div>
               <div className="grid gap-3 sm:grid-cols-3">
                 {hotNow.map((s) => (

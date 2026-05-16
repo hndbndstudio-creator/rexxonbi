@@ -58,7 +58,7 @@ export function PageHeader({
             'radial-gradient(circle, color-mix(in oklab, var(--brand) 35%, transparent), transparent 70%)',
         }}
       />
-      <div className="mx-auto max-w-7xl px-4 py-5 md:px-8 md:py-7">
+      <div className="mx-auto max-w-7xl px-4 py-4 md:px-8 md:py-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0 flex-1 animate-rise">
             <div className="flex items-center gap-3">
@@ -95,7 +95,7 @@ export function PageHeader({
 
         {stats && stats.length > 0 && (
           <div
-            className="mt-4 grid grid-cols-2 gap-2 animate-rise sm:grid-cols-4 md:mt-6 md:gap-3"
+            className="mt-4 grid grid-cols-2 gap-2 animate-rise sm:grid-cols-4 md:mt-5"
             style={{ animationDelay: '120ms' }}
           >
             {stats.map((s) => {
@@ -103,13 +103,13 @@ export function PageHeader({
               return (
                 <div
                   key={s.label}
-                  className="rounded-xl border border-border bg-card/50 px-3 py-2.5 backdrop-blur-sm transition-colors hover:border-brand/40 md:px-4 md:py-3"
+                  className="rounded-lg border border-border bg-card/40 px-3 py-2 backdrop-blur-sm transition-colors hover:border-brand/40"
                 >
                   <div className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                     {StatIcon && <StatIcon className="h-3 w-3" />}
                     {s.label}
                   </div>
-                  <div className={cn('mt-1 text-xl font-bold tabular-nums md:text-2xl', ACCENT_MAP[s.accent ?? 'muted'])}>
+                  <div className={cn('mt-0.5 text-lg font-semibold tabular-nums md:text-xl', ACCENT_MAP[s.accent ?? 'muted'])}>
                     {s.value}
                   </div>
                 </div>
