@@ -205,9 +205,12 @@ function Accounts() {
               <Building2 className="h-6 w-6 text-brand" />
             </div>
             <h3 className="mt-4 font-semibold">No companies found</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Try a different search term or industry.
+            <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
+              Adjust your filters, or add a target account manually so the agent can start tracking it.
             </p>
+            <div className="mt-4 flex justify-center">
+              <AddCompanyDialog />
+            </div>
           </div>
         ) : (
           <div className="stagger grid gap-3 md:grid-cols-2 lg:grid-cols-3">
