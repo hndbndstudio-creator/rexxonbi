@@ -150,9 +150,12 @@ function Accounts() {
           { label: 'Total signals', value: totalSignals, accent: 'amber', icon: Sparkles },
         ]}
         actions={
-          <Button size="sm" variant="outline" className="btn-press" onClick={exportCsv}>
-            <FileDown className="mr-1.5 h-3.5 w-3.5" /> Export CSV
-          </Button>
+          <div className="flex items-center gap-2">
+            <AddCompanyDialog />
+            <Button size="sm" variant="outline" className="btn-press" onClick={exportCsv}>
+              <FileDown className="mr-1.5 h-3.5 w-3.5" /> Export CSV
+            </Button>
+          </div>
         }
       />
 
