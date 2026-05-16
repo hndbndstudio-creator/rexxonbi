@@ -144,9 +144,9 @@ function CaseStudyPage() {
         <div className="mt-12 rounded-2xl border border-border bg-card p-8 text-center">
           <p className="text-xs font-mono uppercase tracking-widest text-brand">Get the same outcome</p>
           <h3 className="mt-2 text-2xl font-semibold">Build pipeline from real-time signals</h3>
-          <p className="mt-2 text-sm text-muted-foreground">Start a free Rexxon workspace and trigger signal-anchored outreach in minutes.</p>
+          <p className="mt-2 text-sm text-muted-foreground">Create your Rexxon workspace and trigger signal-anchored outreach in minutes.</p>
           <Link to="/signup" className="mt-5 inline-flex items-center gap-2 rounded-md bg-brand px-5 py-2 text-sm font-medium text-brand-foreground hover:opacity-90">
-            Start free <ArrowRight className="h-4 w-4" />
+            Get started <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 

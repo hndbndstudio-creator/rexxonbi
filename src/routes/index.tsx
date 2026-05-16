@@ -266,7 +266,7 @@ function LandingPage() {
             </Link>
             <Link to="/signup">
               <Button size="sm" className="btn-press bg-brand text-brand-foreground shadow-inset-glow">
-                Start free
+                Get started
               </Button>
             </Link>
           </div>

@@ -16,12 +16,12 @@ import avatar4 from '@/assets/avatar-4.jpg';
 export const Route = createFileRoute('/signup')({
   head: () => ({
     meta: [
-      { title: "Create your Rexxon AI account — start free" },
+      { title: "Create your Rexxon AI account" },
       { name: "description", content: "Create a Rexxon AI account and start receiving real-time B2B buying signals in minutes." },
       { name: "robots", content: "noindex, follow" },
-      { property: "og:title", content: "Start free on Rexxon AI" },
+      { property: "og:title", content: "Create your Rexxon AI account" },
       { property: "og:description", content: "Create your workspace and start receiving real-time B2B buying signals in minutes." },
-      { name: "twitter:title", content: "Start free on Rexxon AI" },
+      { name: "twitter:title", content: "Create your Rexxon AI account" },
       { name: "twitter:description", content: "Create your workspace and start receiving real-time B2B buying signals in minutes." },
     ],
   }),
