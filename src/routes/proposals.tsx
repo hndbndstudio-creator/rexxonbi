@@ -531,28 +531,16 @@ function StepIntake({
         Upload company docs and (for vendor responses) the prospect's brief. AI will read them, extract requirements, and draft every wizard field. Files are parsed in your browser — only the extracted text is sent to the AI, then discarded.
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-1.5">
-          <Label>Mode</Label>
-          <Select value={mode} onValueChange={(v) => onModeChange(v as Mode)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="BUYER">Buyer brief</SelectItem>
-              <SelectItem value="VENDOR_RESPONSE">Vendor response</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-1.5">
-          <Label>Industry</Label>
-          <Select value={industry} onValueChange={(v) => onIndustryChange(v as Industry)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="IT">IT services & infrastructure</SelectItem>
-              <SelectItem value="SOFTWARE">Software / SaaS</SelectItem>
-              <SelectItem value="AI">AI / ML</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+      <div className="space-y-1.5">
+        <Label>Industry</Label>
+        <Select value={industry} onValueChange={(v) => onIndustryChange(v as Industry)}>
+          <SelectTrigger><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="IT">IT services & infrastructure</SelectItem>
+            <SelectItem value="SOFTWARE">Software / SaaS</SelectItem>
+            <SelectItem value="AI">AI / ML</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <UploadGroup
