@@ -90,8 +90,8 @@ function SignupPage() {
           <Link to="/" className="mb-5 flex items-center">
             <RexxonLogo size="sm" />
           </Link>
-          <h1 className="text-2xl font-bold tracking-tight">Start your free trial</h1>
-          <p className="mt-1 text-sm text-muted-foreground">7 days free · No credit card · Live in 10 min</p>
+          <h1 className="text-2xl font-bold tracking-tight">Create your account</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Live in 10 min · Cancel anytime · 30-day money-back</p>
         </div>
 
         {/* Glow wrapper */}
@@ -141,10 +141,10 @@ function SignupPage() {
                 <Input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="At least 6 characters" />
               </div>
               <Button type="submit" className="btn-press w-full bg-brand text-brand-foreground shadow-inset-glow" disabled={submitting}>
-                {submitting ? 'Creating account…' : 'Start 7-day free trial'}
+                {submitting ? 'Creating account…' : 'Get started'}
               </Button>
               <p className="text-center text-xs text-muted-foreground">
-                No charges until day 15 · Cancel anytime · Setup in 10 minutes
+                Cancel anytime · 30-day money-back · Setup in 10 minutes
               </p>
             </form>
           </div>
@@ -170,7 +170,7 @@ function SignupPage() {
 
         <div className="mt-4 flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground">
           <ShieldCheck className="h-3 w-3 text-brand" />
-          SOC 2 Type II · 256-bit encryption · No credit card
+          SOC 2 Type II · 256-bit encryption · 30-day money-back
         </div>
       </div>
     </div>

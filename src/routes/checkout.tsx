@@ -46,7 +46,7 @@ export const Route = createFileRoute('/checkout')({
   head: () => ({
     meta: [
       { title: 'Checkout — Rexxon AI' },
-      { name: 'description', content: 'Activate your Rexxon plan. 7-day free trial. No charges until day 8. Cancel anytime.' },
+      { name: 'description', content: 'Activate your Rexxon plan. Cancel anytime. 30-day money-back guarantee.' },
       { name: 'robots', content: 'noindex, follow' },
     ],
   }),
@@ -76,14 +76,14 @@ function CheckoutPage() {
   const monthly = selected.price;
   const annualDiscountPct = plan === 'starter' ? 0 : 10;
   const monthlyEffective = billing === 'annual' ? Math.round(monthly * (1 - annualDiscountPct / 100)) : monthly;
-  const dueToday = 0; // Free trial
+  const dueToday = monthlyEffective;
   const annualSavings = (monthly - monthlyEffective) * 12;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     await new Promise((r) => setTimeout(r, 800));
-    toast.success('Trial activated! Redirecting to your dashboard…');
+    toast.success('Subscription activated! Redirecting to your dashboard…');
     setSubmitting(false);
     router.navigate({ to: '/birdseye' });
   };
@@ -116,14 +116,14 @@ function CheckoutPage() {
           <div className="animate-fade-up">
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium text-muted-foreground shadow-soft backdrop-blur-sm">
               <Sparkles className="h-3.5 w-3.5 text-brand" />
-              7-day free trial · Cancel anytime
+              Cancel anytime · 30-day money-back
             </div>
 
             <h1 className="mt-5 text-3xl font-bold tracking-tight md:text-4xl">
               Activate your <span className="text-gradient-brand">{selected.name}</span> plan
             </h1>
             <p className="mt-3 text-muted-foreground">
-              No charges until day 8. Most teams replace 2–4 tools and book 2× more meetings in their first 30 days.
+              Cancel anytime. 30-day money-back guarantee. Most teams replace 2–4 tools and book 2× more meetings in their first 30 days.
             </p>
 
             {/* Plan switcher */}
@@ -193,16 +193,12 @@ function CheckoutPage() {
                   <span className="font-mono text-brand">−${annualSavings}/yr</span>
                 </div>
               )}
-              <div className="mt-2 flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Free trial credit</span>
-                <span className="font-mono">−${monthlyEffective}</span>
-              </div>
               <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
                 <span className="text-sm font-semibold">Due today</span>
                 <span className="text-2xl font-bold tracking-tight">${dueToday.toFixed(2)}</span>
               </div>
               <p className="mt-2 text-xs text-muted-foreground">
-                You'll be charged ${monthlyEffective}{billing === 'annual' ? '/mo billed annually' : '/mo'} starting day 8. Cancel anytime before then for $0.
+                Billed {billing === 'annual' ? 'annually' : 'monthly'}. Cancel anytime · 30-day money-back guarantee.
               </p>
             </div>
 
@@ -286,11 +282,11 @@ function CheckoutPage() {
                     disabled={submitting}
                     className="btn-press w-full bg-brand text-brand-foreground shadow-inset-glow"
                   >
-                    {submitting ? 'Activating…' : `Start free trial · $0 today`}
+                    {submitting ? 'Activating…' : `Get started · $${dueToday}/mo`}
                   </Button>
 
                   <p className="text-center text-xs text-muted-foreground">
-                    By continuing you agree to our Terms and Privacy. We'll email you 3 days before your trial ends.
+                    By continuing you agree to our Terms and Privacy. Cancel anytime · 30-day money-back guarantee.
                   </p>
                 </form>
               </div>
