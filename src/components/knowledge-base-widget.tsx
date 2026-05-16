@@ -11,10 +11,10 @@ import { formatDistanceToNow } from 'date-fns';
 
 type Msg = { role: 'user' | 'assistant'; content: string };
 
-export function KnowledgeBaseWidget() {
+export function KnowledgeBaseWidget({ defaultOpen = false }: { defaultOpen?: boolean } = {}) {
   const { user } = useAuth();
   const qc = useQueryClient();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [input, setInput] = useState('');

@@ -15,6 +15,7 @@ import {
   Users,
   Mail,
   ShieldCheck,
+  BookOpen,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
@@ -25,7 +26,7 @@ import { useIsAdmin } from '@/lib/use-admin';
 import { RexxonLogo } from '@/components/rexxon-logo';
 
 type NavItem = {
-  to: '/birdseye' | '/dashboard' | '/today' | '/campaigns' | '/accounts' | '/contacts' | '/outreach' | '/proposals' | '/territory' | '/analytics' | '/settings' | '/admin';
+  to: '/birdseye' | '/dashboard' | '/today' | '/campaigns' | '/accounts' | '/contacts' | '/outreach' | '/proposals' | '/knowledge' | '/territory' | '/analytics' | '/settings' | '/admin';
   label: string;
   icon: typeof Radio;
   tourId?: string;
@@ -56,6 +57,7 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       { to: '/outreach', label: 'Outreach', icon: Mail, tourId: 'nav-outreach' },
       { to: '/proposals', label: 'Proposals', icon: FileText, tourId: 'nav-proposals' },
+      { to: '/knowledge', label: 'Knowledge', icon: BookOpen, tourId: 'nav-knowledge' },
     ],
   },
   {
