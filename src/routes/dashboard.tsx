@@ -27,6 +27,8 @@ import {
   Flame,
   Filter,
   Target,
+  ChevronDown,
+  Zap,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { ACTIVITY_LABELS, fetchActivity, logActivity } from '@/lib/activity';
