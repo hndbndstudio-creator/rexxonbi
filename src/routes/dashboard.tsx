@@ -90,9 +90,8 @@ function SignalFeed() {
 
   // Apply remaining campaign filters client-side (industries, geos, role, seniority, domains, employees)
   const signals = useMemo(() => {
-    if (!activeCampaign) return rawSignals;
-    const f = activeCampaign.filters ?? {};
-    return rawSignals.filter((s) => {
+    const base = !activeCampaign ? rawSignals : rawSignals.filter((s) => {
+      const f = activeCampaign.filters ?? {};
       if (f.signal_types?.length && !f.signal_types.includes(s.signal_type as SignalType)) return false;
       if (f.industries?.length && (!s.company?.industry || !f.industries.includes(s.company.industry))) return false;
       if (f.role_categories?.length && (!s.role_category || !f.role_categories.includes(s.role_category))) return false;
@@ -104,7 +103,10 @@ function SignalFeed() {
       }
       return true;
     });
-  }, [rawSignals, activeCampaign]);
+    if (statusTab === 'ALL') return base;
+    if (statusTab === 'OPEN') return base.filter((s) => s.status !== 'CLAIMED' && s.status !== 'DISMISSED');
+    return base.filter((s) => s.status === statusTab);
+  }, [rawSignals, activeCampaign, statusTab]);
 
   const actionMut = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: 'CLAIMED' | 'DISMISSED' }) => {
