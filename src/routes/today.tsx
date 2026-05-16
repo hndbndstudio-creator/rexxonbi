@@ -257,7 +257,95 @@ function TodayBriefing() {
           ))}
         </div>
       </div>
+
+      <SyncCalendarDialog open={syncOpen} onOpenChange={setSyncOpen} feedUrl={feedUrl} />
     </>
+  );
+}
+
+function SyncCalendarDialog({
+  open,
+  onOpenChange,
+  feedUrl,
+}: {
+  open: boolean;
+  onOpenChange: (o: boolean) => void;
+  feedUrl: string;
+}) {
+  const [copied, setCopied] = useState(false);
+  const webcalUrl = feedUrl.replace(/^https?:/, 'webcal:');
+
+  const copy = async () => {
+    if (!feedUrl) return;
+    await navigator.clipboard.writeText(feedUrl);
+    setCopied(true);
+    toast.success('Feed URL copied');
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>Sync to your calendar</DialogTitle>
+          <DialogDescription>
+            Subscribe once and every meeting you schedule in Rexxon shows up in your calendar
+            automatically. Updates every ~15 minutes.
+          </DialogDescription>
+        </DialogHeader>
+
+        {!feedUrl ? (
+          <div className="rounded-md border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
+            Generating your private feed…
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div>
+              <div className="mb-1.5 text-[10px] font-mono uppercase text-muted-foreground">
+                Your private feed URL
+              </div>
+              <div className="flex gap-2">
+                <Input readOnly value={feedUrl} className="font-mono text-xs" />
+                <Button size="sm" variant="outline" onClick={copy}>
+                  {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                </Button>
+              </div>
+              <p className="mt-1.5 text-xs text-muted-foreground">
+                Keep this URL private — anyone with it can read your meetings.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+              <a
+                href={`https://calendar.google.com/calendar/r/settings/addbyurl?cid=${encodeURIComponent(feedUrl)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center gap-2 rounded-md border border-border bg-background/40 px-3 py-2 text-xs font-medium hover:bg-muted/40"
+              >
+                <CalendarCheck className="h-3.5 w-3.5" />
+                Google Calendar
+              </a>
+              <a
+                href={webcalUrl}
+                className="flex items-center justify-center gap-2 rounded-md border border-border bg-background/40 px-3 py-2 text-xs font-medium hover:bg-muted/40"
+              >
+                <CalendarCheck className="h-3.5 w-3.5" />
+                Apple Calendar
+              </a>
+              <a
+                href={`https://outlook.live.com/owa?path=/calendar/action/compose&rru=addsubscription&url=${encodeURIComponent(feedUrl)}&name=Rexxon`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center gap-2 rounded-md border border-border bg-background/40 px-3 py-2 text-xs font-medium hover:bg-muted/40"
+              >
+                <CalendarCheck className="h-3.5 w-3.5" />
+                Outlook
+              </a>
+            </div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 }
 
