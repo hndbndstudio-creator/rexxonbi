@@ -22,7 +22,7 @@ export const Route = createFileRoute("/case-studies/$slug")({
     return {
       meta: [
         { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
-        { title: `${c.title} | Rexxon AI` },
+        { title: c.title.length > 60 ? c.title.slice(0, 57) + "…" : `${c.title} | Rexxon AI`.length > 60 ? c.title : `${c.title} | Rexxon AI` },
         { name: "description", content: c.description },
         { name: "keywords", content: c.keywords.join(", ") },
         { property: "og:title", content: c.title },
