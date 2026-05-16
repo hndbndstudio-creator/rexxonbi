@@ -44,7 +44,7 @@ import {
 } from '@/lib/rfp-export';
 import { extractFile, type ExtractedSource, type SourceKind } from '@/lib/rfp-intake';
 
-export const Route = createFileRoute('/rfps')({
+export const Route = createFileRoute('/proposals')({
   head: () => ({
     meta: [
       { title: 'RFP generator — Rexxon AI' },

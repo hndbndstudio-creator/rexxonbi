@@ -15,8 +15,8 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ScheduleDemoRouteImport } from './routes/schedule-demo'
-import { Route as RfpsRouteImport } from './routes/rfps'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ProposalsRouteImport } from './routes/proposals'
 import { Route as OutreachRouteImport } from './routes/outreach'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -66,14 +66,14 @@ const ScheduleDemoRoute = ScheduleDemoRouteImport.update({
   path: '/schedule-demo',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RfpsRoute = RfpsRouteImport.update({
-  id: '/rfps',
-  path: '/rfps',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProposalsRoute = ProposalsRouteImport.update({
+  id: '/proposals',
+  path: '/proposals',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OutreachRoute = OutreachRouteImport.update({
@@ -181,8 +181,8 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
+  '/proposals': typeof ProposalsRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/rfps': typeof RfpsRoute
   '/schedule-demo': typeof ScheduleDemoRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
@@ -209,8 +209,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
+  '/proposals': typeof ProposalsRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/rfps': typeof RfpsRoute
   '/schedule-demo': typeof ScheduleDemoRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
@@ -238,8 +238,8 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
+  '/proposals': typeof ProposalsRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/rfps': typeof RfpsRoute
   '/schedule-demo': typeof ScheduleDemoRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
@@ -268,8 +268,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/outreach'
+    | '/proposals'
     | '/reset-password'
-    | '/rfps'
     | '/schedule-demo'
     | '/settings'
     | '/signup'
@@ -296,8 +296,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/outreach'
+    | '/proposals'
     | '/reset-password'
-    | '/rfps'
     | '/schedule-demo'
     | '/settings'
     | '/signup'
@@ -324,8 +324,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/outreach'
+    | '/proposals'
     | '/reset-password'
-    | '/rfps'
     | '/schedule-demo'
     | '/settings'
     | '/signup'
@@ -353,8 +353,8 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   OutreachRoute: typeof OutreachRoute
+  ProposalsRoute: typeof ProposalsRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
-  RfpsRoute: typeof RfpsRoute
   ScheduleDemoRoute: typeof ScheduleDemoRoute
   SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
@@ -410,18 +410,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScheduleDemoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/rfps': {
-      id: '/rfps'
-      path: '/rfps'
-      fullPath: '/rfps'
-      preLoaderRoute: typeof RfpsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/proposals': {
+      id: '/proposals'
+      path: '/proposals'
+      fullPath: '/proposals'
+      preLoaderRoute: typeof ProposalsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/outreach': {
@@ -589,8 +589,8 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   OutreachRoute: OutreachRoute,
+  ProposalsRoute: ProposalsRoute,
   ResetPasswordRoute: ResetPasswordRoute,
-  RfpsRoute: RfpsRoute,
   ScheduleDemoRoute: ScheduleDemoRoute,
   SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
