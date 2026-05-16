@@ -56,19 +56,11 @@ export const Route = createFileRoute('/checkout')({
 });
 
 function CheckoutPage() {
-  const router = useRouter();
   const search = useSearch({ from: '/checkout' });
+  const { user } = useAuth();
   const planId: PlanId = (search.plan ?? 'pro') as PlanId;
   const [billing, setBilling] = useState<'monthly' | 'annual'>(search.billing ?? 'annual');
   const [plan, setPlan] = useState<PlanId>(planId);
-
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [company, setCompany] = useState('');
-  const [card, setCard] = useState('');
-  const [exp, setExp] = useState('');
-  const [cvc, setCvc] = useState('');
-  const [submitting, setSubmitting] = useState(false);
 
   const selected = PLANS[plan];
   const monthly = selected.price;
@@ -77,14 +69,11 @@ function CheckoutPage() {
   const dueToday = monthlyEffective;
   const annualSavings = (monthly - monthlyEffective) * 12;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 800));
-    toast.success('Subscription activated! Redirecting to your dashboard…');
-    setSubmitting(false);
-    router.navigate({ to: '/birdseye' });
-  };
+  const priceId = `${plan}_${billing === 'annual' ? 'annual' : 'monthly'}`;
+  const returnUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}/birdseye?checkout=success&session_id={CHECKOUT_SESSION_ID}`
+    : '/birdseye';
+
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-aurora">
