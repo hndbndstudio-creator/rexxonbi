@@ -10,7 +10,8 @@ export type ActivityType =
   | 'CRM_PUSHED'
   | 'CSV_EXPORTED'
   | 'CONTACT_REVEALED'
-  | 'ACCOUNT_MONITORED';
+  | 'ACCOUNT_MONITORED'
+  | 'ACCOUNT_ADDED';
 
 export type ActivityEvent = {
   id: string;
