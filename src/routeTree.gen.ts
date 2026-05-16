@@ -37,6 +37,7 @@ import { Route as ProposalsHistoryRouteImport } from './routes/proposals.history
 import { Route as CaseStudiesSlugRouteImport } from './routes/case-studies.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AccountsIdRouteImport } from './routes/accounts.$id'
+import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicCalendarTokenRouteImport } from './routes/api/public/calendar.$token'
 
 const TodayRoute = TodayRouteImport.update({
@@ -179,6 +180,12 @@ const AccountsIdRoute = AccountsIdRouteImport.update({
   path: '/accounts/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicPaymentsWebhookRoute =
+  ApiPublicPaymentsWebhookRouteImport.update({
+    id: '/api/public/payments/webhook',
+    path: '/api/public/payments/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicCalendarTokenRoute = ApiPublicCalendarTokenRouteImport.update({
   id: '/api/public/calendar/$token',
   path: '/api/public/calendar/$token',
@@ -215,6 +222,7 @@ export interface FileRoutesByFullPath {
   '/proposals/history': typeof ProposalsHistoryRoute
   '/accounts/': typeof AccountsIndexRoute
   '/api/public/calendar/$token': typeof ApiPublicCalendarTokenRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -246,6 +254,7 @@ export interface FileRoutesByTo {
   '/proposals/history': typeof ProposalsHistoryRoute
   '/accounts': typeof AccountsIndexRoute
   '/api/public/calendar/$token': typeof ApiPublicCalendarTokenRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -278,6 +287,7 @@ export interface FileRoutesById {
   '/proposals/history': typeof ProposalsHistoryRoute
   '/accounts/': typeof AccountsIndexRoute
   '/api/public/calendar/$token': typeof ApiPublicCalendarTokenRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -311,6 +321,7 @@ export interface FileRouteTypes {
     | '/proposals/history'
     | '/accounts/'
     | '/api/public/calendar/$token'
+    | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -342,6 +353,7 @@ export interface FileRouteTypes {
     | '/proposals/history'
     | '/accounts'
     | '/api/public/calendar/$token'
+    | '/api/public/payments/webhook'
   id:
     | '__root__'
     | '/'
@@ -373,6 +385,7 @@ export interface FileRouteTypes {
     | '/proposals/history'
     | '/accounts/'
     | '/api/public/calendar/$token'
+    | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -402,6 +415,7 @@ export interface RootRouteChildren {
   AccountsIdRoute: typeof AccountsIdRoute
   AccountsIndexRoute: typeof AccountsIndexRoute
   ApiPublicCalendarTokenRoute: typeof ApiPublicCalendarTokenRoute
+  ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -602,6 +616,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/payments/webhook': {
+      id: '/api/public/payments/webhook'
+      path: '/api/public/payments/webhook'
+      fullPath: '/api/public/payments/webhook'
+      preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/calendar/$token': {
       id: '/api/public/calendar/$token'
       path: '/api/public/calendar/$token'
@@ -673,6 +694,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccountsIdRoute: AccountsIdRoute,
   AccountsIndexRoute: AccountsIndexRoute,
   ApiPublicCalendarTokenRoute: ApiPublicCalendarTokenRoute,
+  ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
