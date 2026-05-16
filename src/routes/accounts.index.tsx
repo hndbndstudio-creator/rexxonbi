@@ -50,7 +50,7 @@ import { toast } from 'sonner';
 import { downloadCSV, toCSV } from '@/lib/csv';
 import { logActivity } from '@/lib/activity';
 
-export const Route = createFileRoute('/accounts')({
+export const Route = createFileRoute('/accounts/')({
   head: () => ({
     meta: [
       { title: 'Accounts — Rexxon AI' },
@@ -433,5 +433,5 @@ function AddCompanyDialog() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

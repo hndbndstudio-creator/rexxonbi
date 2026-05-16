@@ -29,8 +29,8 @@ import { Route as BirdseyeRouteImport } from './routes/birdseye'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as AffiliatesRouteImport } from './routes/affiliates'
 import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AccountsRouteImport } from './routes/accounts'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AccountsIndexRouteImport } from './routes/accounts.index'
 import { Route as CaseStudiesSlugRouteImport } from './routes/case-studies.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AccountsIdRouteImport } from './routes/accounts.$id'
@@ -135,14 +135,14 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AccountsRoute = AccountsRouteImport.update({
-  id: '/accounts',
-  path: '/accounts',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountsIndexRoute = AccountsIndexRouteImport.update({
+  id: '/accounts/',
+  path: '/accounts/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CaseStudiesSlugRoute = CaseStudiesSlugRouteImport.update({
@@ -163,7 +163,6 @@ const AccountsIdRoute = AccountsIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/accounts': typeof AccountsRouteWithChildren
   '/admin': typeof AdminRoute
   '/affiliates': typeof AffiliatesRoute
   '/analytics': typeof AnalyticsRoute
@@ -187,10 +186,10 @@ export interface FileRoutesByFullPath {
   '/accounts/$id': typeof AccountsIdRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/case-studies/$slug': typeof CaseStudiesSlugRoute
+  '/accounts/': typeof AccountsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/accounts': typeof AccountsRouteWithChildren
   '/admin': typeof AdminRoute
   '/affiliates': typeof AffiliatesRoute
   '/analytics': typeof AnalyticsRoute
@@ -214,11 +213,11 @@ export interface FileRoutesByTo {
   '/accounts/$id': typeof AccountsIdRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/case-studies/$slug': typeof CaseStudiesSlugRoute
+  '/accounts': typeof AccountsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/accounts': typeof AccountsRouteWithChildren
   '/admin': typeof AdminRoute
   '/affiliates': typeof AffiliatesRoute
   '/analytics': typeof AnalyticsRoute
@@ -242,12 +241,12 @@ export interface FileRoutesById {
   '/accounts/$id': typeof AccountsIdRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/case-studies/$slug': typeof CaseStudiesSlugRoute
+  '/accounts/': typeof AccountsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/accounts'
     | '/admin'
     | '/affiliates'
     | '/analytics'
@@ -271,10 +270,10 @@ export interface FileRouteTypes {
     | '/accounts/$id'
     | '/blog/$slug'
     | '/case-studies/$slug'
+    | '/accounts/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/accounts'
     | '/admin'
     | '/affiliates'
     | '/analytics'
@@ -298,10 +297,10 @@ export interface FileRouteTypes {
     | '/accounts/$id'
     | '/blog/$slug'
     | '/case-studies/$slug'
+    | '/accounts'
   id:
     | '__root__'
     | '/'
-    | '/accounts'
     | '/admin'
     | '/affiliates'
     | '/analytics'
@@ -325,11 +324,11 @@ export interface FileRouteTypes {
     | '/accounts/$id'
     | '/blog/$slug'
     | '/case-studies/$slug'
+    | '/accounts/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AccountsRoute: typeof AccountsRouteWithChildren
   AdminRoute: typeof AdminRoute
   AffiliatesRoute: typeof AffiliatesRoute
   AnalyticsRoute: typeof AnalyticsRoute
@@ -350,6 +349,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TerritoryRoute: typeof TerritoryRoute
   TodayRoute: typeof TodayRoute
+  AccountsIndexRoute: typeof AccountsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -494,18 +494,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/accounts': {
-      id: '/accounts'
-      path: '/accounts'
-      fullPath: '/accounts'
-      preLoaderRoute: typeof AccountsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accounts/': {
+      id: '/accounts/'
+      path: '/accounts'
+      fullPath: '/accounts/'
+      preLoaderRoute: typeof AccountsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/case-studies/$slug': {
@@ -532,18 +532,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AccountsRouteChildren {
-  AccountsIdRoute: typeof AccountsIdRoute
-}
-
-const AccountsRouteChildren: AccountsRouteChildren = {
-  AccountsIdRoute: AccountsIdRoute,
-}
-
-const AccountsRouteWithChildren = AccountsRoute._addFileChildren(
-  AccountsRouteChildren,
-)
-
 interface BlogRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
 }
@@ -568,7 +556,6 @@ const CaseStudiesRouteWithChildren = CaseStudiesRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AccountsRoute: AccountsRouteWithChildren,
   AdminRoute: AdminRoute,
   AffiliatesRoute: AffiliatesRoute,
   AnalyticsRoute: AnalyticsRoute,
@@ -589,6 +576,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TerritoryRoute: TerritoryRoute,
   TodayRoute: TodayRoute,
+  AccountsIndexRoute: AccountsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
