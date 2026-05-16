@@ -1,6 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Calendar, Clock, Tag } from "lucide-react";
-import { BLOG_POSTS } from "@/lib/blog-content";
+import { BLOG_POSTS, type BlogPost } from "@/lib/blog-content";
+
+type Section = BlogPost["sections"][number];
+type FaqItem = BlogPost["faq"][number];
 import { BlogNav, BlogFooter, formatDate } from "./blog";
 
 export const Route = createFileRoute("/blog/$slug")({
@@ -63,7 +66,7 @@ function BlogPostPage() {
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: post.faq.map((f) => ({
+    mainEntity: post.faq.map((f: FaqItem) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -92,16 +95,16 @@ function BlogPostPage() {
         <div className="mt-10 space-y-10 text-[15px] leading-relaxed text-foreground/90">
           <p className="text-lg leading-relaxed text-foreground">{post.intro}</p>
 
-          {post.sections.map((s, i) => (
+          {post.sections.map((s: Section, i: number) => (
             <section key={i}>
               <h2 className="text-xl font-semibold tracking-tight text-foreground">{s.h2}</h2>
               <div className="mt-3 space-y-4">
-                {s.body.map((para, j) => (
+                {s.body.map((para: string, j: number) => (
                   <p key={j}>{para}</p>
                 ))}
                 {s.bullets && (
                   <ul className="mt-3 space-y-2">
-                    {s.bullets.map((b, k) => (
+                    {s.bullets.map((b: string, k: number) => (
                       <li key={k} className="flex gap-2">
                         <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
                         <span>{b}</span>
@@ -116,7 +119,7 @@ function BlogPostPage() {
           <section className="rounded-2xl border border-border bg-card p-6">
             <h2 className="text-xl font-semibold tracking-tight">Frequently asked questions</h2>
             <dl className="mt-4 space-y-5">
-              {post.faq.map((f, i) => (
+              {post.faq.map((f: FaqItem, i: number) => (
                 <div key={i}>
                   <dt className="font-medium text-foreground">{f.q}</dt>
                   <dd className="mt-1 text-muted-foreground">{f.a}</dd>
@@ -131,7 +134,7 @@ function BlogPostPage() {
           </section>
 
           <div className="flex flex-wrap gap-2 pt-2">
-            {post.keywords.map((k) => (
+            {post.keywords.map((k: string) => (
               <span key={k} className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
                 <Tag className="h-3 w-3" /> {k}
               </span>
