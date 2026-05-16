@@ -35,6 +35,7 @@ import { ACTIVITY_LABELS, fetchActivity, logActivity } from '@/lib/activity';
 import { formatDistanceToNow } from 'date-fns';
 import { fetchCampaigns, type CampaignRow, CAMPAIGN_COLORS } from '@/lib/campaigns';
 import { cn } from '@/lib/utils';
+import { KnowledgeBaseWidget } from '@/components/knowledge-base-widget';
 
 export const Route = createFileRoute('/dashboard')({
   head: () => ({
