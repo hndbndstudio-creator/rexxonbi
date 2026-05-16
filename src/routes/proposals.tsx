@@ -47,12 +47,12 @@ import { extractFile, type ExtractedSource, type SourceKind } from '@/lib/rfp-in
 export const Route = createFileRoute('/proposals')({
   head: () => ({
     meta: [
-      { title: 'RFP generator — Rexxon AI' },
-      { name: 'description', content: 'Generate IT, software and AI RFPs and vendor responses with AI.' },
+      { title: 'Proposal generator — Rexxon AI' },
+      { name: 'description', content: 'Generate winning sales proposals for IT, software, and AI projects with AI.' },
       { name: 'robots', content: 'noindex, nofollow' },
     ],
   }),
-  component: RfpsPage,
+  component: ProposalsPage,
 });
 
 type Mode = 'BUYER' | 'VENDOR_RESPONSE';
