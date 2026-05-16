@@ -156,9 +156,9 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   getParentRoute: () => BlogRoute,
 } as any)
 const AccountsIdRoute = AccountsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AccountsRoute,
+  id: '/accounts/$id',
+  path: '/accounts/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -349,6 +349,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TerritoryRoute: typeof TerritoryRoute
   TodayRoute: typeof TodayRoute
+  AccountsIdRoute: typeof AccountsIdRoute
   AccountsIndexRoute: typeof AccountsIndexRoute
 }
 
@@ -524,10 +525,10 @@ declare module '@tanstack/react-router' {
     }
     '/accounts/$id': {
       id: '/accounts/$id'
-      path: '/$id'
+      path: '/accounts/$id'
       fullPath: '/accounts/$id'
       preLoaderRoute: typeof AccountsIdRouteImport
-      parentRoute: typeof AccountsRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -576,6 +577,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TerritoryRoute: TerritoryRoute,
   TodayRoute: TodayRoute,
+  AccountsIdRoute: AccountsIdRoute,
   AccountsIndexRoute: AccountsIndexRoute,
 }
 export const routeTree = rootRouteImport
