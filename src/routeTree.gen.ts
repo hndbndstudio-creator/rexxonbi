@@ -20,6 +20,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ProposalsRouteImport } from './routes/proposals'
 import { Route as OutreachRouteImport } from './routes/outreach'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as KnowledgeRouteImport } from './routes/knowledge'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactsRouteImport } from './routes/contacts'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -91,6 +92,11 @@ const OutreachRoute = OutreachRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KnowledgeRoute = KnowledgeRouteImport.update({
+  id: '/knowledge',
+  path: '/knowledge',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -191,6 +197,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/contacts': typeof ContactsRoute
   '/dashboard': typeof DashboardRoute
+  '/knowledge': typeof KnowledgeRoute
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
   '/proposals': typeof ProposalsRouteWithChildren
@@ -221,6 +228,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/contacts': typeof ContactsRoute
   '/dashboard': typeof DashboardRoute
+  '/knowledge': typeof KnowledgeRoute
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
   '/proposals': typeof ProposalsRouteWithChildren
@@ -252,6 +260,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/contacts': typeof ContactsRoute
   '/dashboard': typeof DashboardRoute
+  '/knowledge': typeof KnowledgeRoute
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
   '/proposals': typeof ProposalsRouteWithChildren
@@ -284,6 +293,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contacts'
     | '/dashboard'
+    | '/knowledge'
     | '/login'
     | '/outreach'
     | '/proposals'
@@ -314,6 +324,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contacts'
     | '/dashboard'
+    | '/knowledge'
     | '/login'
     | '/outreach'
     | '/proposals'
@@ -344,6 +355,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contacts'
     | '/dashboard'
+    | '/knowledge'
     | '/login'
     | '/outreach'
     | '/proposals'
@@ -375,6 +387,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   ContactsRoute: typeof ContactsRoute
   DashboardRoute: typeof DashboardRoute
+  KnowledgeRoute: typeof KnowledgeRoute
   LoginRoute: typeof LoginRoute
   OutreachRoute: typeof OutreachRoute
   ProposalsRoute: typeof ProposalsRouteWithChildren
@@ -468,6 +481,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/knowledge': {
+      id: '/knowledge'
+      path: '/knowledge'
+      fullPath: '/knowledge'
+      preLoaderRoute: typeof KnowledgeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -638,6 +658,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   ContactsRoute: ContactsRoute,
   DashboardRoute: DashboardRoute,
+  KnowledgeRoute: KnowledgeRoute,
   LoginRoute: LoginRoute,
   OutreachRoute: OutreachRoute,
   ProposalsRoute: ProposalsRouteWithChildren,

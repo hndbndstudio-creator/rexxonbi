@@ -795,7 +795,7 @@ function LandingPage() {
               groups: [
                 { label: 'Core', items: ['75 monitored accounts', '1 user seat', 'Real-time signal feed', 'Verified contacts', 'Email digest + Slack alerts', '1 campaign'] },
                 { label: 'AI & content', items: ['AI outreach drafts', 'Proposal generator · 3 / month'] },
-                { label: 'Knowledge base', items: ['Up to 50 docs', 'Chat with your docs on the dashboard'] },
+                { label: 'Knowledge base', items: ['Not included — upgrade to Pro to unlock'] },
                 { label: 'Integrations', items: ['Slack', 'Calendar sync (.ics)'] },
               ],
             },
@@ -809,7 +809,7 @@ function LandingPage() {
               groups: [
                 { label: 'Core', items: ['250 monitored accounts', '3 user seats', 'Custom signal weighting', 'Unlimited campaigns + per-sector filters', 'Everything in Starter'] },
                 { label: 'AI & content', items: ['AI-assisted proposals · unlimited', 'Meeting briefs with citations'] },
-                { label: 'Knowledge base', items: ['Up to 500 docs', 'Cited answers with source linking', 'Workspace-wide search'] },
+                { label: 'Knowledge base ★', items: ['Included — up to 500 docs', 'Cited answers with source linking', 'Dedicated /knowledge workspace', 'Workspace-wide search'] },
                 { label: 'Integrations', items: ['CRM push (Salesforce, HubSpot)', 'Outreach.io / Salesloft sync'] },
                 { label: 'Support', items: ['Priority support'] },
               ],
@@ -824,7 +824,7 @@ function LandingPage() {
               groups: [
                 { label: 'Core', items: ['750 monitored accounts', '10 user seats', 'Territory routing', 'Win/loss feedback loop', 'Shared campaigns across teams', 'Everything in Pro'] },
                 { label: 'AI & content', items: ['Proposal collaboration + version history'] },
-                { label: 'Knowledge base', items: ['Unlimited docs', 'Workspace library + shared collections', 'Per-team permissions'] },
+                { label: 'Knowledge base ★', items: ['Included — unlimited docs', 'Workspace library + shared collections', 'Per-team permissions'] },
                 { label: 'Integrations', items: ['SAML SSO', 'Audit logs'] },
                 { label: 'Support', items: ['Dedicated CSM', 'White-glove onboarding'] },
               ],
