@@ -879,7 +879,7 @@ function ProposalDetail({ rfp, onBack, onDelete }: { rfp: RfpRow; onBack: () => 
           <div className="mb-1 flex items-center gap-2">
             <Badge variant="secondary" className="text-[10px]">{rfp.industry}</Badge>
             <Badge variant="outline" className="text-[10px]">
-              {rfp.mode === 'BUYER' ? 'Buyer brief' : 'Vendor response'}
+              Proposal
             </Badge>
           </div>
           <h1 className="text-2xl font-semibold">{rfp.title}</h1>
