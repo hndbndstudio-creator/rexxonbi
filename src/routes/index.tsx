@@ -778,7 +778,7 @@ function LandingPage() {
               onClick={() => setAnnual(true)}
               className={`btn-press rounded-full px-4 py-1.5 transition-colors ${annual ? 'bg-brand text-brand-foreground shadow-inset-glow' : 'text-muted-foreground'}`}
             >
-              Annual <span className="ml-1 text-xs opacity-80">−20%</span>
+              Annual <span className="ml-1 text-xs opacity-80">−10%</span>
             </button>
           </div>
         </div>
@@ -788,7 +788,7 @@ function LandingPage() {
             {
               id: 'starter' as const,
               name: 'Starter',
-              price: 79,
+              price: 99,
               accounts: '75 accounts',
               users: '1 user',
               highlight: false,
@@ -802,7 +802,7 @@ function LandingPage() {
             {
               id: 'pro' as const,
               name: 'Pro',
-              price: 199,
+              price: 279,
               accounts: '250 accounts',
               users: '3 users',
               highlight: true,
@@ -817,7 +817,7 @@ function LandingPage() {
             {
               id: 'team' as const,
               name: 'Team',
-              price: 349,
+              price: 879,
               accounts: '750 accounts',
               users: '10 users',
               highlight: false,
@@ -830,7 +830,9 @@ function LandingPage() {
               ],
             },
           ].map((plan) => {
-            const price = annual ? Math.round(plan.price * 0.8) : plan.price;
+            // Tiered annual discount: Starter 0%, Pro 10%, Team 10% (auto on annual)
+            const discountPct = annual ? (plan.id === 'starter' ? 0 : 10) : 0;
+            const price = Math.round(plan.price * (1 - discountPct / 100));
             return (
               <div
                 key={plan.name}

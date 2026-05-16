@@ -21,24 +21,24 @@ type PlanId = 'starter' | 'pro' | 'team';
 const PLANS: Record<PlanId, { name: string; price: number; accounts: string; seats: string; features: string[] }> = {
   starter: {
     name: 'Starter',
-    price: 79,
+    price: 99,
     accounts: '75 accounts',
     seats: '1 user',
     features: ['Real-time signal feed', 'AI outreach drafts', 'Verified contacts', 'Slack alerts'],
   },
   pro: {
     name: 'Pro',
-    price: 199,
+    price: 279,
     accounts: '250 accounts',
     seats: '3 users',
-    features: ['Everything in Starter', 'CRM push (Salesforce, HubSpot)', 'Outreach.io / Salesloft', 'Custom signal weighting', 'Priority support'],
+    features: ['Everything in Starter', 'Knowledge base (500 docs)', 'CRM push (Salesforce, HubSpot)', 'Outreach.io / Salesloft', 'Custom signal weighting', 'Priority support'],
   },
   team: {
     name: 'Team',
-    price: 349,
+    price: 879,
     accounts: '750 accounts',
     seats: '10 users',
-    features: ['Everything in Pro', 'Territory routing', 'Win/loss feedback loop', 'Dedicated CSM', 'SAML SSO'],
+    features: ['Everything in Pro', 'Knowledge base (unlimited)', 'Territory routing', 'Win/loss feedback loop', 'Dedicated CSM', 'SAML SSO'],
   },
 };
 
@@ -74,7 +74,8 @@ function CheckoutPage() {
 
   const selected = PLANS[plan];
   const monthly = selected.price;
-  const monthlyEffective = billing === 'annual' ? Math.round(monthly * 0.8) : monthly;
+  const annualDiscountPct = plan === 'starter' ? 0 : 10;
+  const monthlyEffective = billing === 'annual' ? Math.round(monthly * (1 - annualDiscountPct / 100)) : monthly;
   const dueToday = 0; // Free trial
   const annualSavings = (monthly - monthlyEffective) * 12;
 
