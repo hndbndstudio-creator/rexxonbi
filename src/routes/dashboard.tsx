@@ -227,15 +227,14 @@ function SignalFeed() {
     <>
       <PageHeader
         icon={Radio}
-        eyebrow="Live feed"
         title="Signals"
-        subtitle="Every buying moment, the instant it happens. Claim what fits — let the rest go."
-        badge="Streaming"
+        subtitle="Every buying moment, the instant it happens."
+        badge="Live"
         badgeTone="green"
         stats={[
           { label: 'Total', value: signals.length, icon: Inbox },
           { label: 'Unread', value: unreadCount, accent: 'amber', icon: Sparkles },
-          { label: 'Hot leads', value: hotCount, accent: 'rose', icon: Flame },
+          { label: 'Hot', value: hotCount, accent: 'rose', icon: Flame },
           { label: 'Claimed', value: claimedCount, accent: 'green', icon: CheckCheck },
         ]}
         actions={
