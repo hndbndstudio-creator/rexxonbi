@@ -100,7 +100,7 @@ interface WizardData {
 }
 
 const EMPTY_WIZARD: WizardData = {
-  mode: 'BUYER',
+  mode: 'VENDOR_RESPONSE',
   industry: 'SOFTWARE',
   title: '',
   organization: '',
