@@ -86,6 +86,7 @@ function SignalFeed() {
   const { data: rawSignals = [], isLoading, isError, refetch } = useQuery({
     queryKey: ['signals', effectiveType, effectiveMinConf],
     queryFn: () => fetchSignals({ type: effectiveType, minConfidence: effectiveMinConf }),
+    placeholderData: (prev) => prev,
   });
 
   // Apply remaining campaign filters client-side (industries, geos, role, seniority, domains, employees)
