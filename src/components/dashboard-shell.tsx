@@ -100,13 +100,9 @@ export function DashboardShell({ children }: { children: ReactNode }) {
     }
   };
 
-  if (loading || !user) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-brand border-t-transparent" />
-      </div>
-    );
-  }
+  // While auth is resolving, render the shell chrome (sidebar + empty main) so
+  // the layout doesn't flash a centered spinner before swapping to the page.
+  // If unauthenticated, the effect above redirects to /login.
 
   const renderNav = (onItemClick?: () => void) => (
     <nav className="flex-1 space-y-3 overflow-y-auto p-2">
@@ -158,10 +154,10 @@ export function DashboardShell({ children }: { children: ReactNode }) {
     <div className="space-y-2 border-t border-border p-3">
       <div className="flex items-center gap-2.5 rounded-md p-1.5">
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand/20 text-xs font-semibold text-brand">
-          {(user.email || 'U').slice(0, 2).toUpperCase()}
+          {(user?.email || 'U').slice(0, 2).toUpperCase()}
         </div>
         <div className="min-w-0 flex-1">
-          <div className="truncate text-xs font-medium">{user.email}</div>
+          <div className="truncate text-xs font-medium">{user?.email ?? '\u00a0'}</div>
           <div className="text-[11px] text-muted-foreground">Team plan · Trial</div>
         </div>
       </div>
@@ -169,6 +165,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
         variant="outline"
         size="sm"
         onClick={handleSignOut}
+        disabled={!user}
         className="w-full justify-center gap-2"
       >
         <LogOut className="h-3.5 w-3.5" />
@@ -209,12 +206,12 @@ export function DashboardShell({ children }: { children: ReactNode }) {
           <RexxonLogo size="sm" />
         </Link>
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand/20 text-[11px] font-semibold text-brand">
-          {(user.email || 'U').slice(0, 2).toUpperCase()}
+          {(user?.email || 'U').slice(0, 2).toUpperCase()}
         </div>
       </div>
 
       {/* Main */}
-      <main key={location.pathname} className="page-transition min-w-0 flex-1 pt-14 md:pt-0">{children}</main>
+      <main className="page-transition min-w-0 flex-1 pt-14 md:pt-0">{children}</main>
 
       {/* Onboarding tour overlay */}
       <OnboardingTour />

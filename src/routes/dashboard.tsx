@@ -86,6 +86,7 @@ function SignalFeed() {
   const { data: rawSignals = [], isLoading, isError, refetch } = useQuery({
     queryKey: ['signals', effectiveType, effectiveMinConf],
     queryFn: () => fetchSignals({ type: effectiveType, minConfidence: effectiveMinConf }),
+    placeholderData: (prev) => prev,
   });
 
   // Apply remaining campaign filters client-side (industries, geos, role, seniority, domains, employees)
@@ -279,7 +280,7 @@ function SignalFeed() {
         <div className="min-w-0">
           {/* Hot now rail — top 3 highest-confidence open signals, the "do this next" */}
           {!isLoading && hotNow.length > 0 && (
-            <div className="mb-4 animate-rise md:mb-5" style={{ animationDelay: '100ms' }}>
+            <div className="mb-4 animate-rise md:mb-5">
               <div className="mb-2 flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-rose-300/80">
                 <Flame className="h-3 w-3" />
                 Hot now
@@ -316,7 +317,7 @@ function SignalFeed() {
           )}
 
           {/* Status tabs */}
-          <div className="mb-3 flex flex-wrap items-center gap-1.5 animate-rise" style={{ animationDelay: '140ms' }}>
+          <div className="mb-3 flex flex-wrap items-center gap-1.5 animate-rise">
             {([
               { key: 'ALL', label: 'All', count: rawSignals.length },
               { key: 'OPEN', label: 'Open', count: openCount },
@@ -348,7 +349,7 @@ function SignalFeed() {
           </div>
 
           {/* Filter pill bar — collapsed by default unless filters are active */}
-          <div className="surface-1 mb-4 rounded-xl border border-border animate-rise md:mb-5" style={{ animationDelay: '160ms' }}>
+          <div className="surface-1 mb-4 rounded-xl border border-border animate-rise md:mb-5">
             <button
               type="button"
               onClick={() => setFiltersOpen((o) => !o)}
@@ -507,7 +508,7 @@ function SignalFeed() {
         <aside className="hidden lg:block">
           <div
             className="surface-2 sticky top-6 rounded-xl border border-border p-4 shadow-soft animate-rise"
-            style={{ animationDelay: '200ms' }}
+           
           >
             <h2 className="flex items-center gap-2 text-sm font-semibold">
               <Activity className="h-4 w-4 text-brand" />
