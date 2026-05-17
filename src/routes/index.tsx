@@ -65,23 +65,23 @@ export const Route = createFileRoute('/')({
   head: () => ({
     meta: [
       { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1' },
-      { title: 'Rexxon AI — Real-time B2B buying signals' },
+      { title: 'Rexxon AI — Business market intelligence SaaS' },
       {
         name: 'description',
         content:
-          'AI agents monitor 10M+ companies for buying signals — hiring, funding, leadership shifts — and draft outreach to verified contacts. Book 2× more meetings.',
+          'Rexxon AI turns real-time signals across companies, industries, and markets into decision-ready intelligence for revenue, strategy, and operations teams.',
       },
-      { property: 'og:title', content: 'Rexxon AI — Real-time B2B buying signals & AI outreach' },
+      { property: 'og:title', content: 'Rexxon AI — Business market intelligence SaaS' },
       {
         property: 'og:description',
-        content: 'Catch every buying signal across 10M+ companies. AI-drafted outreach to verified contacts. Get started today.',
+        content: 'Real-time market intelligence for revenue, strategy, and operations teams. Signals across companies and industries, synthesized by AI.',
       },
       { property: 'og:url', content: 'https://rexxon.ai/' },
       { property: 'og:image', content: 'https://rexxon.ai/og-image.jpg' },
-      { name: 'twitter:title', content: 'Rexxon AI — Real-time B2B buying signals' },
+      { name: 'twitter:title', content: 'Rexxon AI — Business market intelligence SaaS' },
       {
         name: 'twitter:description',
-        content: 'Catch every buying signal across 10M+ companies. AI-drafted outreach to verified contacts.',
+        content: 'Real-time market intelligence for revenue, strategy, and operations teams.',
       },
       { name: 'twitter:image', content: 'https://rexxon.ai/og-image.jpg' },
     ],
