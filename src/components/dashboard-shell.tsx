@@ -100,13 +100,9 @@ export function DashboardShell({ children }: { children: ReactNode }) {
     }
   };
 
-  if (loading || !user) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-brand border-t-transparent" />
-      </div>
-    );
-  }
+  // While auth is resolving, render the shell chrome (sidebar + empty main) so
+  // the layout doesn't flash a centered spinner before swapping to the page.
+  // If unauthenticated, the effect above redirects to /login.
 
   const renderNav = (onItemClick?: () => void) => (
     <nav className="flex-1 space-y-3 overflow-y-auto p-2">
