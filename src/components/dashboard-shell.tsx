@@ -206,12 +206,12 @@ export function DashboardShell({ children }: { children: ReactNode }) {
           <RexxonLogo size="sm" />
         </Link>
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand/20 text-[11px] font-semibold text-brand">
-          {(user.email || 'U').slice(0, 2).toUpperCase()}
+          {(user?.email || 'U').slice(0, 2).toUpperCase()}
         </div>
       </div>
 
       {/* Main */}
-      <main key={location.pathname} className="page-transition min-w-0 flex-1 pt-14 md:pt-0">{children}</main>
+      <main className="page-transition min-w-0 flex-1 pt-14 md:pt-0">{children}</main>
 
       {/* Onboarding tour overlay */}
       <OnboardingTour />
