@@ -49,6 +49,7 @@ import {
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { RexxonLogo } from '@/components/rexxon-logo';
+import { SiteFooter } from '@/components/site-footer';
 import { BLOG_POSTS, CASE_STUDIES } from '@/lib/blog-content';
 import birdseyeDashboard from '@/assets/birdseye-dashboard.png';
 import avatar1 from '@/assets/avatar-1.jpg';
