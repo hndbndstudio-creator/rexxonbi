@@ -49,6 +49,7 @@ import {
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { RexxonLogo } from '@/components/rexxon-logo';
+import { SiteFooter } from '@/components/site-footer';
 import { BLOG_POSTS, CASE_STUDIES } from '@/lib/blog-content';
 import birdseyeDashboard from '@/assets/birdseye-dashboard.png';
 import avatar1 from '@/assets/avatar-1.jpg';
@@ -1042,23 +1043,7 @@ function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 sm:flex-row">
-          <div className="flex items-center">
-            <RexxonLogo size="sm" />
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
-            <a href="#how" className="hover:text-foreground">How it works</a>
-            <a href="#pricing" className="hover:text-foreground">Pricing</a>
-            <Link to="/blog" className="hover:text-foreground">Blog</Link>
-            <Link to="/case-studies" className="hover:text-foreground">Case studies</Link>
-            <Link to="/affiliates" className="hover:text-foreground">Affiliate program</Link>
-            <a href="https://docs.rexxon.ai" className="hover:text-foreground">Docs</a>
-            <a href="mailto:hello@rexxon.ai" className="hover:text-foreground">Contact</a>
-          </div>
-          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Rexxon AI</p>
-        </div>
-      </footer>
+      <SiteFooter />
 
       {/* ============================ STICKY MOBILE CTA ============================ */}
       {showStickyCta && !stickyDismissed && (

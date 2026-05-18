@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, Calendar, Clock } from "lucide-react";
 import { BLOG_POSTS } from "@/lib/blog-content";
 import { RexxonLogo } from "@/components/rexxon-logo";
+import { SiteFooter } from "@/components/site-footer";
 
 export const Route = createFileRoute("/blog")({
   component: BlogIndex,
@@ -140,19 +141,7 @@ export function BlogNav() {
 }
 
 export function BlogFooter() {
-  return (
-    <footer className="border-t border-border">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 sm:flex-row">
-        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Rexxon AI</p>
-        <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
-          <Link to="/blog" className="hover:text-foreground">Blog</Link>
-          <Link to="/case-studies" className="hover:text-foreground">Case studies</Link>
-          <Link to="/affiliates" className="hover:text-foreground">Affiliate program</Link>
-          <Link to="/" className="hover:text-foreground">Product</Link>
-        </div>
-      </div>
-    </footer>
-  );
+  return <SiteFooter />;
 }
 
 export function formatDate(iso: string) {
