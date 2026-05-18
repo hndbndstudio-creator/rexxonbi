@@ -51,7 +51,7 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/compone
 import { RexxonLogo } from '@/components/rexxon-logo';
 import { SiteFooter } from '@/components/site-footer';
 import { BLOG_POSTS, CASE_STUDIES } from '@/lib/blog-content';
-import birdseyeDashboard from '@/assets/birdseye-dashboard.png';
+import birdseyeDashboard from '@/assets/birdseye-dashboard.webp';
 import avatar1 from '@/assets/avatar-1.jpg';
 import avatar2 from '@/assets/avatar-2.jpg';
 import avatar3 from '@/assets/avatar-3.jpg';
@@ -491,8 +491,12 @@ function LandingPage() {
             <img
               src={birdseyeDashboard}
               alt="Rexxon Bird's-Eye dashboard showing daily goal progress, pipeline stages, fresh buying signals, and 14-day momentum"
-              loading="lazy"
-              className="block w-full"
+              width={1920}
+              height={1080}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              className="block h-auto w-full"
             />
           </div>
 
