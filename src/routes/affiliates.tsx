@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { breadcrumbJsonLd } from "@/lib/seo";
 import {
   ArrowRight,
   CheckCircle2,
@@ -38,6 +39,7 @@ export const Route = createFileRoute("/affiliates")({
       },
       { rel: "canonical", href: "https://rexxon.ai/affiliates" } as never,
     ],
+    scripts: [breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Affiliates", path: "/affiliates" }])],
   }),
 });
 
