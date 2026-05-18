@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { breadcrumbJsonLd } from "@/lib/seo";
 import { ArrowRight, Briefcase, Globe2, Heart, MapPin, Rocket, Sparkles, Users } from "lucide-react";
 import { BlogNav } from "./blog";
 import { SiteFooter } from "@/components/site-footer";
@@ -145,6 +146,7 @@ export const Route = createFileRoute("/careers")({
     links: [
       { rel: "canonical", href: "https://rexxon.ai/careers" },
     ],
+    scripts: [breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Careers", path: "/careers" }])],
   }),
 });
 

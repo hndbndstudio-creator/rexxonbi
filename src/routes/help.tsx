@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { breadcrumbJsonLd } from "@/lib/seo";
 import { ArrowRight, BookOpen, ChevronRight, CreditCard, MessageCircle, Plug, Search, Settings, ShieldCheck, Zap } from "lucide-react";
 import { MarketingShell } from "@/components/marketing-page";
 
@@ -37,6 +38,7 @@ export const Route = createFileRoute("/help")({
     links: [
       { rel: "canonical", href: "https://rexxon.ai/help" },
     ],
+    scripts: [breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Help Center", path: "/help" }])],
   }),
 });
 

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { breadcrumbJsonLd } from "@/lib/seo";
 import { LegalPage as MarketingPage } from "@/components/marketing-page";
 
 const SUBPROCESSORS = [
@@ -27,6 +28,7 @@ export const Route = createFileRoute("/subprocessors")({
     links: [
       { rel: "canonical", href: "https://rexxon.ai/subprocessors" },
     ],
+    scripts: [breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Subprocessors", path: "/subprocessors" }])],
   }),
 });
 

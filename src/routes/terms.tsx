@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { breadcrumbJsonLd } from "@/lib/seo";
 import { LegalPage as MarketingPage } from "@/components/marketing-page";
 
 export const Route = createFileRoute("/terms")({
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/terms")({
     links: [
       { rel: "canonical", href: "https://rexxon.ai/terms" },
     ],
+    scripts: [breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Terms", path: "/terms" }])],
   }),
 });
 
