@@ -491,8 +491,12 @@ function LandingPage() {
             <img
               src={birdseyeDashboard}
               alt="Rexxon Bird's-Eye dashboard showing daily goal progress, pipeline stages, fresh buying signals, and 14-day momentum"
-              loading="lazy"
-              className="block w-full"
+              width={1920}
+              height={1080}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              className="block h-auto w-full"
             />
           </div>
 
