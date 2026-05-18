@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Building2, Quote, Tag } from "lucide-react";
 import { CASE_STUDIES, type CaseStudy } from "@/lib/blog-content";
+import { breadcrumbJsonLd } from "@/lib/seo";
 
 type Metric = CaseStudy["metrics"][number];
 import { BlogNav, BlogFooter, formatDate } from "./blog";
@@ -40,6 +41,7 @@ export const Route = createFileRoute("/case-studies/$slug")({
         { name: "twitter:image", content: "https://rexxon.ai/og-image.jpg" },
       ],
       links: [{ rel: "canonical", href: `https://rexxon.ai/case-studies/${c.slug}` }],
+      scripts: [breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Case Studies", path: "/case-studies" }, { name: c.title, path: `/case-studies/${c.slug}` }])],
     };
   },
 });

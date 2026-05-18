@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Calendar, Clock, Tag } from "lucide-react";
 import { BLOG_POSTS, type BlogPost } from "@/lib/blog-content";
+import { breadcrumbJsonLd } from "@/lib/seo";
 
 type Section = BlogPost["sections"][number];
 type FaqItem = BlogPost["faq"][number];
@@ -43,6 +44,7 @@ export const Route = createFileRoute("/blog/$slug")({
         { name: "twitter:image", content: "https://rexxon.ai/og-image.jpg" },
       ],
       links: [{ rel: "canonical", href: `https://rexxon.ai/blog/${p.slug}` }],
+      scripts: [breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Blog", path: "/blog" }, { name: p.title, path: `/blog/${p.slug}` }])],
     };
   },
 });

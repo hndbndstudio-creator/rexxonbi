@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { breadcrumbJsonLd } from "@/lib/seo";
 import { ArrowRight, TrendingUp } from "lucide-react";
 import { CASE_STUDIES } from "@/lib/blog-content";
 import { BlogNav, BlogFooter, formatDate } from "./blog";
@@ -27,6 +28,7 @@ export const Route = createFileRoute("/case-studies")({
       },
       { rel: "canonical", href: "https://rexxon.ai/case-studies" } as never,
     ],
+    scripts: [breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Case Studies", path: "/case-studies" }])],
   }),
 });
 

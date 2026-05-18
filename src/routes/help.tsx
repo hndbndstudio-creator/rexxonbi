@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { breadcrumbJsonLd } from "@/lib/seo";
 import { ArrowRight, BookOpen, ChevronRight, CreditCard, MessageCircle, Plug, Search, Settings, ShieldCheck, Zap } from "lucide-react";
 import { MarketingShell } from "@/components/marketing-page";
 
@@ -37,6 +38,7 @@ export const Route = createFileRoute("/help")({
     links: [
       { rel: "canonical", href: "https://rexxon.ai/help" },
     ],
+    scripts: [breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Help Center", path: "/help" }])],
   }),
 });
 
@@ -108,7 +110,7 @@ function HelpPage() {
             <MessageCircle className="h-5 w-5 text-brand" />
             <h3 className="mt-3 text-base font-semibold group-hover:text-brand">Email support</h3>
             <p className="mt-1 text-sm text-muted-foreground">Replies inside 2 business hours.</p>
-            <span className="mt-3 inline-flex items-center gap-1 text-sm text-brand">support@rexxon.ai <ArrowRight className="h-4 w-4" /></span>
+            <span className="mt-3 inline-flex items-center gap-1 text-sm text-brand"><span>support@rexxon.ai</span><ArrowRight className="h-4 w-4" /></span>
           </a>
           <Link to="/docs" className="group rounded-xl border border-border bg-card p-6 transition-colors hover:border-brand/50">
             <BookOpen className="h-5 w-5 text-brand" />

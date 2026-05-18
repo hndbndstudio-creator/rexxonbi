@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { breadcrumbJsonLd } from "@/lib/seo";
 import { ArrowRight, Check, FileCheck, Globe, Key, Lock, Server, ShieldCheck } from "lucide-react";
 import { BottomCta, MarketingShell } from "@/components/marketing-page";
 
@@ -37,6 +38,7 @@ export const Route = createFileRoute("/security")({
     links: [
       { rel: "canonical", href: "https://rexxon.ai/security" },
     ],
+    scripts: [breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Security", path: "/security" }])],
   }),
 });
 
