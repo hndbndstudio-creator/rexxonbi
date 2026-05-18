@@ -132,12 +132,18 @@ export const Route = createFileRoute("/careers")({
         content:
           "Remote-first, well-funded, building the leading business market intelligence platform. Open roles across engineering, sales, design and ops.",
       },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Careers at Rexxon AI" },
       {
         name: "twitter:description",
         content: "Help build the leading business market intelligence platform. Remote-first.",
       },
-      { rel: "canonical", href: "https://rexxon.ai/careers" } as never,
+      { property: "og:url", content: "https://rexxon.ai/careers" },
+      { property: "og:type", content: "website" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://rexxon.ai/careers" },
     ],
   }),
 });

@@ -7,6 +7,14 @@ export const Route = createFileRoute("/privacy")({
     meta: [
       { title: "Privacy Policy — Rexxon AI" },
       { name: "description", content: "How Rexxon AI collects, uses, stores and protects your personal data." },
+          { property: "og:url", content: "https://rexxon.ai/privacy" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Privacy Policy — Rexxon AI" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://rexxon.ai/privacy" },
     ],
   }),
 });

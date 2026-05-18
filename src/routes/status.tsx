@@ -31,6 +31,14 @@ export const Route = createFileRoute("/status")({
       { name: "description", content: "Real-time status of Rexxon AI services and historical uptime. 99.98% uptime over the last 90 days." },
       { property: "og:title", content: "Rexxon AI System Status" },
       { property: "og:description", content: "Real-time status and uptime for Rexxon AI." },
+          { property: "og:url", content: "https://rexxon.ai/status" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "System Status — Rexxon AI" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://rexxon.ai/status" },
     ],
   }),
 });

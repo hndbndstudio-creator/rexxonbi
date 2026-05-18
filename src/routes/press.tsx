@@ -23,6 +23,14 @@ export const Route = createFileRoute("/press")({
       { name: "description", content: "Logos, brand assets, executive bios, product screenshots and press contacts for Rexxon AI." },
       { property: "og:title", content: "Press Kit — Rexxon AI" },
       { property: "og:description", content: "Logos, brand assets and press contacts for Rexxon AI." },
+          { property: "og:url", content: "https://rexxon.ai/press" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Press Kit — Rexxon AI Brand Assets & Media" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://rexxon.ai/press" },
     ],
   }),
 });

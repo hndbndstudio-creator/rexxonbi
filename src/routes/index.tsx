@@ -902,6 +902,21 @@ function LandingPage() {
 
       {/* ============================ FAQ ============================ */}
       <section id="faq" className="border-y border-border bg-card/30 py-14 md:py-28">
+        {/* FAQPage structured data — boosts AI answer engines (ChatGPT, Perplexity), AEO and Google rich results */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: FAQS.map((f) => ({
+                "@type": "Question",
+                name: f.q,
+                acceptedAnswer: { "@type": "Answer", text: f.a },
+              })),
+            }),
+          }}
+        />
         <div className="mx-auto max-w-3xl px-4 md:px-6">
           <SectionHeader eyebrow="FAQ" title="Common questions" />
           <div className="reveal mt-12">
@@ -1303,28 +1318,44 @@ const FEATURE_BLOCKS = [
 
 const FAQS = [
   {
-    q: 'How is this different from ZoomInfo or Apollo?',
-    a: 'Static databases give you a snapshot — Rexxon gives you the moment. We don\'t sell records by the credit; we surface the exact buying triggers (hiring, funding, leadership moves, compliance, earnings) inside your ICP and ship them with verified contacts and a draft email. Most teams replace 2–4 tools when they switch.',
+    q: 'What is Rexxon AI?',
+    a: 'Rexxon AI is a business market intelligence SaaS platform. It turns real-time signals across companies, industries and markets into decision-ready intelligence for revenue, strategy and operations teams — synthesized by AI with full source citations.',
+  },
+  {
+    q: 'How is Rexxon different from market research tools or BI dashboards?',
+    a: 'Traditional research is stale by the time you read it, and BI only shows you what already happened inside your own data. Rexxon ingests live external signals — hiring, funding, leadership, regulatory, earnings, web and product signals — and synthesizes them on demand for any company, market or industry you care about.',
+  },
+  {
+    q: 'Who uses Rexxon AI?',
+    a: 'Revenue teams (sales, RevOps, marketing) use it to focus on the right accounts at the right time. Strategy and corp-dev teams use it for market sizing, competitive intelligence and M&A. Operations teams use it to monitor risk and category shifts in real time.',
   },
   {
     q: 'How fast can I be live?',
-    a: 'Under 10 minutes. Sign up, define your territory (industries, sizes, geos, named accounts), connect Slack or your CRM, and the first signals usually fire within the hour.',
+    a: 'Under 10 minutes. Sign up, configure your watchlists (companies, industries, markets), connect Slack or your CRM, and the first intelligence briefings usually fire within the hour.',
   },
   {
-    q: 'What\'s included when I sign up?',
-    a: 'Full access to real-time signals, AI briefs, verified contact reveals, AI outreach drafts, Slack alerts and CRM push from day one. Cancel anytime, plus a 30-day money-back guarantee.',
+    q: 'Where does your data come from?',
+    a: 'A combination of licensed datasets, public filings, hiring boards, news, web data and proprietary partner feeds. Every output cites its source, with timestamps, so your team can verify and trust each insight.',
   },
   {
-    q: 'Do you have an ROI guarantee?',
-    a: 'Yes. If Rexxon doesn\'t book you 2× more meetings in your first 30 days versus your prior 30, we refund every dollar — no questions asked.',
+    q: 'How current is the intelligence?',
+    a: 'Most signal categories update in near real time — typically inside 15 minutes of the source event. Daily AI briefings consolidate everything that moved across your watchlists over the previous 24 hours.',
   },
   {
-    q: 'How do you handle data privacy and security?',
-    a: 'SOC 2 Type II certified, EU data residency available on every plan, SAML SSO on Team, full audit logs, and zero training on customer data. Enterprise security is the floor, not the ceiling.',
+    q: 'Does Rexxon integrate with our existing stack?',
+    a: 'Yes — two-way sync with Salesforce and HubSpot, native Slack and Microsoft Teams alerts, webhooks for everything else, and pipes to Snowflake and BigQuery on Enterprise. Full REST API for custom builds.',
   },
   {
-    q: 'Can I integrate with my existing CRM and sequencer?',
-    a: 'Yes — one-click push to Salesforce, HubSpot, Outreach.io, Salesloft and Slack on day one. Zapier and webhook support for everything else. Bi-directional sync on Pro and above.',
+    q: 'How do you handle data security and compliance?',
+    a: 'SOC 2 Type II, ISO 27001, GDPR and CCPA compliant. AES-256 encryption at rest, TLS 1.3 in transit, SAML SSO and SCIM provisioning, role-based access, full audit logs, and a signed DPA available for every customer.',
+  },
+  {
+    q: 'Do you train your AI on customer data?',
+    a: 'No. Customer workspace data is never used to train shared models. LLM providers are configurable per workspace and you can pin to providers with strict zero-retention policies (we recommend this for regulated industries).',
+  },
+  {
+    q: 'What does pricing look like?',
+    a: 'Transparent per-seat pricing with three tiers (Starter, Team, Enterprise) and an unlimited free trial of core features. Enterprise plans add SSO, SCIM, custom data sources, dedicated success and procurement-friendly terms. Cancel anytime.',
   },
 ];
 

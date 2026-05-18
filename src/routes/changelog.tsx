@@ -71,6 +71,14 @@ export const Route = createFileRoute("/changelog")({
       { name: "description", content: "What's new and improved in Rexxon AI. Product updates, new features and notable fixes." },
       { property: "og:title", content: "Rexxon AI Changelog" },
       { property: "og:description", content: "Product updates, new features and improvements." },
+          { property: "og:url", content: "https://rexxon.ai/changelog" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Changelog — Rexxon AI Product Updates" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://rexxon.ai/changelog" },
     ],
   }),
 });

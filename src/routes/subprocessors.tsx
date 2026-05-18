@@ -18,6 +18,14 @@ export const Route = createFileRoute("/subprocessors")({
     meta: [
       { title: "Subprocessors — Rexxon AI" },
       { name: "description", content: "Current list of subprocessors used by Rexxon AI to deliver the service." },
+          { property: "og:url", content: "https://rexxon.ai/subprocessors" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Subprocessors — Rexxon AI" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://rexxon.ai/subprocessors" },
     ],
   }),
 });
