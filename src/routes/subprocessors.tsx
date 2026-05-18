@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MarketingPage } from "@/components/marketing-page";
+import { LegalPage as MarketingPage } from "@/components/marketing-page";
 
 const SUBPROCESSORS = [
   { name: "Amazon Web Services", purpose: "Cloud hosting & storage", region: "United States, EU" },
