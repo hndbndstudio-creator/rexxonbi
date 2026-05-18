@@ -25,6 +25,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactsRouteImport } from './routes/contacts'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CaseStudiesRouteImport } from './routes/case-studies'
+import { Route as CareersRouteImport } from './routes/careers'
 import { Route as CampaignsRouteImport } from './routes/campaigns'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as BirdseyeRouteImport } from './routes/birdseye'
@@ -120,6 +121,11 @@ const CaseStudiesRoute = CaseStudiesRouteImport.update({
   path: '/case-studies',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CampaignsRoute = CampaignsRouteImport.update({
   id: '/campaigns',
   path: '/campaigns',
@@ -200,6 +206,7 @@ export interface FileRoutesByFullPath {
   '/birdseye': typeof BirdseyeRoute
   '/blog': typeof BlogRouteWithChildren
   '/campaigns': typeof CampaignsRoute
+  '/careers': typeof CareersRoute
   '/case-studies': typeof CaseStudiesRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/contacts': typeof ContactsRoute
@@ -232,6 +239,7 @@ export interface FileRoutesByTo {
   '/birdseye': typeof BirdseyeRoute
   '/blog': typeof BlogRouteWithChildren
   '/campaigns': typeof CampaignsRoute
+  '/careers': typeof CareersRoute
   '/case-studies': typeof CaseStudiesRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/contacts': typeof ContactsRoute
@@ -265,6 +273,7 @@ export interface FileRoutesById {
   '/birdseye': typeof BirdseyeRoute
   '/blog': typeof BlogRouteWithChildren
   '/campaigns': typeof CampaignsRoute
+  '/careers': typeof CareersRoute
   '/case-studies': typeof CaseStudiesRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/contacts': typeof ContactsRoute
@@ -299,6 +308,7 @@ export interface FileRouteTypes {
     | '/birdseye'
     | '/blog'
     | '/campaigns'
+    | '/careers'
     | '/case-studies'
     | '/checkout'
     | '/contacts'
@@ -331,6 +341,7 @@ export interface FileRouteTypes {
     | '/birdseye'
     | '/blog'
     | '/campaigns'
+    | '/careers'
     | '/case-studies'
     | '/checkout'
     | '/contacts'
@@ -363,6 +374,7 @@ export interface FileRouteTypes {
     | '/birdseye'
     | '/blog'
     | '/campaigns'
+    | '/careers'
     | '/case-studies'
     | '/checkout'
     | '/contacts'
@@ -396,6 +408,7 @@ export interface RootRouteChildren {
   BirdseyeRoute: typeof BirdseyeRoute
   BlogRoute: typeof BlogRouteWithChildren
   CampaignsRoute: typeof CampaignsRoute
+  CareersRoute: typeof CareersRoute
   CaseStudiesRoute: typeof CaseStudiesRouteWithChildren
   CheckoutRoute: typeof CheckoutRoute
   ContactsRoute: typeof ContactsRoute
@@ -530,6 +543,13 @@ declare module '@tanstack/react-router' {
       path: '/case-studies'
       fullPath: '/case-studies'
       preLoaderRoute: typeof CaseStudiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/campaigns': {
@@ -675,6 +695,7 @@ const rootRouteChildren: RootRouteChildren = {
   BirdseyeRoute: BirdseyeRoute,
   BlogRoute: BlogRouteWithChildren,
   CampaignsRoute: CampaignsRoute,
+  CareersRoute: CareersRoute,
   CaseStudiesRoute: CaseStudiesRouteWithChildren,
   CheckoutRoute: CheckoutRoute,
   ContactsRoute: ContactsRoute,
