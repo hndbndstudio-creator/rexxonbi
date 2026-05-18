@@ -7,6 +7,14 @@ export const Route = createFileRoute("/dpa")({
     meta: [
       { title: "Data Processing Agreement — Rexxon AI" },
       { name: "description", content: "Rexxon AI's Data Processing Agreement for GDPR and global privacy compliance." },
+          { property: "og:url", content: "https://rexxon.ai/dpa" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Data Processing Agreement (DPA) — Rexxon AI" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://rexxon.ai/dpa" },
     ],
   }),
 });

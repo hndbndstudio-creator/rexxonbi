@@ -7,6 +7,14 @@ export const Route = createFileRoute("/terms")({
     meta: [
       { title: "Terms of Service — Rexxon AI" },
       { name: "description", content: "The terms that govern your use of Rexxon AI's website and services." },
+          { property: "og:url", content: "https://rexxon.ai/terms" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Terms of Service — Rexxon AI" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://rexxon.ai/terms" },
     ],
   }),
 });

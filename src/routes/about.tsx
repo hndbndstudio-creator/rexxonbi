@@ -26,6 +26,14 @@ export const Route = createFileRoute("/about")({
       { name: "description", content: "Rexxon AI is building the system of record for business market intelligence. Learn about our mission, team and values." },
       { property: "og:title", content: "About Rexxon AI" },
       { property: "og:description", content: "Building the system of record for business market intelligence." },
+          { property: "og:url", content: "https://rexxon.ai/about" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "About Rexxon AI — Business Market Intelligence Platform" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://rexxon.ai/about" },
     ],
   }),
 });

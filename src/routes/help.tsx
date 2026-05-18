@@ -28,6 +28,14 @@ export const Route = createFileRoute("/help")({
       { name: "description", content: "Search guides, walkthroughs and answers for Rexxon AI. Real human support when you need it." },
       { property: "og:title", content: "Rexxon AI Help Center" },
       { property: "og:description", content: "Answers, guides and support for Rexxon AI." },
+          { property: "og:url", content: "https://rexxon.ai/help" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Help Center — Rexxon AI Support" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://rexxon.ai/help" },
     ],
   }),
 });

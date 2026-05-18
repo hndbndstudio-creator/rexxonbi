@@ -28,6 +28,14 @@ export const Route = createFileRoute("/security")({
       { name: "description", content: "SOC 2 Type II, ISO 27001, GDPR, encryption in transit and at rest, SSO, SCIM, audit logs, and a responsible disclosure program." },
       { property: "og:title", content: "Security at Rexxon AI" },
       { property: "og:description", content: "Enterprise-grade security. SOC 2 Type II, ISO 27001, GDPR." },
+          { property: "og:url", content: "https://rexxon.ai/security" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Security & Compliance — Rexxon AI" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://rexxon.ai/security" },
     ],
   }),
 });

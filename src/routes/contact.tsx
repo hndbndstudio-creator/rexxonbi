@@ -70,6 +70,14 @@ export const Route = createFileRoute("/contact")({
       { name: "description", content: "Get in touch with the Rexxon AI team — sales, support, press, security and partnerships. Real humans, fast responses." },
       { property: "og:title", content: "Contact Rexxon AI" },
       { property: "og:description", content: "Sales, support, press, security and partnership contacts." },
+          { property: "og:url", content: "https://rexxon.ai/contact" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Contact Rexxon AI — Sales, Support, Press, Security" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://rexxon.ai/contact" },
     ],
   }),
 });
