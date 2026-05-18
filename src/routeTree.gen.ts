@@ -11,19 +11,31 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TodayRouteImport } from './routes/today'
 import { Route as TerritoryRouteImport } from './routes/territory'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SubprocessorsRouteImport } from './routes/subprocessors'
+import { Route as StatusRouteImport } from './routes/status'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SecurityRouteImport } from './routes/security'
 import { Route as ScheduleDemoRouteImport } from './routes/schedule-demo'
 import { Route as RfpsRouteImport } from './routes/rfps'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ProposalsRouteImport } from './routes/proposals'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PressRouteImport } from './routes/press'
 import { Route as OutreachRouteImport } from './routes/outreach'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as KnowledgeRouteImport } from './routes/knowledge'
+import { Route as HelpRouteImport } from './routes/help'
+import { Route as DpaRouteImport } from './routes/dpa'
+import { Route as DocsRouteImport } from './routes/docs'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactsRouteImport } from './routes/contacts'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as ChangelogRouteImport } from './routes/changelog'
 import { Route as CaseStudiesRouteImport } from './routes/case-studies'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as CampaignsRouteImport } from './routes/campaigns'
@@ -32,6 +44,7 @@ import { Route as BirdseyeRouteImport } from './routes/birdseye'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as AffiliatesRouteImport } from './routes/affiliates'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountsIndexRouteImport } from './routes/accounts.index'
 import { Route as ProposalsHistoryRouteImport } from './routes/proposals.history'
@@ -51,6 +64,21 @@ const TerritoryRoute = TerritoryRouteImport.update({
   path: '/territory',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubprocessorsRoute = SubprocessorsRouteImport.update({
+  id: '/subprocessors',
+  path: '/subprocessors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatusRoute = StatusRouteImport.update({
+  id: '/status',
+  path: '/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -64,6 +92,11 @@ const SignupRoute = SignupRouteImport.update({
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SecurityRoute = SecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ScheduleDemoRoute = ScheduleDemoRouteImport.update({
@@ -86,6 +119,16 @@ const ProposalsRoute = ProposalsRouteImport.update({
   path: '/proposals',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PressRoute = PressRouteImport.update({
+  id: '/press',
+  path: '/press',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OutreachRoute = OutreachRouteImport.update({
   id: '/outreach',
   path: '/outreach',
@@ -101,9 +144,29 @@ const KnowledgeRoute = KnowledgeRouteImport.update({
   path: '/knowledge',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DpaRoute = DpaRouteImport.update({
+  id: '/dpa',
+  path: '/dpa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocsRoute = DocsRouteImport.update({
+  id: '/docs',
+  path: '/docs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactsRoute = ContactsRouteImport.update({
@@ -111,9 +174,19 @@ const ContactsRoute = ContactsRouteImport.update({
   path: '/contacts',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CheckoutRoute = CheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChangelogRoute = ChangelogRouteImport.update({
+  id: '/changelog',
+  path: '/changelog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CaseStudiesRoute = CaseStudiesRouteImport.update({
@@ -154,6 +227,11 @@ const AffiliatesRoute = AffiliatesRouteImport.update({
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -200,6 +278,7 @@ const ApiPublicCalendarTokenRoute = ApiPublicCalendarTokenRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/affiliates': typeof AffiliatesRoute
   '/analytics': typeof AnalyticsRoute
@@ -208,19 +287,31 @@ export interface FileRoutesByFullPath {
   '/campaigns': typeof CampaignsRoute
   '/careers': typeof CareersRoute
   '/case-studies': typeof CaseStudiesRouteWithChildren
+  '/changelog': typeof ChangelogRoute
   '/checkout': typeof CheckoutRoute
+  '/contact': typeof ContactRoute
   '/contacts': typeof ContactsRoute
+  '/cookies': typeof CookiesRoute
   '/dashboard': typeof DashboardRoute
+  '/docs': typeof DocsRoute
+  '/dpa': typeof DpaRoute
+  '/help': typeof HelpRoute
   '/knowledge': typeof KnowledgeRoute
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
+  '/press': typeof PressRoute
+  '/privacy': typeof PrivacyRoute
   '/proposals': typeof ProposalsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/rfps': typeof RfpsRoute
   '/schedule-demo': typeof ScheduleDemoRoute
+  '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/status': typeof StatusRoute
+  '/subprocessors': typeof SubprocessorsRoute
+  '/terms': typeof TermsRoute
   '/territory': typeof TerritoryRoute
   '/today': typeof TodayRoute
   '/accounts/$id': typeof AccountsIdRoute
@@ -233,6 +324,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/affiliates': typeof AffiliatesRoute
   '/analytics': typeof AnalyticsRoute
@@ -241,19 +333,31 @@ export interface FileRoutesByTo {
   '/campaigns': typeof CampaignsRoute
   '/careers': typeof CareersRoute
   '/case-studies': typeof CaseStudiesRouteWithChildren
+  '/changelog': typeof ChangelogRoute
   '/checkout': typeof CheckoutRoute
+  '/contact': typeof ContactRoute
   '/contacts': typeof ContactsRoute
+  '/cookies': typeof CookiesRoute
   '/dashboard': typeof DashboardRoute
+  '/docs': typeof DocsRoute
+  '/dpa': typeof DpaRoute
+  '/help': typeof HelpRoute
   '/knowledge': typeof KnowledgeRoute
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
+  '/press': typeof PressRoute
+  '/privacy': typeof PrivacyRoute
   '/proposals': typeof ProposalsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/rfps': typeof RfpsRoute
   '/schedule-demo': typeof ScheduleDemoRoute
+  '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/status': typeof StatusRoute
+  '/subprocessors': typeof SubprocessorsRoute
+  '/terms': typeof TermsRoute
   '/territory': typeof TerritoryRoute
   '/today': typeof TodayRoute
   '/accounts/$id': typeof AccountsIdRoute
@@ -267,6 +371,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/affiliates': typeof AffiliatesRoute
   '/analytics': typeof AnalyticsRoute
@@ -275,19 +380,31 @@ export interface FileRoutesById {
   '/campaigns': typeof CampaignsRoute
   '/careers': typeof CareersRoute
   '/case-studies': typeof CaseStudiesRouteWithChildren
+  '/changelog': typeof ChangelogRoute
   '/checkout': typeof CheckoutRoute
+  '/contact': typeof ContactRoute
   '/contacts': typeof ContactsRoute
+  '/cookies': typeof CookiesRoute
   '/dashboard': typeof DashboardRoute
+  '/docs': typeof DocsRoute
+  '/dpa': typeof DpaRoute
+  '/help': typeof HelpRoute
   '/knowledge': typeof KnowledgeRoute
   '/login': typeof LoginRoute
   '/outreach': typeof OutreachRoute
+  '/press': typeof PressRoute
+  '/privacy': typeof PrivacyRoute
   '/proposals': typeof ProposalsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/rfps': typeof RfpsRoute
   '/schedule-demo': typeof ScheduleDemoRoute
+  '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/status': typeof StatusRoute
+  '/subprocessors': typeof SubprocessorsRoute
+  '/terms': typeof TermsRoute
   '/territory': typeof TerritoryRoute
   '/today': typeof TodayRoute
   '/accounts/$id': typeof AccountsIdRoute
@@ -302,6 +419,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/admin'
     | '/affiliates'
     | '/analytics'
@@ -310,19 +428,31 @@ export interface FileRouteTypes {
     | '/campaigns'
     | '/careers'
     | '/case-studies'
+    | '/changelog'
     | '/checkout'
+    | '/contact'
     | '/contacts'
+    | '/cookies'
     | '/dashboard'
+    | '/docs'
+    | '/dpa'
+    | '/help'
     | '/knowledge'
     | '/login'
     | '/outreach'
+    | '/press'
+    | '/privacy'
     | '/proposals'
     | '/reset-password'
     | '/rfps'
     | '/schedule-demo'
+    | '/security'
     | '/settings'
     | '/signup'
     | '/sitemap.xml'
+    | '/status'
+    | '/subprocessors'
+    | '/terms'
     | '/territory'
     | '/today'
     | '/accounts/$id'
@@ -335,6 +465,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/admin'
     | '/affiliates'
     | '/analytics'
@@ -343,19 +474,31 @@ export interface FileRouteTypes {
     | '/campaigns'
     | '/careers'
     | '/case-studies'
+    | '/changelog'
     | '/checkout'
+    | '/contact'
     | '/contacts'
+    | '/cookies'
     | '/dashboard'
+    | '/docs'
+    | '/dpa'
+    | '/help'
     | '/knowledge'
     | '/login'
     | '/outreach'
+    | '/press'
+    | '/privacy'
     | '/proposals'
     | '/reset-password'
     | '/rfps'
     | '/schedule-demo'
+    | '/security'
     | '/settings'
     | '/signup'
     | '/sitemap.xml'
+    | '/status'
+    | '/subprocessors'
+    | '/terms'
     | '/territory'
     | '/today'
     | '/accounts/$id'
@@ -368,6 +511,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/admin'
     | '/affiliates'
     | '/analytics'
@@ -376,19 +520,31 @@ export interface FileRouteTypes {
     | '/campaigns'
     | '/careers'
     | '/case-studies'
+    | '/changelog'
     | '/checkout'
+    | '/contact'
     | '/contacts'
+    | '/cookies'
     | '/dashboard'
+    | '/docs'
+    | '/dpa'
+    | '/help'
     | '/knowledge'
     | '/login'
     | '/outreach'
+    | '/press'
+    | '/privacy'
     | '/proposals'
     | '/reset-password'
     | '/rfps'
     | '/schedule-demo'
+    | '/security'
     | '/settings'
     | '/signup'
     | '/sitemap.xml'
+    | '/status'
+    | '/subprocessors'
+    | '/terms'
     | '/territory'
     | '/today'
     | '/accounts/$id'
@@ -402,6 +558,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRoute
   AffiliatesRoute: typeof AffiliatesRoute
   AnalyticsRoute: typeof AnalyticsRoute
@@ -410,19 +567,31 @@ export interface RootRouteChildren {
   CampaignsRoute: typeof CampaignsRoute
   CareersRoute: typeof CareersRoute
   CaseStudiesRoute: typeof CaseStudiesRouteWithChildren
+  ChangelogRoute: typeof ChangelogRoute
   CheckoutRoute: typeof CheckoutRoute
+  ContactRoute: typeof ContactRoute
   ContactsRoute: typeof ContactsRoute
+  CookiesRoute: typeof CookiesRoute
   DashboardRoute: typeof DashboardRoute
+  DocsRoute: typeof DocsRoute
+  DpaRoute: typeof DpaRoute
+  HelpRoute: typeof HelpRoute
   KnowledgeRoute: typeof KnowledgeRoute
   LoginRoute: typeof LoginRoute
   OutreachRoute: typeof OutreachRoute
+  PressRoute: typeof PressRoute
+  PrivacyRoute: typeof PrivacyRoute
   ProposalsRoute: typeof ProposalsRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
   RfpsRoute: typeof RfpsRoute
   ScheduleDemoRoute: typeof ScheduleDemoRoute
+  SecurityRoute: typeof SecurityRoute
   SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  StatusRoute: typeof StatusRoute
+  SubprocessorsRoute: typeof SubprocessorsRoute
+  TermsRoute: typeof TermsRoute
   TerritoryRoute: typeof TerritoryRoute
   TodayRoute: typeof TodayRoute
   AccountsIdRoute: typeof AccountsIdRoute
@@ -447,6 +616,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TerritoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/subprocessors': {
+      id: '/subprocessors'
+      path: '/subprocessors'
+      fullPath: '/subprocessors'
+      preLoaderRoute: typeof SubprocessorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/status': {
+      id: '/status'
+      path: '/status'
+      fullPath: '/status'
+      preLoaderRoute: typeof StatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -466,6 +656,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/security': {
+      id: '/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof SecurityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/schedule-demo': {
@@ -496,6 +693,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProposalsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/press': {
+      id: '/press'
+      path: '/press'
+      fullPath: '/press'
+      preLoaderRoute: typeof PressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/outreach': {
       id: '/outreach'
       path: '/outreach'
@@ -517,11 +728,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KnowledgeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dpa': {
+      id: '/dpa'
+      path: '/dpa'
+      fullPath: '/dpa'
+      preLoaderRoute: typeof DpaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs': {
+      id: '/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof DocsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contacts': {
@@ -531,11 +770,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/checkout': {
       id: '/checkout'
       path: '/checkout'
       fullPath: '/checkout'
       preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/changelog': {
+      id: '/changelog'
+      path: '/changelog'
+      fullPath: '/changelog'
+      preLoaderRoute: typeof ChangelogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/case-studies': {
@@ -592,6 +845,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -689,6 +949,7 @@ const ProposalsRouteWithChildren = ProposalsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AdminRoute: AdminRoute,
   AffiliatesRoute: AffiliatesRoute,
   AnalyticsRoute: AnalyticsRoute,
@@ -697,19 +958,31 @@ const rootRouteChildren: RootRouteChildren = {
   CampaignsRoute: CampaignsRoute,
   CareersRoute: CareersRoute,
   CaseStudiesRoute: CaseStudiesRouteWithChildren,
+  ChangelogRoute: ChangelogRoute,
   CheckoutRoute: CheckoutRoute,
+  ContactRoute: ContactRoute,
   ContactsRoute: ContactsRoute,
+  CookiesRoute: CookiesRoute,
   DashboardRoute: DashboardRoute,
+  DocsRoute: DocsRoute,
+  DpaRoute: DpaRoute,
+  HelpRoute: HelpRoute,
   KnowledgeRoute: KnowledgeRoute,
   LoginRoute: LoginRoute,
   OutreachRoute: OutreachRoute,
+  PressRoute: PressRoute,
+  PrivacyRoute: PrivacyRoute,
   ProposalsRoute: ProposalsRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
   RfpsRoute: RfpsRoute,
   ScheduleDemoRoute: ScheduleDemoRoute,
+  SecurityRoute: SecurityRoute,
   SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  StatusRoute: StatusRoute,
+  SubprocessorsRoute: SubprocessorsRoute,
+  TermsRoute: TermsRoute,
   TerritoryRoute: TerritoryRoute,
   TodayRoute: TodayRoute,
   AccountsIdRoute: AccountsIdRoute,
