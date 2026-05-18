@@ -41,6 +41,7 @@ export const Route = createFileRoute("/case-studies/$slug")({
         { name: "twitter:image", content: "https://rexxon.ai/og-image.jpg" },
       ],
       links: [{ rel: "canonical", href: `https://rexxon.ai/case-studies/${c.slug}` }],
+      scripts: [breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Case Studies", path: "/case-studies" }, { name: c.title, path: `/case-studies/${c.slug}` }])],
     };
   },
 });
