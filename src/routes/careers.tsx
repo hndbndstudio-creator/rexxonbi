@@ -16,7 +16,7 @@ const JOBS: Job[] = [
   // Engineering
   {
     slug: "senior-backend-engineer",
-    title: "Senior backend engineer",
+    title: "Senior Backend Engineer",
     team: "Engineering",
     location: "Remote (Americas / EU)",
     type: "Full-time",
@@ -24,17 +24,8 @@ const JOBS: Job[] = [
       "Own the signal ingestion pipeline — Postgres, edge functions, queueing — that powers real-time market intelligence for thousands of teams.",
   },
   {
-    slug: "staff-backend-engineer-data",
-    title: "Staff backend engineer, data platform",
-    team: "Engineering",
-    location: "Remote (Global)",
-    type: "Full-time",
-    description:
-      "Design the multi-tenant data warehouse, vector store and entity-resolution graph behind Rexxon's intelligence layer.",
-  },
-  {
     slug: "senior-full-stack-engineer",
-    title: "Senior full-stack engineer",
+    title: "Senior Full-Stack Engineer",
     team: "Engineering",
     location: "Remote (Americas / EU)",
     type: "Full-time",
@@ -43,7 +34,7 @@ const JOBS: Job[] = [
   },
   {
     slug: "ai-engineer-llm",
-    title: "AI engineer, LLM systems",
+    title: "AI Engineer, LLM Systems",
     team: "Engineering",
     location: "Remote (Global)",
     type: "Full-time",
@@ -52,65 +43,29 @@ const JOBS: Job[] = [
   },
   {
     slug: "qa-engineer",
-    title: "QA engineer",
+    title: "QA Engineer",
     team: "Engineering",
     location: "Remote (EU / Americas)",
     type: "Full-time",
     description:
       "Own end-to-end test coverage, regression suites and release confidence for the Rexxon platform. Playwright, Vitest, synthetic monitoring.",
   },
-  {
-    slug: "senior-qa-automation-engineer",
-    title: "Senior QA automation engineer",
-    team: "Engineering",
-    location: "Remote (Global)",
-    type: "Full-time",
-    description:
-      "Design the automated testing strategy across web, API and data pipelines. Build the harness our engineers ship against every day.",
-  },
-  {
-    slug: "senior-devops-engineer",
-    title: "Senior DevOps / platform engineer",
-    team: "Engineering",
-    location: "Remote (Global)",
-    type: "Full-time",
-    description:
-      "Run our Cloudflare + Supabase infra, CI/CD, observability and on-call rotation. Quietly make everything ten times faster.",
-  },
-  {
-    slug: "security-engineer",
-    title: "Security engineer",
-    team: "Engineering",
-    location: "Remote (Americas / EU)",
-    type: "Full-time",
-    description:
-      "Drive SOC 2 Type II, ISO 27001 and application security across the stack. Partner with product on threat modeling and least-privilege design.",
-  },
 
-  // Design & Product
+  // Design
   {
     slug: "senior-product-designer",
-    title: "Senior product designer",
+    title: "Senior Product Designer",
     team: "Design",
     location: "Remote (Americas / EU)",
     type: "Full-time",
     description:
       "Define the visual and interaction language of Rexxon's intelligence surfaces. Heavy data, heavy density, must feel effortless.",
   },
-  {
-    slug: "product-manager-intelligence",
-    title: "Product manager, intelligence",
-    team: "Product",
-    location: "Remote (Global)",
-    type: "Full-time",
-    description:
-      "Own the signal-to-action loop: how teams discover, prioritize and act on market intelligence inside Rexxon.",
-  },
 
   // Sales
   {
     slug: "account-executive-mid-market",
-    title: "Account executive, mid-market",
+    title: "Account Executive, Mid-Market",
     team: "Sales",
     location: "Remote (US)",
     type: "Full-time",
@@ -118,100 +73,35 @@ const JOBS: Job[] = [
       "Run full-cycle deals from $25k–$150k ACV with RevOps, strategy and ops leaders at 200–2,000 employee companies.",
   },
   {
-    slug: "account-executive-enterprise",
-    title: "Account executive, enterprise",
-    team: "Sales",
-    location: "Remote (US / EMEA)",
-    type: "Full-time",
-    description:
-      "Land and expand strategic accounts at the Fortune 1000. Multi-threaded, 6–9 month cycles, $150k+ ACV.",
-  },
-  {
     slug: "sales-development-representative",
-    title: "Sales development representative",
+    title: "Sales Development Representative",
     team: "Sales",
     location: "Remote (US)",
     type: "Full-time",
     description:
       "Be the first conversation prospects have with Rexxon. Outbound to revenue, strategy and ops leaders using our own signal engine.",
   },
-  {
-    slug: "senior-sales-engineer",
-    title: "Senior sales engineer",
-    team: "Sales",
-    location: "Remote (Global)",
-    type: "Full-time",
-    description:
-      "Technical co-pilot in every enterprise deal. Run demos, scope integrations and translate prospect data into a story.",
-  },
 
-  // GTM
-  {
-    slug: "head-of-marketing",
-    title: "Head of marketing",
-    team: "Marketing",
-    location: "Remote (US)",
-    type: "Full-time",
-    description:
-      "Own brand, demand and product marketing. Build the category narrative around business market intelligence.",
-  },
+  // Marketing
   {
     slug: "content-marketing-lead",
-    title: "Content marketing lead",
+    title: "Content Marketing Lead",
     team: "Marketing",
     location: "Remote (Global)",
     type: "Full-time",
     description:
       "Lead the editorial engine — research, blog, playbooks, case studies — that fuels our inbound and AI-search presence.",
   },
-  {
-    slug: "lifecycle-marketing-manager",
-    title: "Lifecycle marketing manager",
-    team: "Marketing",
-    location: "Remote (Americas / EU)",
-    type: "Full-time",
-    description:
-      "Own activation, retention and expansion comms across email, in-app and product surfaces.",
-  },
 
   // Customer
   {
     slug: "customer-success-manager",
-    title: "Customer success manager",
+    title: "Customer Success Manager",
     team: "Customer",
     location: "Remote (US / EMEA)",
     type: "Full-time",
     description:
       "Drive activation, ROI and expansion for our top-quartile accounts. Become the trusted intelligence partner inside each customer.",
-  },
-  {
-    slug: "solutions-architect",
-    title: "Solutions architect",
-    team: "Customer",
-    location: "Remote (Global)",
-    type: "Full-time",
-    description:
-      "Architect data, integration and workflow rollouts for strategic customers. Bridge between product, engineering and the customer's stack.",
-  },
-
-  // Ops
-  {
-    slug: "head-of-finance",
-    title: "Head of finance",
-    team: "Operations",
-    location: "Remote (US)",
-    type: "Full-time",
-    description:
-      "Own FP&A, accounting and investor reporting as we scale through Series B and beyond.",
-  },
-  {
-    slug: "people-operations-lead",
-    title: "People operations lead",
-    team: "Operations",
-    location: "Remote (Global)",
-    type: "Full-time",
-    description:
-      "Build the systems, rituals and culture of a remote-first, high-trust company across 4 time zones.",
   },
 ];
 
@@ -283,16 +173,16 @@ function CareersPage() {
 
         <div className="mt-8 grid gap-4 sm:grid-cols-3">
           <div className="rounded-xl border border-border bg-card p-5">
-            <p className="text-3xl font-semibold">$42M</p>
-            <p className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">Series A · 2025</p>
+            <p className="text-3xl font-semibold">14</p>
+            <p className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">Countries</p>
           </div>
           <div className="rounded-xl border border-border bg-card p-5">
-            <p className="text-3xl font-semibold">38</p>
-            <p className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">Team across 14 countries</p>
+            <p className="text-3xl font-semibold">100%</p>
+            <p className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">Remote-First</p>
           </div>
           <div className="rounded-xl border border-border bg-card p-5">
             <p className="text-3xl font-semibold">{JOBS.length}</p>
-            <p className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">Open roles</p>
+            <p className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">Open Roles</p>
           </div>
         </div>
       </header>
