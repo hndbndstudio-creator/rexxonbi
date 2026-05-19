@@ -29,9 +29,9 @@ export const Route = createFileRoute('/signup')({
 });
 
 const PLANS = [
-  { id: 'starter', name: 'Starter', price: 79, accounts: '75 accounts', seats: '1 user' },
-  { id: 'pro', name: 'Pro', price: 199, accounts: '250 accounts', seats: '3 users' },
-  { id: 'team', name: 'Team', price: 349, accounts: '750 accounts', seats: '10 users' },
+  { id: 'starter', name: 'Starter', price: 99, accounts: '75 accounts', seats: '1 user' },
+  { id: 'pro', name: 'Pro', price: 279, accounts: '250 accounts', seats: '3 users' },
+  { id: 'team', name: 'Team', price: 879, accounts: '750 accounts', seats: '10 users' },
 ] as const;
 
 const HERO_AVATARS = [avatar1, avatar2, avatar3, avatar4];
