@@ -92,23 +92,27 @@ export function OnboardingTour() {
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const [showWelcome, setShowWelcome] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [sessionActive, setSessionActive] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     setMounted(true);
     const s = loadStatus();
     setStatus(s);
+    // Only show on the very first visit — after the user has been welcomed once
+    // (started or skipped the tour), never show again on subsequent sessions.
     if (!s.welcomed && !s.dismissed) {
-      // small delay so layout settles
       const t = setTimeout(() => setShowWelcome(true), 400);
       return () => clearTimeout(t);
     }
   }, []);
 
   if (!mounted || status.dismissed) return null;
+  // Already welcomed in a previous session and not actively touring now → stay hidden.
+  if (status.welcomed && !sessionActive) return null;
 
   const allDone = STEPS.every((s) => status.completed.includes(s.id));
-  if (allDone && !showWelcome) return null;
+  if (allDone && !showWelcome && !sessionActive) return null;
 
   const startTour = () => {
     const next = { ...status, welcomed: true };
