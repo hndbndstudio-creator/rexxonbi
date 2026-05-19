@@ -141,8 +141,14 @@ function SignupPage() {
                 <Label htmlFor="password">Password</Label>
                 <Input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="At least 6 characters" />
               </div>
-              <Button type="submit" className="btn-press w-full bg-brand text-brand-foreground shadow-inset-glow" disabled={submitting}>
-                {submitting ? 'Creating account…' : 'Get started'}
+              <Button
+                type="submit"
+                size="lg"
+                className="btn-press group h-12 w-full bg-brand text-base font-semibold text-brand-foreground shadow-[0_0_0_1px_hsl(var(--brand)/0.6),0_10px_30px_-10px_hsl(var(--brand)/0.6)] ring-1 ring-brand/40 transition-all hover:bg-brand/90 hover:shadow-[0_0_0_1px_hsl(var(--brand)),0_14px_40px_-10px_hsl(var(--brand)/0.8)]"
+                disabled={submitting}
+              >
+                {submitting ? 'Creating account…' : 'Create account'}
+                {!submitting && <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />}
               </Button>
               <p className="text-center text-xs text-muted-foreground">
                 Cancel anytime · 30-day money-back · Setup in 10 minutes
