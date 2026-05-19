@@ -1,12 +1,12 @@
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/use-auth';
-import { supabase } from '@/integrations/supabase/client';
+import { lovable } from '@/integrations/lovable';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Check, ShieldCheck, Star } from 'lucide-react';
+import { ArrowRight, Check, ShieldCheck, Star } from 'lucide-react';
 import { RexxonLogo } from '@/components/rexxon-logo';
 import avatar1 from '@/assets/avatar-1.jpg';
 import avatar2 from '@/assets/avatar-2.jpg';
