@@ -118,12 +118,13 @@ export function OnboardingTour() {
     const next = { ...status, welcomed: true };
     setStatus(next);
     saveStatus(next);
+    setSessionActive(true);
     setShowWelcome(false);
     setActiveIdx(0);
   };
 
   const skipWelcome = () => {
-    const next = { ...status, welcomed: true };
+    const next = { ...status, welcomed: true, dismissed: true };
     setStatus(next);
     saveStatus(next);
     setShowWelcome(false);
