@@ -2,6 +2,7 @@ import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/use-auth';
 import { supabase } from '@/integrations/supabase/client';
+import { lovable } from '@/integrations/lovable';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -53,11 +54,12 @@ function LoginPage() {
   const handleGoogle = async () => {
     setSubmitting(true);
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: typeof window !== 'undefined' ? `${window.location.origin}/dashboard` : undefined },
+      const result = await lovable.auth.signInWithOAuth('google', {
+        redirect_uri: typeof window !== 'undefined' ? window.location.origin : undefined,
       });
-      if (error) throw error;
+      if (result.error) throw result.error;
+      if (result.redirected) return;
+      router.navigate({ to: '/birdseye' });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Google sign in failed');
       setSubmitting(false);

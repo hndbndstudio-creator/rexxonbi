@@ -1,12 +1,12 @@
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/use-auth';
-import { supabase } from '@/integrations/supabase/client';
+import { lovable } from '@/integrations/lovable';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Check, ShieldCheck, Star } from 'lucide-react';
+import { ArrowRight, Check, ShieldCheck, Star } from 'lucide-react';
 import { RexxonLogo } from '@/components/rexxon-logo';
 import avatar1 from '@/assets/avatar-1.jpg';
 import avatar2 from '@/assets/avatar-2.jpg';
@@ -29,9 +29,9 @@ export const Route = createFileRoute('/signup')({
 });
 
 const PLANS = [
-  { id: 'starter', name: 'Starter', price: 79, accounts: '75 accounts', seats: '1 user' },
-  { id: 'pro', name: 'Pro', price: 199, accounts: '250 accounts', seats: '3 users' },
-  { id: 'team', name: 'Team', price: 349, accounts: '750 accounts', seats: '10 users' },
+  { id: 'starter', name: 'Starter', price: 99, accounts: '75 accounts', seats: '1 user' },
+  { id: 'pro', name: 'Pro', price: 279, accounts: '250 accounts', seats: '3 users' },
+  { id: 'team', name: 'Team', price: 879, accounts: '750 accounts', seats: '10 users' },
 ] as const;
 
 const HERO_AVATARS = [avatar1, avatar2, avatar3, avatar4];
@@ -65,11 +65,12 @@ function SignupPage() {
   const handleGoogle = async () => {
     setSubmitting(true);
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: typeof window !== 'undefined' ? `${window.location.origin}/dashboard` : undefined },
+      const result = await lovable.auth.signInWithOAuth('google', {
+        redirect_uri: typeof window !== 'undefined' ? window.location.origin : undefined,
       });
-      if (error) throw error;
+      if (result.error) throw result.error;
+      if (result.redirected) return;
+      router.navigate({ to: '/birdseye' });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Google sign up failed');
       setSubmitting(false);
@@ -140,8 +141,14 @@ function SignupPage() {
                 <Label htmlFor="password">Password</Label>
                 <Input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="At least 6 characters" />
               </div>
-              <Button type="submit" className="btn-press w-full bg-brand text-brand-foreground shadow-inset-glow" disabled={submitting}>
-                {submitting ? 'Creating account…' : 'Get started'}
+              <Button
+                type="submit"
+                size="lg"
+                className="btn-press group h-12 w-full bg-brand text-base font-semibold text-brand-foreground shadow-[0_0_0_1px_hsl(var(--brand)/0.6),0_10px_30px_-10px_hsl(var(--brand)/0.6)] ring-1 ring-brand/40 transition-all hover:bg-brand/90 hover:shadow-[0_0_0_1px_hsl(var(--brand)),0_14px_40px_-10px_hsl(var(--brand)/0.8)]"
+                disabled={submitting}
+              >
+                {submitting ? 'Creating account…' : 'Create account'}
+                {!submitting && <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />}
               </Button>
               <p className="text-center text-xs text-muted-foreground">
                 Cancel anytime · 30-day money-back · Setup in 10 minutes
